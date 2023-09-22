@@ -1,9 +1,10 @@
-package com.tama;
+package com.gorkemarik.tama;
 
 import com.facebook.react.ReactActivity;
 import com.facebook.react.ReactActivityDelegate;
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint;
 import com.facebook.react.defaults.DefaultReactActivityDelegate;
+import org.devio.rn.splashscreen.SplashScreen;
 import android.os.Bundle;
 
 public class MainActivity extends ReactActivity {
@@ -19,6 +20,7 @@ public class MainActivity extends ReactActivity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
+    SplashScreen.show(this);
     super.onCreate(null);
   }
 
