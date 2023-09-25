@@ -2,18 +2,19 @@ import React from 'react';
 import Profile from '../screens/Profile/Profile';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MyMedicines from '../screens/MyMedicines/MyMedicines';
-import Appointments from '../screens/Appointments/Appointments';
 import Home from '../screens/Home/Home';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {PageNames} from './RouteNames';
+import {PageNames} from '../constants/RouteNames';
+import NewAppointment from '../screens/Appointments/NewAppointment/NewAppointment';
 
 const Tab = createBottomTabNavigator();
 
-function TabGroup() {
+export default function TabNavigator() {
   return (
     <Tab.Navigator
       initialRouteName={PageNames.home}
       screenOptions={({route}) => ({
+        unmountOnBlur: true,
         headerShown: false,
         tabBarIcon: ({color, focused, size}) => {
           return (
@@ -27,36 +28,36 @@ function TabGroup() {
         tabBarActiveTintColor: '#4D7E3E',
         tabBarInactiveTintColor: 'gray',
         tabBarStyle: {
-          backgroundColor: '#F5F5F5',
-          height: 70,
+          backgroundColor: '#fff',
+          height: 60,
+        },
+        tabBarItemStyle: {
+          paddingBottom: 10,
+          paddingTop: 3,
         },
       })}>
       <Tab.Screen
         name={PageNames.home}
         component={Home}
-        options={{title: 'Ana Sayfa'}}
+        options={{title: 'Ana Sayfa', tabBarLabel: 'Ana Sayfa'}}
       />
       <Tab.Screen
         name={PageNames.myMedicines}
         component={MyMedicines}
-        options={{title: 'İlaçlarım'}}
+        options={{title: 'İlaçlarım', tabBarLabel: 'İlaçlarım'}}
       />
       <Tab.Screen
         name={PageNames.appointments}
-        component={Appointments}
-        options={{title: 'Randevular'}}
+        component={NewAppointment} // TODO: Change this to AppointmentsStackGroup
+        options={{title: 'Randevu', tabBarLabel: 'Randevu'}}
       />
       <Tab.Screen
         name={PageNames.profile}
         component={Profile}
-        options={{title: 'Profil'}}
+        options={{title: 'Profil', tabBarLabel: 'Profil'}}
       />
     </Tab.Navigator>
   );
-}
-
-export default function Navigation() {
-  return <TabGroup />;
 }
 
 const getIconNameByPage = (name: string, focused: boolean) => {
