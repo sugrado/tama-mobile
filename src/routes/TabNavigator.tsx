@@ -4,7 +4,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MyMedicines from '../screens/MyMedicines/MyMedicines';
 import Home from '../screens/Home/Home';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {PageNames} from '../constants/RouteNames';
+import {PAGE_NAMES} from '../constants';
 import NewAppointment from '../screens/Appointments/NewAppointment/NewAppointment';
 
 const Tab = createBottomTabNavigator();
@@ -12,7 +12,7 @@ const Tab = createBottomTabNavigator();
 export default function TabNavigator() {
   return (
     <Tab.Navigator
-      initialRouteName={PageNames.home}
+      initialRouteName={PAGE_NAMES.home}
       screenOptions={({route}) => ({
         unmountOnBlur: true,
         headerShown: false,
@@ -37,22 +37,22 @@ export default function TabNavigator() {
         },
       })}>
       <Tab.Screen
-        name={PageNames.home}
+        name={PAGE_NAMES.home}
         component={Home}
         options={{title: 'Ana Sayfa', tabBarLabel: 'Ana Sayfa'}}
       />
       <Tab.Screen
-        name={PageNames.myMedicines}
+        name={PAGE_NAMES.myMedicines}
         component={MyMedicines}
         options={{title: 'İlaçlarım', tabBarLabel: 'İlaçlarım'}}
       />
       <Tab.Screen
-        name={PageNames.appointments}
+        name={PAGE_NAMES.appointments}
         component={NewAppointment} // TODO: Change this to AppointmentsStackGroup
         options={{title: 'Randevu', tabBarLabel: 'Randevu'}}
       />
       <Tab.Screen
-        name={PageNames.profile}
+        name={PAGE_NAMES.profile}
         component={Profile}
         options={{title: 'Profil', tabBarLabel: 'Profil'}}
       />
@@ -62,13 +62,13 @@ export default function TabNavigator() {
 
 const getIconNameByPage = (name: string, focused: boolean) => {
   switch (name) {
-    case PageNames.home:
+    case PAGE_NAMES.home:
       return focused ? 'home' : 'home-outline';
-    case PageNames.myMedicines:
+    case PAGE_NAMES.myMedicines:
       return focused ? 'medical' : 'medical-outline';
-    case PageNames.appointments:
+    case PAGE_NAMES.appointments:
       return focused ? 'calendar' : 'calendar-outline';
-    case PageNames.profile:
+    case PAGE_NAMES.profile:
       return focused ? 'person' : 'person-outline';
     default:
       throw new Error('Invalid page name');
