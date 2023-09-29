@@ -15,7 +15,6 @@ import {
 } from 'react-native-paper';
 import {Styles} from './Login.style';
 import {useAuth} from '../../contexts/AuthContext';
-import {COLORS} from '../../constants';
 
 function Login() {
   const {login} = useAuth();
@@ -40,7 +39,7 @@ function Login() {
 
   return (
     <>
-      <StatusBar backgroundColor={COLORS.THEME_GREEN} />
+      <StatusBar backgroundColor="#4D7E3E" />
       <SafeAreaView style={Styles.login_container}>
         <View style={Styles.login_header}>
           <Image
@@ -101,7 +100,7 @@ function Login() {
               onPress={() => handleLogin()}
               style={Styles.loginButton}
               theme={{dark: false}}
-              buttonColor={COLORS.THEME_GREEN}
+              buttonColor="#4D7E3E"
               icon="login-variant">
               Giriş Yap
             </Button>
