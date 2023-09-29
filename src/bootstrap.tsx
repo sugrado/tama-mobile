@@ -13,7 +13,7 @@ export default function Bootstrap() {
   return (
     <AuthProvider>
       <SafeAreaProvider>
-        <PaperProvider>
+        <PaperProvider theme={{dark: false}}>
           <Navigation />
         </PaperProvider>
       </SafeAreaProvider>

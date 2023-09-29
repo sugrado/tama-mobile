@@ -5,13 +5,18 @@ import {NavigationContainer} from '@react-navigation/native';
 import {useAuth} from '../contexts/AuthContext';
 import {ActivityIndicator, Text} from 'react-native-paper';
 import {StyleSheet, View} from 'react-native';
+import {COLORS} from '../constants';
 
 export default function Navigation() {
   const {isLoading, userToken} = useAuth();
   if (isLoading) {
     return (
       <View style={styles.loading_container}>
-        <ActivityIndicator animating={true} color="#4D7E3E" size="large" />
+        <ActivityIndicator
+          animating={true}
+          color={COLORS.THEME_GREEN}
+          size="large"
+        />
         <Text style={styles.loading_text}>Yükleniyor...</Text>
       </View>
     );
