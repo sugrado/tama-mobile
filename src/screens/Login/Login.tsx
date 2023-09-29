@@ -1,153 +1,141 @@
 import React, {useState} from 'react';
 import {
   Image,
-  StyleSheet,
   View,
   TouchableOpacity,
   SafeAreaView,
   StatusBar,
 } from 'react-native';
-import {DIMENSIONS} from '../../constants';
-import {Button, TextInput, Text} from 'react-native-paper';
+import {
+  Button,
+  TextInput,
+  Text,
+  HelperText,
+  Snackbar,
+} from 'react-native-paper';
+import {Styles} from './Login.style';
+import {useAuth} from '../../contexts/AuthContext';
+import {COLORS} from '../../constants';
 
 function Login() {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const {login} = useAuth();
+  const [username, setUsername] = useState<string | undefined>(undefined);
+  const [password, setPassword] = useState<string | undefined>(undefined);
+  const [snackbarVisible, setSnackbarVisible] = useState(false);
+
+  const hasUsernameErrors = () => username !== undefined && username.length < 3;
+  const hasPasswordErrors = () => password !== undefined && password.length < 8;
+
+  const handleLogin = () => {
+    if (hasUsernameErrors() || hasPasswordErrors()) {
+      return;
+    }
+    if (!username || !password) {
+      setSnackbarVisible(true);
+      return;
+    }
+
+    login(String(username), String(password));
+  };
+
   return (
     <>
-      <StatusBar backgroundColor="#4D7E3E" />
-      <SafeAreaView style={styles.login_container}>
-        <View style={styles.login_header}>
+      <StatusBar backgroundColor={COLORS.THEME_GREEN} />
+      <SafeAreaView style={Styles.login_container}>
+        <View style={Styles.login_header}>
           <Image
-            style={styles.login_header_logo}
+            style={Styles.login_header_logo}
             source={require('../../assets/icon_transparent.png')}
           />
-          <Text style={styles.login_header_text}>
-            <Text style={styles.login_header_text_bold}>{'TAMA - '}</Text>
+          <Text style={Styles.login_header_text}>
+            <Text style={Styles.login_header_text_bold}>{'TAMA - '}</Text>
             {'Giriş Yap'}
           </Text>
         </View>
-        <View style={styles.login_wrapper}>
-          <View style={styles.form}>
-            <TextInput
-              label="Kullanıcı adı"
-              value={username}
-              onChangeText={input => setUsername(input)}
-              theme={{
-                colors: {primary: 'green'},
-              }}
-              style={styles.input}
-            />
-            <TextInput
-              label="Parola"
-              value={password}
-              onChangeText={input => setPassword(input)}
-              theme={{
-                colors: {primary: 'green'},
-              }}
-              secureTextEntry={true}
-              style={styles.input}
-            />
-            <View style={styles.forgot_password}>
+        <View style={Styles.login_wrapper}>
+          <View style={Styles.form}>
+            <View style={Styles.form_field}>
+              <TextInput
+                label="Kullanıcı adı"
+                value={username}
+                onChangeText={input => setUsername(input)}
+                theme={{
+                  colors: {primary: 'green'},
+                  dark: false,
+                }}
+                style={Styles.input}
+              />
+              <HelperText
+                padding="none"
+                type="error"
+                visible={hasUsernameErrors()}>
+                Kullanıcı adı geçersiz!
+              </HelperText>
+            </View>
+            <View style={Styles.form_field}>
+              <TextInput
+                label="Parola"
+                value={password}
+                onChangeText={input => setPassword(input)}
+                theme={{
+                  colors: {primary: 'green'},
+                  dark: false,
+                }}
+                secureTextEntry={true}
+                style={Styles.input}
+              />
+              <HelperText
+                type="error"
+                visible={hasPasswordErrors()}
+                padding="none">
+                Parola geçersiz!
+              </HelperText>
+            </View>
+            <View style={Styles.forgot_password}>
               <TouchableOpacity>
-                <Text style={styles.forgot_password_text}>Şifremi Unuttum</Text>
+                <Text style={Styles.forgot_password_text}>Şifremi Unuttum</Text>
               </TouchableOpacity>
             </View>
             <Button
               mode="contained"
-              onPress={() => console.log('pressed')}
-              style={styles.loginButton}
-              buttonColor="#4D7E3E"
+              onPress={() => handleLogin()}
+              style={Styles.loginButton}
+              theme={{dark: false}}
+              buttonColor={COLORS.THEME_GREEN}
               icon="login-variant">
               Giriş Yap
             </Button>
             <Button
               mode="elevated"
               onPress={() => console.log('pressed')}
-              style={styles.firstAppointmentButton}
+              style={Styles.firstAppointmentButton}
+              theme={{dark: false}}
               buttonColor="#2b5758"
               textColor="#fff"
               icon="calendar-plus">
               İlk Randevu
             </Button>
           </View>
-          <View style={styles.footer}>
+          <View style={Styles.footer}>
             <Image
-              style={styles.footer_logo}
+              style={Styles.footer_logo}
               source={require('../../assets/neu_logo.png')}
             />
-            <Text variant="bodySmall" style={styles.login_footer_text}>
+            <Text variant="bodySmall" style={Styles.login_footer_text}>
               Necmettin Erbakan Üniversitesi{'\n'}Tıp Fakültesi Ruh Sağlığı ve
               Hastalıkları{'\n'}Ana Bilim Dalı
             </Text>
+            <Snackbar
+              visible={snackbarVisible}
+              duration={2000}
+              onDismiss={() => setSnackbarVisible(false)}>
+              Lütfen kullanıcı adı ve parolanızı eksiksiz doldurun.
+            </Snackbar>
           </View>
         </View>
       </SafeAreaView>
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  forgot_password: {width: '100%', alignItems: 'flex-end'},
-  forgot_password_text: {
-    fontWeight: 'bold',
-    color: '#4D7E3E',
-  },
-  loginButton: {width: '100%', marginTop: 30},
-  firstAppointmentButton: {width: '100%', marginTop: 30},
-  input: {backgroundColor: '#fff', marginBottom: 10},
-  login_container: {
-    flex: 1,
-    backgroundColor: '#FFF',
-  },
-  login_header: {
-    alignItems: 'center',
-    paddingTop: 30,
-    paddingBottom: 30,
-    backgroundColor: '#4D7E3E',
-  },
-  login_header_logo: {
-    height: (DIMENSIONS.height * 1.2) / 10,
-    resizeMode: 'contain',
-  },
-  login_header_text: {
-    marginTop: 15,
-    color: '#f0f0f0',
-    fontSize: 16,
-  },
-  login_header_text_bold: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  login_wrapper: {
-    flex: 1,
-    justifyContent: 'space-between',
-    paddingTop: 30,
-    paddingBottom: 15,
-    borderTopRightRadius: 12,
-    borderTopLeftRadius: 12,
-    marginTop: -10,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-  },
-  form: {
-    width: '100%',
-    maxWidth: 280,
-  },
-  login_footer_text: {
-    color: '#808080',
-    textAlign: 'center',
-  },
-  footer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingHorizontal: 20,
-  },
-  footer_logo: {
-    width: 50,
-    height: 50,
-    marginVertical: 10,
-  },
-});
 
 export default Login;
