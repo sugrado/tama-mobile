@@ -2,7 +2,7 @@ import React from 'react';
 import {KeyboardTypeOptions} from 'react-native';
 import {TextInput} from 'react-native-paper';
 
-type InputFieldProps = {
+type SugradoInputProps = {
   label: string;
   keyboardType?: KeyboardTypeOptions | undefined;
   value: string;
@@ -11,22 +11,28 @@ type InputFieldProps = {
   secureTextEntry?: boolean;
 };
 
-export default function InputField({
+export default function SugradoInput({
   label,
   keyboardType = 'default',
   value,
   valueChange,
   style,
   secureTextEntry = false,
-}: InputFieldProps) {
+}: SugradoInputProps) {
   return (
     <TextInput
-      style={{width: '80%', ...style}}
+      style={{width: '100%', ...style}}
       label={label}
+      mode="outlined"
       value={value}
       onChangeText={valueChange}
       keyboardType={keyboardType}
       secureTextEntry={secureTextEntry}
+      theme={{
+        colors: {primary: 'green'},
+        roundness: 50,
+      }}
+      outlineColor="transparent"
     />
   );
 }
