@@ -1,24 +1,22 @@
 import React from 'react';
-import {NavigationContainer} from '@react-navigation/native';
 import Navigation from './routes';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {PaperProvider} from 'react-native-paper';
 import SplashScreen from 'react-native-splash-screen';
-import {Platform} from 'react-native';
+import {AuthProvider} from './contexts/AuthContext';
 
 export default function Bootstrap() {
   React.useEffect(() => {
-    if (Platform.OS === 'android') {
-      SplashScreen.hide();
-    }
+    // TODO: async Token expiry check and refresh token request if needed
+    SplashScreen.hide();
   }, []);
   return (
-    <SafeAreaProvider>
-      <NavigationContainer>
+    <AuthProvider>
+      <SafeAreaProvider>
         <PaperProvider>
           <Navigation />
         </PaperProvider>
-      </NavigationContainer>
-    </SafeAreaProvider>
+      </SafeAreaProvider>
+    </AuthProvider>
   );
 }

@@ -1,10 +1,13 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {View} from 'react-native';
+import {Button} from 'react-native-paper';
+import {useAuth} from '../../contexts/AuthContext';
 
 export default function Profile() {
+  const {logout} = useAuth();
   return (
     <View>
-      <Text>Profile Page</Text>
+      <Button onPress={logout}>Çıkış Yap</Button>
     </View>
   );
 }
