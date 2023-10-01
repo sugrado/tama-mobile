@@ -22,7 +22,7 @@ export const Styles = StyleSheet.create({
     backgroundColor: '#4D7E3E',
   },
   login_header_logo: {
-    height: (DIMENSIONS.height * 1.2) / 10,
+    height: (DIMENSIONS.HEIGHT * 1.2) / 10,
     resizeMode: 'contain',
   },
   login_header_text: {
