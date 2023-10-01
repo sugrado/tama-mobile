@@ -12,7 +12,7 @@ const Tab = createBottomTabNavigator();
 export default function TabNavigator() {
   return (
     <Tab.Navigator
-      initialRouteName={PAGE_NAMES.home}
+      initialRouteName={PAGE_NAMES.HOME}
       screenOptions={({route}) => ({
         unmountOnBlur: true,
         headerShown: false,
@@ -37,22 +37,22 @@ export default function TabNavigator() {
         },
       })}>
       <Tab.Screen
-        name={PAGE_NAMES.home}
+        name={PAGE_NAMES.HOME}
         component={Home}
         options={{title: 'Ana Sayfa', tabBarLabel: 'Ana Sayfa'}}
       />
       <Tab.Screen
-        name={PAGE_NAMES.myMedicines}
+        name={PAGE_NAMES.MY_MEDICINES}
         component={MyMedicines}
         options={{title: 'İlaçlarım', tabBarLabel: 'İlaçlarım'}}
       />
       <Tab.Screen
-        name={PAGE_NAMES.appointments}
+        name={PAGE_NAMES.APPOINTMENTS}
         component={NewAppointment} // TODO: Change this to AppointmentsStackGroup
         options={{title: 'Randevu', tabBarLabel: 'Randevu'}}
       />
       <Tab.Screen
-        name={PAGE_NAMES.profile}
+        name={PAGE_NAMES.PROFILE}
         component={Profile}
         options={{title: 'Profil', tabBarLabel: 'Profil'}}
       />
@@ -62,13 +62,13 @@ export default function TabNavigator() {
 
 const getIconNameByPage = (name: string, focused: boolean) => {
   switch (name) {
-    case PAGE_NAMES.home:
+    case PAGE_NAMES.HOME:
       return focused ? 'home' : 'home-outline';
-    case PAGE_NAMES.myMedicines:
+    case PAGE_NAMES.MY_MEDICINES:
       return focused ? 'medical' : 'medical-outline';
-    case PAGE_NAMES.appointments:
+    case PAGE_NAMES.APPOINTMENTS:
       return focused ? 'calendar' : 'calendar-outline';
-    case PAGE_NAMES.profile:
+    case PAGE_NAMES.PROFILE:
       return focused ? 'person' : 'person-outline';
     default:
       throw new Error('Invalid page name');
