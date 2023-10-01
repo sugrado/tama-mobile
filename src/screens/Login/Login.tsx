@@ -1,11 +1,5 @@
 import React, {useState} from 'react';
-import {
-  Image,
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-  StatusBar,
-} from 'react-native';
+import {Image, View, TouchableOpacity, SafeAreaView} from 'react-native';
 import {
   Button,
   TextInput,
@@ -39,7 +33,6 @@ function Login() {
 
   return (
     <>
-      <StatusBar backgroundColor="#4D7E3E" />
       <SafeAreaView style={Styles.login_container}>
         <View style={Styles.login_header}>
           <Image

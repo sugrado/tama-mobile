@@ -4,7 +4,7 @@ import AuthStackNavigator from './AuthStackNavigator';
 import {NavigationContainer} from '@react-navigation/native';
 import {useAuth} from '../contexts/AuthContext';
 import {ActivityIndicator, Text} from 'react-native-paper';
-import {StyleSheet, View} from 'react-native';
+import {StatusBar, StyleSheet, View} from 'react-native';
 import {COLORS} from '../constants';
 
 export default function Navigation() {
@@ -24,6 +24,7 @@ export default function Navigation() {
 
   return (
     <NavigationContainer>
+      <StatusBar backgroundColor="#4D7E3E" />
       {userToken === null ? <AuthStackNavigator /> : <TabNavigator />}
     </NavigationContainer>
   );
