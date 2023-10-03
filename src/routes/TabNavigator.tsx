@@ -2,17 +2,17 @@ import React from 'react';
 import Profile from '../screens/Profile/Profile';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MyMedicines from '../screens/MyMedicines/MyMedicines';
-import Home from '../screens/Home/Home';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {PAGE_NAMES} from '../constants';
 import NewAppointment from '../screens/Appointments/NewAppointment/NewAppointment';
+import HomeStackNavigator from './HomeStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigator() {
   return (
     <Tab.Navigator
-      initialRouteName={PAGE_NAMES.HOME}
+      initialRouteName={PAGE_NAMES.HOME.HOME}
       screenOptions={({route}) => ({
         unmountOnBlur: true,
         headerShown: false,
@@ -37,8 +37,8 @@ export default function TabNavigator() {
         },
       })}>
       <Tab.Screen
-        name={PAGE_NAMES.HOME}
-        component={Home}
+        name={PAGE_NAMES.HOME.HOME}
+        component={HomeStackNavigator}
         options={{title: 'Ana Sayfa', tabBarLabel: 'Ana Sayfa'}}
       />
       <Tab.Screen
@@ -62,7 +62,7 @@ export default function TabNavigator() {
 
 const getIconNameByPage = (name: string, focused: boolean) => {
   switch (name) {
-    case PAGE_NAMES.HOME:
+    case PAGE_NAMES.HOME.HOME:
       return focused ? 'home' : 'home-outline';
     case PAGE_NAMES.MY_MEDICINES:
       return focused ? 'medical' : 'medical-outline';
