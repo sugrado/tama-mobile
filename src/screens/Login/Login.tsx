@@ -32,101 +32,99 @@ function Login() {
   };
 
   return (
-    <>
-      <SafeAreaView style={Styles.login_container}>
-        <View style={Styles.login_header}>
-          <Image
-            style={Styles.login_header_logo}
-            source={require('../../assets/icon_transparent.png')}
-          />
-          <Text style={Styles.login_header_text}>
-            <Text style={Styles.login_header_text_bold}>{'TAMA - '}</Text>
-            {'Giriş Yap'}
-          </Text>
-        </View>
-        <View style={Styles.login_wrapper}>
-          <View style={Styles.form}>
-            <View style={Styles.form_field}>
-              <TextInput
-                label="Kullanıcı adı"
-                value={username}
-                onChangeText={input => setUsername(input)}
-                theme={{
-                  colors: {primary: 'green'},
-                  dark: false,
-                }}
-                style={Styles.input}
-              />
-              <HelperText
-                padding="none"
-                type="error"
-                visible={hasUsernameErrors()}>
-                Kullanıcı adı geçersiz!
-              </HelperText>
-            </View>
-            <View style={Styles.form_field}>
-              <TextInput
-                label="Parola"
-                value={password}
-                onChangeText={input => setPassword(input)}
-                theme={{
-                  colors: {primary: 'green'},
-                  dark: false,
-                }}
-                secureTextEntry={true}
-                style={Styles.input}
-              />
-              <HelperText
-                type="error"
-                visible={hasPasswordErrors()}
-                padding="none">
-                Parola geçersiz!
-              </HelperText>
-            </View>
-            <View style={Styles.forgot_password}>
-              <TouchableOpacity>
-                <Text style={Styles.forgot_password_text}>Şifremi Unuttum</Text>
-              </TouchableOpacity>
-            </View>
-            <Button
-              mode="contained"
-              onPress={() => handleLogin()}
-              style={Styles.loginButton}
-              theme={{dark: false}}
-              buttonColor="#4D7E3E"
-              icon="login-variant">
-              Giriş Yap
-            </Button>
-            <Button
-              mode="elevated"
-              onPress={() => console.log('pressed')}
-              style={Styles.firstAppointmentButton}
-              theme={{dark: false}}
-              buttonColor="#2b5758"
-              textColor="#fff"
-              icon="calendar-plus">
-              İlk Randevu
-            </Button>
-          </View>
-          <View style={Styles.footer}>
-            <Image
-              style={Styles.footer_logo}
-              source={require('../../assets/neu_logo.png')}
+    <SafeAreaView style={Styles.login_container}>
+      <View style={Styles.login_header}>
+        <Image
+          style={Styles.login_header_logo}
+          source={require('../../assets/icon_transparent.png')}
+        />
+        <Text style={Styles.login_header_text}>
+          <Text style={Styles.login_header_text_bold}>{'TAMA - '}</Text>
+          {'Giriş Yap'}
+        </Text>
+      </View>
+      <View style={Styles.login_wrapper}>
+        <View style={Styles.form}>
+          <View style={Styles.form_field}>
+            <TextInput
+              label="Kullanıcı adı"
+              value={username}
+              onChangeText={input => setUsername(input)}
+              theme={{
+                colors: {primary: 'green'},
+                dark: false,
+              }}
+              style={Styles.input}
             />
-            <Text variant="bodySmall" style={Styles.login_footer_text}>
-              Necmettin Erbakan Üniversitesi{'\n'}Tıp Fakültesi Ruh Sağlığı ve
-              Hastalıkları{'\n'}Ana Bilim Dalı
-            </Text>
-            <Snackbar
-              visible={snackbarVisible}
-              duration={2000}
-              onDismiss={() => setSnackbarVisible(false)}>
-              Lütfen kullanıcı adı ve parolanızı eksiksiz doldurun.
-            </Snackbar>
+            <HelperText
+              padding="none"
+              type="error"
+              visible={hasUsernameErrors()}>
+              Kullanıcı adı geçersiz!
+            </HelperText>
           </View>
+          <View style={Styles.form_field}>
+            <TextInput
+              label="Parola"
+              value={password}
+              onChangeText={input => setPassword(input)}
+              theme={{
+                colors: {primary: 'green'},
+                dark: false,
+              }}
+              secureTextEntry={true}
+              style={Styles.input}
+            />
+            <HelperText
+              type="error"
+              visible={hasPasswordErrors()}
+              padding="none">
+              Parola geçersiz!
+            </HelperText>
+          </View>
+          <View style={Styles.forgot_password}>
+            <TouchableOpacity>
+              <Text style={Styles.forgot_password_text}>Şifremi Unuttum</Text>
+            </TouchableOpacity>
+          </View>
+          <Button
+            mode="contained"
+            onPress={() => handleLogin()}
+            style={Styles.loginButton}
+            theme={{dark: false}}
+            buttonColor="#4D7E3E"
+            icon="login-variant">
+            Giriş Yap
+          </Button>
+          <Button
+            mode="elevated"
+            onPress={() => console.log('pressed')}
+            style={Styles.firstAppointmentButton}
+            theme={{dark: false}}
+            buttonColor="#2b5758"
+            textColor="#fff"
+            icon="calendar-plus">
+            İlk Randevu
+          </Button>
         </View>
-      </SafeAreaView>
-    </>
+        <View style={Styles.footer}>
+          <Image
+            style={Styles.footer_logo}
+            source={require('../../assets/neu_logo.png')}
+          />
+          <Text variant="bodySmall" style={Styles.login_footer_text}>
+            Necmettin Erbakan Üniversitesi{'\n'}Tıp Fakültesi Ruh Sağlığı ve
+            Hastalıkları{'\n'}Ana Bilim Dalı
+          </Text>
+          <Snackbar
+            visible={snackbarVisible}
+            duration={2000}
+            onDismiss={() => setSnackbarVisible(false)}>
+            Lütfen kullanıcı adı ve parolanızı eksiksiz doldurun.
+          </Snackbar>
+        </View>
+      </View>
+    </SafeAreaView>
   );
 }
 

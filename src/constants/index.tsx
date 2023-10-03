@@ -1,7 +1,14 @@
 import {Dimensions} from 'react-native';
 
 export const PAGE_NAMES = {
-  HOME: 'home',
+  AUTH: {
+    LOGIN: 'login',
+  },
+  HOME: {
+    HOME: 'home',
+    DAILY_QUESTIONS: 'dailyQuestions',
+    DAILY_MEDICINES: 'dailyMedicines',
+  },
   MY_MEDICINES: 'myMedicines',
   APPOINTMENTS: 'appointments',
   PROFILE: 'profile',
