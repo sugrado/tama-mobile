@@ -18,7 +18,6 @@ type HomeCardProps = {
 };
 const HomeCard = ({
   icon,
-  navigateUrl,
   headerText,
   bodyText,
   footerText,
@@ -28,11 +27,7 @@ const HomeCard = ({
   onPress,
 }: HomeCardProps) => {
   return (
-    <Card
-      style={{backgroundColor, ...styles.card}}
-      onPress={
-        navigateUrl ? () => console.log('karta tıklandı', navigateUrl) : onPress
-      }>
+    <Card style={{backgroundColor, ...styles.card}} onPress={onPress}>
       <Card.Content>
         <View style={styles.cardHeader}>
           <View style={styles.cardHeaderElement}>
