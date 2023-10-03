@@ -5,6 +5,7 @@ export const PAGE_NAMES = {
     LOGIN: 'login',
   },
   HOME: {
+    HOME_STACK: 'homeStack',
     HOME: 'home',
     DAILY_QUESTIONS: 'dailyQuestions',
     DAILY_MEDICINES: 'dailyMedicines',

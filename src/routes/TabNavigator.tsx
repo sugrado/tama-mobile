@@ -12,7 +12,7 @@ const Tab = createBottomTabNavigator();
 export default function TabNavigator() {
   return (
     <Tab.Navigator
-      initialRouteName={PAGE_NAMES.HOME.HOME}
+      initialRouteName={PAGE_NAMES.HOME.HOME_STACK}
       screenOptions={({route}) => ({
         unmountOnBlur: true,
         headerShown: false,
@@ -37,7 +37,7 @@ export default function TabNavigator() {
         },
       })}>
       <Tab.Screen
-        name={PAGE_NAMES.HOME.HOME}
+        name={PAGE_NAMES.HOME.HOME_STACK}
         component={HomeStackNavigator}
         options={{title: 'Ana Sayfa', tabBarLabel: 'Ana Sayfa'}}
       />
@@ -62,7 +62,7 @@ export default function TabNavigator() {
 
 const getIconNameByPage = (name: string, focused: boolean) => {
   switch (name) {
-    case PAGE_NAMES.HOME.HOME:
+    case PAGE_NAMES.HOME.HOME_STACK:
       return focused ? 'home' : 'home-outline';
     case PAGE_NAMES.MY_MEDICINES:
       return focused ? 'medical' : 'medical-outline';
