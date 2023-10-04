@@ -11,7 +11,11 @@ export const PAGE_NAMES = {
     DAILY_MEDICINES: 'dailyMedicines',
   },
   MY_MEDICINES: 'myMedicines',
-  APPOINTMENTS: 'appointments',
+  APPOINTMENTS: {
+    APPOINTMENT_TOP_TAB: 'appointmentTopTab',
+    NEW_APPOINTMENT: 'newAppointment',
+    PAST_APPOINTMENTS: 'pastAppointments',
+  },
   PROFILE: 'profile',
 };
 

@@ -54,7 +54,9 @@ const Home = ({navigation}: any) => {
           bodyText="Yaklaşan randevularını unutma!"
           footerText={'30 Ağustos 2023 14:30 - Dr. Anıl İBİŞ'}
           onPress={() => {
-            navigation.navigate('appointments');
+            navigation.navigate(PAGE_NAMES.APPOINTMENTS.APPOINTMENT_TOP_TAB, {
+              screen: PAGE_NAMES.APPOINTMENTS.PAST_APPOINTMENTS,
+            });
           }}
         />
       </View>

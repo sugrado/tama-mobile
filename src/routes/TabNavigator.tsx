@@ -4,8 +4,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MyMedicines from '../screens/MyMedicines/MyMedicines';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {PAGE_NAMES} from '../constants';
-import NewAppointment from '../screens/Appointments/NewAppointment/NewAppointment';
 import HomeStackNavigator from './HomeStackNavigator';
+import AppointmentTopTabNavigator from './AppointmentTopTabNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -47,8 +47,8 @@ export default function TabNavigator() {
         options={{title: 'İlaçlarım', tabBarLabel: 'İlaçlarım'}}
       />
       <Tab.Screen
-        name={PAGE_NAMES.APPOINTMENTS}
-        component={NewAppointment} // TODO: Change this to AppointmentsStackGroup
+        name={PAGE_NAMES.APPOINTMENTS.APPOINTMENT_TOP_TAB}
+        component={AppointmentTopTabNavigator}
         options={{title: 'Randevu', tabBarLabel: 'Randevu'}}
       />
       <Tab.Screen
@@ -66,7 +66,7 @@ const getIconNameByPage = (name: string, focused: boolean) => {
       return focused ? 'home' : 'home-outline';
     case PAGE_NAMES.MY_MEDICINES:
       return focused ? 'medical' : 'medical-outline';
-    case PAGE_NAMES.APPOINTMENTS:
+    case PAGE_NAMES.APPOINTMENTS.APPOINTMENT_TOP_TAB:
       return focused ? 'calendar' : 'calendar-outline';
     case PAGE_NAMES.PROFILE:
       return focused ? 'person' : 'person-outline';
