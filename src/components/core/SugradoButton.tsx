@@ -1,11 +1,13 @@
 import React from 'react';
 import {Button} from 'react-native-paper';
+import {COLORS} from '../../constants';
 
 type SugradoButtonProps = {
   onPress: () => void;
   title: string;
   icon?: string;
   style?: any;
+  buttonColor?: string;
 };
 
 export default function SugradoButton({
@@ -13,6 +15,7 @@ export default function SugradoButton({
   title,
   icon,
   style,
+  buttonColor = COLORS.THEME_GREEN,
 }: SugradoButtonProps) {
   return (
     <Button
@@ -20,7 +23,7 @@ export default function SugradoButton({
       onPress={onPress}
       style={style}
       theme={{dark: false}}
-      buttonColor="#4D7E3E"
+      buttonColor={buttonColor}
       icon={icon}>
       {title}
     </Button>

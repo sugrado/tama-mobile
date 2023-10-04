@@ -29,6 +29,7 @@ export const COLORS = {
   THEME_GREEN: '#4D7E3E',
   THEME_TRANSPARENT_COLOR: '#f0f7ee',
   TRANSPARENT_RED: '#ffe6e6',
+  DARK_RED: '#880808',
   TEXT: 'rgb(197, 240, 194)',
 };
 
