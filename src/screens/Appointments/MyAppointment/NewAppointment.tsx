@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import SugradoButton from '../../../components/core/SugradoButton';
-import {Modal, Portal, Text} from 'react-native-paper';
+import {Text} from 'react-native-paper';
 import {StyleSheet, ScrollView, View} from 'react-native';
-import {COLORS} from '../../../constants';
 import SugradoSelectBox, {
   SelectBoxData,
 } from '../../../components/core/SugradoSelectBox';
+import SugradoModal from '../../../components/core/SugradoModal';
 
 class FormValues {
   hospitalId: string;
@@ -112,84 +112,77 @@ const NewAppointment = ({onAppointmentCreated}: NewAppointmentProps) => {
         onPress={showModal}
         style={styles.new_appointment_button}
       />
-      <Portal>
-        <Modal
-          visible={modalVisible}
-          contentContainerStyle={styles.modal_container}
-          dismissableBackButton={true}
-          dismissable={false}
-          onDismiss={hideModal}>
-          <Text
-            variant="titleLarge"
-            style={{textAlign: 'center', marginBottom: 25}}>
-            Randevu Oluştur
-          </Text>
-          <ScrollView>
-            <SugradoSelectBox
-              data={hospitals || []}
-              label="Hastane Seçiniz"
-              displayValue={item => item.value}
-              onSelected={(selectedItem, _) => {
-                setFormValues({...formValues, hospitalId: selectedItem.id});
-                loadDepartmentsByHospital(selectedItem.id);
-              }}
+      <SugradoModal visible={modalVisible} onDismiss={hideModal}>
+        <Text
+          variant="titleLarge"
+          style={{textAlign: 'center', marginBottom: 25}}>
+          Randevu Oluştur
+        </Text>
+        <ScrollView>
+          <SugradoSelectBox
+            data={hospitals || []}
+            label="Hastane Seçiniz"
+            displayValue={item => item.value}
+            onSelected={(selectedItem, _) => {
+              setFormValues({...formValues, hospitalId: selectedItem.id});
+              loadDepartmentsByHospital(selectedItem.id);
+            }}
+          />
+          <SugradoSelectBox
+            disabled={!formValues.hospitalId}
+            data={departments || []}
+            label="Bölüm Seçiniz"
+            displayValue={item => item.value}
+            onSelected={(selectedItem, _) => {
+              setFormValues({...formValues, departmentId: selectedItem.id});
+              loadDoctorsByDepartment(selectedItem.id);
+            }}
+          />
+          <SugradoSelectBox
+            disabled={!formValues.departmentId}
+            data={doctors || []}
+            label="Doktorunuzu Seçiniz"
+            displayValue={item => item.value}
+            onSelected={(selectedItem, _) => {
+              setFormValues({...formValues, doctorId: selectedItem.id});
+              loadDatesByDoctor(selectedItem.id);
+            }}
+          />
+          <SugradoSelectBox
+            disabled={!formValues.doctorId}
+            data={dates || []}
+            label="Tarih Seçiniz"
+            displayValue={item => item.value}
+            onSelected={(selectedItem, _) => {
+              setFormValues({...formValues, date: selectedItem.id});
+              loadTimesByDate(selectedItem.id);
+            }}
+          />
+          <SugradoSelectBox
+            disabled={!formValues.date}
+            data={times || []}
+            label="Saat Seçiniz"
+            displayValue={item => item.value}
+            onSelected={(selectedItem, _) => {
+              setFormValues({...formValues, time: selectedItem.id});
+            }}
+          />
+          <View style={styles.modal_footer}>
+            <SugradoButton
+              onPress={hideModal}
+              title="Vazgeç"
+              buttonColor="gray"
+              style={styles.modal_footer_button}
             />
-            <SugradoSelectBox
-              disabled={!formValues.hospitalId}
-              data={departments || []}
-              label="Bölüm Seçiniz"
-              displayValue={item => item.value}
-              onSelected={(selectedItem, _) => {
-                setFormValues({...formValues, departmentId: selectedItem.id});
-                loadDoctorsByDepartment(selectedItem.id);
-              }}
+            <SugradoButton
+              onPress={handleNewAppointment}
+              title="Tamamla"
+              style={styles.modal_footer_button}
+              disabled={!isFormValid()}
             />
-            <SugradoSelectBox
-              disabled={!formValues.departmentId}
-              data={doctors || []}
-              label="Doktorunuzu Seçiniz"
-              displayValue={item => item.value}
-              onSelected={(selectedItem, _) => {
-                setFormValues({...formValues, doctorId: selectedItem.id});
-                loadDatesByDoctor(selectedItem.id);
-              }}
-            />
-            <SugradoSelectBox
-              disabled={!formValues.doctorId}
-              data={dates || []}
-              label="Tarih Seçiniz"
-              displayValue={item => item.value}
-              onSelected={(selectedItem, _) => {
-                setFormValues({...formValues, date: selectedItem.id});
-                loadTimesByDate(selectedItem.id);
-              }}
-            />
-            <SugradoSelectBox
-              disabled={!formValues.date}
-              data={times || []}
-              label="Saat Seçiniz"
-              displayValue={item => item.value}
-              onSelected={(selectedItem, _) => {
-                setFormValues({...formValues, time: selectedItem.id});
-              }}
-            />
-            <View style={styles.modal_footer}>
-              <SugradoButton
-                onPress={hideModal}
-                title="Vazgeç"
-                buttonColor="gray"
-                style={styles.modal_footer_button}
-              />
-              <SugradoButton
-                onPress={handleNewAppointment}
-                title="Tamamla"
-                style={styles.modal_footer_button}
-                disabled={!isFormValid()}
-              />
-            </View>
-          </ScrollView>
-        </Modal>
-      </Portal>
+          </View>
+        </ScrollView>
+      </SugradoModal>
     </>
   );
 };
@@ -198,12 +191,6 @@ const styles = StyleSheet.create({
   new_appointment_button: {
     marginTop: 10,
     width: '80%',
-  },
-  modal_container: {
-    backgroundColor: COLORS.THEME_TRANSPARENT_COLOR,
-    padding: 20,
-    margin: 20,
-    borderRadius: 20,
   },
   modal_footer: {
     flexDirection: 'row',
