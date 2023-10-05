@@ -50,13 +50,11 @@ const Home = ({navigation}: any) => {
         <Text style={styles.card_title}>Yaklaşan Aktiviteler</Text>
         <HomeCard
           icon="calendar-month-outline"
-          headerText="Yaklaşan Randevular"
-          bodyText="Yaklaşan randevularını unutma!"
+          headerText="Randevu Hatırlatıcısı"
+          bodyText="Yaklaşan randevunu unutma!"
           footerText={'30 Ağustos 2023 14:30 - Dr. Anıl İBİŞ'}
           onPress={() => {
-            navigation.navigate(PAGE_NAMES.APPOINTMENTS.APPOINTMENT_TOP_TAB, {
-              screen: PAGE_NAMES.APPOINTMENTS.PAST_APPOINTMENTS,
-            });
+            navigation.navigate(PAGE_NAMES.APPOINTMENTS.APPOINTMENT_TOP_TAB);
           }}
         />
       </View>
