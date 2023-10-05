@@ -8,6 +8,7 @@ type SugradoButtonProps = {
   icon?: string;
   style?: any;
   buttonColor?: string;
+  disabled?: boolean;
 };
 
 export default function SugradoButton({
@@ -16,6 +17,7 @@ export default function SugradoButton({
   icon,
   style,
   buttonColor = COLORS.THEME_GREEN,
+  disabled = false,
 }: SugradoButtonProps) {
   return (
     <Button
@@ -24,7 +26,8 @@ export default function SugradoButton({
       style={style}
       theme={{dark: false}}
       buttonColor={buttonColor}
-      icon={icon}>
+      icon={icon}
+      disabled={disabled}>
       {title}
     </Button>
   );
