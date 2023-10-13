@@ -12,7 +12,7 @@ const Home = ({navigation}: any) => {
       showsVerticalScrollIndicator={false}>
       <View style={styles.header}>
         <Text variant="headlineSmall" style={styles.header_text}>
-          TAMA'ya Hoşgeldin!{'\n'}John
+          TAMA'ya Hoşgeldin!{'\n'}Görkem Rıdvan
         </Text>
         <Image
           source={require('../../assets/icon_transparent.png')}
