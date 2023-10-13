@@ -6,6 +6,7 @@ import SugradoSelectBox, {
   SelectBoxData,
 } from '../../../components/core/SugradoSelectBox';
 import SugradoModal from '../../../components/core/SugradoModal';
+import Loading from '../../../components/layout/Loading';
 
 class FormValues {
   hospitalId: string;
@@ -28,6 +29,7 @@ type NewAppointmentProps = {
 };
 
 const NewAppointment = ({onAppointmentCreated}: NewAppointmentProps) => {
+  const [loading, setLoading] = useState<boolean>(false);
   const [doctors, setDoctors] = useState<SelectBoxData[] | null>(null);
   const [hospitals, setHospitals] = useState<SelectBoxData[] | null>(null);
   const [departments, setDepartments] = useState<SelectBoxData[] | null>(null);
@@ -76,17 +78,19 @@ const NewAppointment = ({onAppointmentCreated}: NewAppointmentProps) => {
 
   const loadDepartmentsByHospital = async (hospitalId: string) => {
     // TODO: backend request and filter departments by hospital
-    // await wait(5000);
+    setLoading(true);
+    await wait(5000);
+    setLoading(false);
     setDepartments(dummyData.departments);
   };
 
-  // function wait(ms: any) {
-  //   return new Promise((resolve, _) => {
-  //     setTimeout(() => {
-  //       resolve(ms);
-  //     }, ms);
-  //   });
-  // }
+  function wait(ms: any) {
+    return new Promise((resolve, _) => {
+      setTimeout(() => {
+        resolve(ms);
+      }, ms);
+    });
+  }
 
   const loadDoctorsByDepartment = (departmentId: string) => {
     // TODO: backend request and filter doctors by department
@@ -106,6 +110,7 @@ const NewAppointment = ({onAppointmentCreated}: NewAppointmentProps) => {
 
   return (
     <>
+      {loading && <Loading loading={loading} />}
       <SugradoButton
         title="Randevu al"
         icon="calendar-plus"

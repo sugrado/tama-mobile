@@ -19,6 +19,7 @@ const Item = ({item}: ItemProps) => (
       name="history"
       size={24}
       style={styles.history_icon}
+      color="gray"
     />
     <View>
       <Text>Doktor: {item.doctorName}</Text>

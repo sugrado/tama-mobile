@@ -6,6 +6,7 @@ import SugradoButton from '../../../components/core/SugradoButton';
 import {StyleSheet} from 'react-native';
 import SugradoDialog from '../../../components/core/SugradoDialog';
 import NewAppointment from './NewAppointment';
+import Loading from '../../../components/layout/Loading';
 
 export class MyAppointmentDto {
   hospital: string;
@@ -15,13 +16,15 @@ export class MyAppointmentDto {
   doctor: string;
 }
 
-export default function MyAppointment() {
+export default function MyAppointment(/*{navigation}: any*/) {
+  const [loading, setLoading] = useState<boolean>(false);
   const [appointment, setAppointment] = useState<MyAppointmentDto | null>(null);
   const [cancelDialogVisible, setCancelDialogVisible] =
     useState<boolean>(false);
 
   useEffect(() => {
     //TODO: Get appointment from backend
+    setLoading(true);
     setAppointment({
       hospital: 'Necmettin Erbakan Üniversitesi Tıp Fakültesi Hastanesi',
       department: 'Psikiyatri Ana Bilim Dalı',
@@ -30,7 +33,17 @@ export default function MyAppointment() {
       doctor: 'Dr. Anıl İBİŞ',
     } as MyAppointmentDto);
     // setAppointment(null);
+    setLoading(false);
   }, []);
+
+  // TODO: will be used for refreshing the page when tab is pressed
+  // useEffect(() => {
+  //   const unsubscribe = navigation.addListener('focus', (e: any) => {
+  //     console.log('e', e);
+  //   });
+
+  //   return unsubscribe;
+  // }, [navigation]);
 
   const handleCancel = () => {
     // TODO: backend call for cancel appointment
@@ -42,6 +55,7 @@ export default function MyAppointment() {
 
   return (
     <View>
+      {loading && <Loading loading={loading} />}
       {appointment ? (
         <Card style={styles.card_green}>
           <Card.Content style={styles.card_content}>
