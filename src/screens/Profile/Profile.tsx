@@ -33,7 +33,7 @@ export default function Profile() {
     setLastName('ARIK');
     setEmail('gorkem@mail.com');
     setRelativeEmail('ridvan@mail.com');
-    setAddress('Örnek Mah. Deneme Sok. No: 20:67 Keçiören/Ankara');
+    setAddress('Örnek Mah. Deneme Sok. No: 20/67 Keçiören/Ankara');
     setDailyTeaConsumption('5');
     setDailyCoffeeConsumption('3');
     setLoading(false);

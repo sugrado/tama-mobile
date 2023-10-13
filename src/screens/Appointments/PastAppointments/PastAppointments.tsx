@@ -103,11 +103,17 @@ export default function PastAppointments() {
           icon="calendar-search"
         />
       </View>
-      <FlatList
-        data={appointments}
-        renderItem={({item}) => <Item item={item} />}
-        keyExtractor={(item: any) => item.id}
-      />
+      {appointments && appointments.length > 0 ? (
+        <FlatList
+          data={appointments}
+          renderItem={({item}) => <Item item={item} />}
+          keyExtractor={(item: any) => item.id}
+        />
+      ) : (
+        <Text style={{textAlign: 'center', marginTop: 20}}>
+          Geçmiş randevu bulunamadı.
+        </Text>
+      )}
     </>
   );
 }
