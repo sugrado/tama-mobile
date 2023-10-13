@@ -1,38 +1,42 @@
 import React from 'react';
-import {KeyboardTypeOptions} from 'react-native';
+import {KeyboardTypeOptions, Text} from 'react-native';
 import {TextInput} from 'react-native-paper';
 
-type SugradoInputProps = {
+type SugradoTextAreaProps = {
   label: string;
   keyboardType?: KeyboardTypeOptions | undefined;
-  value: string;
-  valueChange: (input: string) => void;
+  value: any;
+  valueChange?: (input: string) => void;
   style?: any;
   secureTextEntry?: boolean;
+  disabled?: boolean;
 };
 
-export default function SugradoInput({
+export default function SugradoTextArea({
   label,
   keyboardType = 'default',
   value,
   valueChange,
   style,
   secureTextEntry = false,
-}: SugradoInputProps) {
+  disabled = false,
+}: SugradoTextAreaProps) {
   return (
     <TextInput
-      style={{width: '100%', ...style}}
-      label={label}
-      mode="outlined"
+      multiline={true}
+      style={{width: '100%', backgroundColor: 'transparent', ...style}}
+      contentStyle={{marginTop: 5}}
+      label={<Text style={{fontWeight: 'bold'}}>{label}</Text>}
+      mode="flat"
       value={value}
       onChangeText={valueChange}
       keyboardType={keyboardType}
       secureTextEntry={secureTextEntry}
       theme={{
         colors: {primary: 'green'},
-        roundness: 50,
       }}
       outlineColor="transparent"
+      disabled={disabled}
     />
   );
 }
