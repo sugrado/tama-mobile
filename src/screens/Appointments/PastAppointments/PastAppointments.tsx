@@ -1,8 +1,10 @@
 import React, {useEffect, useState} from 'react';
-import {FlatList, View, SafeAreaView, StyleSheet} from 'react-native';
-import {Text} from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {FlatList, View, StyleSheet} from 'react-native';
+import {Text, TextInput} from 'react-native-paper';
 import {COLORS} from '../../../constants';
+import SugradoText from '../../../components/core/SugradoText';
+import Loading from '../../../components/layout/Loading';
+import SugradoButton from '../../../components/core/SugradoButton';
 
 type ItemProps = {item: any};
 
@@ -15,12 +17,7 @@ const Item = ({item}: ItemProps) => (
         : COLORS.TRANSPARENT_RED,
       borderColor: item.went ? COLORS.THEME_GREEN : COLORS.DARK_RED,
     }}>
-    <MaterialCommunityIcons
-      name="history"
-      size={24}
-      style={styles.history_icon}
-      color="gray"
-    />
+    <Text style={styles.history_icon}>#{item.id}</Text>
     <View>
       <Text>Doktor: {item.doctorName}</Text>
       <Text>Tarih: {item.date}</Text>
@@ -32,18 +29,86 @@ const Item = ({item}: ItemProps) => (
 
 export default function PastAppointments() {
   const [appointments, setAppointments] = useState<any[]>();
+  const [searchText, setSearchText] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
     setAppointments(dummyData);
   }, []);
 
+  const handleSearch = async () => {
+    // TODO: go to api and get filtered data
+    if (searchText.length > 0) {
+      setLoading(true);
+      const filteredData = dummyData.filter(item => {
+        return item.id
+          .toString()
+          .toLowerCase()
+          .includes(searchText.toLowerCase());
+      });
+      await wait(2000);
+      setAppointments(filteredData);
+      setLoading(false);
+    } else {
+      setLoading(true);
+      setAppointments(dummyData);
+      setLoading(false);
+    }
+  };
+  function wait(ms: any) {
+    return new Promise((resolve, _) => {
+      setTimeout(() => {
+        resolve(ms);
+      }, ms);
+    });
+  }
   return (
-    <SafeAreaView>
+    <>
+      {loading && <Loading loading={loading} />}
+      <View style={styles.search_container}>
+        <SugradoText
+          style={{width: '67%'}}
+          label="Ara"
+          value={searchText}
+          valueChange={e => {
+            setSearchText(e);
+          }}
+          keyboardType="numeric"
+          right={
+            searchText && (
+              <TextInput.Icon
+                style={{
+                  marginTop: 20,
+                }}
+                icon="close-circle"
+                color="gray"
+                onPress={() => {
+                  setLoading(true);
+                  setSearchText('');
+                  setAppointments(dummyData);
+                  setLoading(false);
+                }}
+              />
+            )
+          }
+          placeholder="Randevu numarası giriniz..."
+        />
+        <SugradoButton
+          style={{
+            width: '30%',
+            marginTop: 10,
+          }}
+          title="Filtrele"
+          onPress={handleSearch}
+          disabled={!searchText}
+          icon="calendar-search"
+        />
+      </View>
       <FlatList
         data={appointments}
         renderItem={({item}) => <Item item={item} />}
         keyExtractor={(item: any) => item.id}
       />
-    </SafeAreaView>
+    </>
   );
 }
 
@@ -58,6 +123,13 @@ const styles = StyleSheet.create({
   },
   history_icon: {
     marginEnd: 10,
+    fontSize: 20,
+  },
+  search_container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    margin: 10,
   },
 });
 

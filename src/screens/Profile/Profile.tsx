@@ -162,14 +162,23 @@ export default function Profile() {
 }
 
 const styles = StyleSheet.create({
-  scroll_container: {backgroundColor: COLORS.THEME_GREEN, flex: 1},
+  scroll_container: {
+    backgroundColor: COLORS.THEME_GREEN,
+    flex: 1,
+  },
   header: {
     height: (DIMENSIONS.AVAILABLE_HEIGHT * 15) / 100,
     padding: 10,
     alignItems: 'center',
   },
-  header_text: {color: COLORS.TEXT, marginTop: 15},
-  header_logo: {resizeMode: 'contain', height: '60%', width: 100},
+  header_text: {
+    color: COLORS.TEXT,
+  },
+  header_logo: {
+    resizeMode: 'contain',
+    height: '60%',
+    width: 100,
+  },
   content: {
     backgroundColor: 'white',
     borderTopRightRadius: 30,
@@ -177,6 +186,14 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     flex: 1,
   },
-  input: {marginTop: 10, width: '75%', alignSelf: 'center'},
-  save_button: {marginTop: 20, width: '75%', alignSelf: 'center'},
+  input: {
+    marginTop: 10,
+    width: '75%',
+    alignSelf: 'center',
+  },
+  save_button: {
+    marginTop: 20,
+    width: '75%',
+    alignSelf: 'center',
+  },
 });
