@@ -14,6 +14,7 @@ export default function TabNavigator() {
     <Tab.Navigator
       initialRouteName={PAGE_NAMES.HOME.HOME_STACK}
       screenOptions={({route}) => ({
+        tabBarHideOnKeyboard: true,
         unmountOnBlur: true,
         headerShown: false,
         tabBarIcon: ({color, focused, size}) => {
