@@ -7,16 +7,24 @@ type SugradoModalProps = {
   children: React.ReactNode;
   visible: boolean;
   onDismiss: () => void;
+  dismissable?: boolean;
+  dismissableBackButton?: boolean;
 };
 
-const SugradoModal = ({children, visible, onDismiss}: SugradoModalProps) => {
+const SugradoModal = ({
+  children,
+  visible,
+  onDismiss,
+  dismissable = false,
+  dismissableBackButton = true,
+}: SugradoModalProps) => {
   return (
     <Portal>
       <Modal
         visible={visible}
         contentContainerStyle={styles.modal_container}
-        dismissableBackButton={true}
-        dismissable={false}
+        dismissableBackButton={dismissableBackButton}
+        dismissable={dismissable}
         onDismiss={onDismiss}>
         {children}
       </Modal>
