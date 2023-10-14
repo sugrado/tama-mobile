@@ -12,4 +12,5 @@ export class UserInfoDto {
   lastName: string;
   email: string;
   username: string;
+  consentAccepted: boolean;
 }

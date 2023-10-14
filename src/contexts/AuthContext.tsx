@@ -11,8 +11,9 @@ import {LoginDto, UserInfoDto} from '../dtos/auth.dto';
 type AuthContextType = {
   isLoading: boolean;
   userToken: string | null;
-  userInfo: UserInfoDto | null;
+  userInfo: UserInfoDto;
   login: (username: string, password: string) => void;
+  setConsentStatus: () => void;
   logout: () => void;
 };
 
@@ -21,7 +22,7 @@ export const AuthContext = createContext({} as AuthContextType);
 export const AuthProvider = ({children}: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userToken, setUserToken] = useState<string | null>(null);
-  const [userInfo, setUserInfon] = useState<UserInfoDto | null>(null);
+  const [userInfo, setUserInfo] = useState<UserInfoDto>({} as UserInfoDto);
 
   const login = async (username: string, password: string) => {
     setIsLoading(true);
@@ -37,16 +38,36 @@ export const AuthProvider = ({children}: any) => {
           lastName: 'Doe',
           email: 'john@doe.com',
           username: 'johndoe',
+          consentAccepted: false,
         } as UserInfoDto,
         token: 'myToken',
         refreshToken: 'myRefreshToken',
       },
     };
-    setUserInfon(loginResponse.data.userInfo);
+    setUserInfo(loginResponse.data.userInfo);
     setUserToken(loginResponse.data.token);
     await setStorageItems(loginResponse.data);
 
     setIsLoading(false);
+  };
+
+  const setConsentStatus = async () => {
+    // axiosInstance
+    //   .patch('users/set-consent-status', {accepted: true})
+    //   .then(res => {
+    //     setUserInfo({...userInfo, consentAccepted: true} as UserInfoDto);
+    //   })
+    //   .catch(err => {});
+    const updatedUserInfo: UserInfoDto = {
+      ...userInfo,
+      consentAccepted: true,
+    };
+    setUserInfo(updatedUserInfo);
+    await AsyncStorage.removeItem(STORAGE_USER_INFO_KEY);
+    await AsyncStorage.setItem(
+      STORAGE_USER_INFO_KEY,
+      JSON.stringify(updatedUserInfo),
+    );
   };
 
   const logout = async () => {
@@ -68,10 +89,9 @@ export const AuthProvider = ({children}: any) => {
 
       if (info && token) {
         setUserToken(token);
-        setUserInfon(JSON.parse(info));
+        setUserInfo(JSON.parse(info));
       }
 
-      setUserToken(token);
       setIsLoading(false);
     } catch (error) {
       console.log('eerr', error);
@@ -103,7 +123,14 @@ export const AuthProvider = ({children}: any) => {
   return (
     <AuthContext.Provider
       value={
-        {isLoading, userToken, userInfo, login, logout} as AuthContextType
+        {
+          isLoading,
+          userToken,
+          userInfo,
+          login,
+          logout,
+          setConsentStatus,
+        } as AuthContextType
       }>
       {children}
     </AuthContext.Provider>

@@ -8,7 +8,7 @@ import {StatusBar, StyleSheet, View} from 'react-native';
 import {COLORS} from '../constants';
 
 export default function Navigation() {
-  const {isLoading, userToken} = useAuth();
+  const {isLoading, userToken, userInfo} = useAuth();
   if (isLoading) {
     return (
       <View style={styles.loading_container}>
@@ -25,7 +25,11 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <StatusBar backgroundColor="#4D7E3E" />
-      {userToken === null ? <AuthStackNavigator /> : <TabNavigator />}
+      {userToken === null ? (
+        <AuthStackNavigator />
+      ) : (
+        <TabNavigator consentAccepted={userInfo.consentAccepted} />
+      )}
     </NavigationContainer>
   );
 }
