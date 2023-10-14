@@ -63,16 +63,26 @@ const Home = ({navigation}: any) => {
 };
 
 const styles = StyleSheet.create({
-  scroll_container: {backgroundColor: COLORS.THEME_GREEN, flex: 1},
+  scroll_container: {
+    backgroundColor: COLORS.THEME_GREEN,
+    flex: 1,
+  },
   header: {
+    // TODO: will be column instead of space between in the future
     height: (DIMENSIONS.AVAILABLE_HEIGHT * 25) / 100,
     padding: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  header_text: {color: COLORS.TEXT},
-  header_logo: {resizeMode: 'contain', height: '60%', width: 100},
+  header_text: {
+    color: COLORS.TEXT,
+  },
+  header_logo: {
+    resizeMode: 'contain',
+    height: '60%',
+    width: 100,
+  },
   content: {
     backgroundColor: 'white',
     borderTopRightRadius: 30,
@@ -83,7 +93,10 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     flex: 1,
   },
-  card_title: {marginLeft: 20, marginTop: 5},
+  card_title: {
+    marginLeft: 20,
+    marginTop: 5,
+  },
 });
 
 export default Home;

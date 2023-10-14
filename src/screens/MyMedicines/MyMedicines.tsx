@@ -44,11 +44,17 @@ export default function MyMedicines() {
   return (
     <>
       {loading && <Loading loading={loading} />}
-      <FlatList
-        data={medicines}
-        renderItem={({item}) => <Item item={item} />}
-        keyExtractor={(item: any) => item.id}
-      />
+      {medicines && medicines.length > 0 ? (
+        <FlatList
+          data={medicines}
+          renderItem={({item}) => <Item item={item} />}
+          keyExtractor={(item: any) => item.id}
+        />
+      ) : (
+        <Text style={styles.no_data_text}>
+          Kullanımda olduğunuz herhangi bir ilaç bulunmamaktadır.
+        </Text>
+      )}
     </>
   );
 }
@@ -70,6 +76,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
+    flexWrap: 'wrap',
+  },
+  no_data_text: {
+    textAlign: 'center',
+    marginTop: 20,
   },
 });
 

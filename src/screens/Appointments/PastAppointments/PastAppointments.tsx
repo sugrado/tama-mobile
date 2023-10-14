@@ -17,8 +17,8 @@ const Item = ({item}: ItemProps) => (
         : COLORS.TRANSPARENT_RED,
       borderColor: item.went ? COLORS.THEME_GREEN : COLORS.DARK_RED,
     }}>
-    <Text style={styles.history_icon}>#{item.id}</Text>
-    <View>
+    <Text style={styles.selector_column}>#{item.id}</Text>
+    <View style={styles.info_column}>
       <Text>Doktor: {item.doctorName}</Text>
       <Text>Tarih: {item.date}</Text>
       <Text>Saat: {item.time}</Text>
@@ -66,7 +66,7 @@ export default function PastAppointments() {
       {loading && <Loading loading={loading} />}
       <View style={styles.search_container}>
         <SugradoText
-          style={{width: '67%'}}
+          style={styles.search_bar}
           label="Ara"
           value={searchText}
           valueChange={e => {
@@ -76,9 +76,7 @@ export default function PastAppointments() {
           right={
             searchText && (
               <TextInput.Icon
-                style={{
-                  marginTop: 20,
-                }}
+                style={styles.search_clear_icon}
                 icon="close-circle"
                 color="gray"
                 onPress={() => {
@@ -93,10 +91,7 @@ export default function PastAppointments() {
           placeholder="Randevu numarası giriniz..."
         />
         <SugradoButton
-          style={{
-            width: '30%',
-            marginTop: 10,
-          }}
+          style={styles.filter_button}
           title="Filtrele"
           onPress={handleSearch}
           disabled={!searchText}
@@ -110,9 +105,7 @@ export default function PastAppointments() {
           keyExtractor={(item: any) => item.id}
         />
       ) : (
-        <Text style={{textAlign: 'center', marginTop: 20}}>
-          Geçmiş randevu bulunamadı.
-        </Text>
+        <Text style={styles.no_data_text}>Geçmiş randevu bulunamadı.</Text>
       )}
     </>
   );
@@ -120,22 +113,50 @@ export default function PastAppointments() {
 
 const styles = StyleSheet.create({
   item_container: {
-    flexDirection: 'row',
     alignItems: 'center',
     margin: 10,
     borderRadius: 20,
     padding: 10,
     borderWidth: 1,
+    flexDirection: 'row',
+    display: 'flex',
+    flex: 1,
   },
-  history_icon: {
+  selector_column: {
     marginEnd: 10,
     fontSize: 20,
+    flexDirection: 'column',
+    display: 'flex',
+    flexBasis: '10%',
+    flex: 1,
+  },
+  info_column: {
+    marginEnd: 10,
+    fontSize: 20,
+    flexDirection: 'column',
+    display: 'flex',
+    flexBasis: '90%',
+    flex: 1,
   },
   search_container: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     margin: 10,
+  },
+  search_bar: {
+    width: '67%',
+  },
+  search_clear_icon: {
+    marginTop: 20,
+  },
+  filter_button: {
+    width: '30%',
+    marginTop: 10,
+  },
+  no_data_text: {
+    textAlign: 'center',
+    marginTop: 20,
   },
 });
 
@@ -204,7 +225,7 @@ const dummyData = [
     went: false,
   },
   {
-    id: 10,
+    id: 9999,
     doctorName: 'Jacenta Barritt',
     date: '22.03.2023',
     time: '3:35',
