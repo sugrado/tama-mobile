@@ -38,7 +38,7 @@ const Home = ({navigation}: any) => {
           icon="medical-bag"
           headerText="Günlük İlaç Takibi"
           statusColor={COLORS.THEME_GREEN}
-          statusText="Tamamlanmadı"
+          statusText="Tamamlandı"
           bodyText="Bugün kullanman gereken ilaçları takip etmeyi unutma!"
           footerText={
             'A İlacı: 13:30, 19:30' + '\n' + 'B İlacı: 12:00, 18:00, 00:00'

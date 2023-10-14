@@ -52,6 +52,7 @@ const DailyQuestionCard = ({
           </View>
           {!answered && (
             <IconButton
+              style={styles.button_column}
               icon="file-document-edit-outline"
               iconColor={COLORS.THEME_GREEN}
               size={24}
@@ -90,13 +91,13 @@ const styles = StyleSheet.create({
   text_column: {
     flexDirection: 'column',
     display: 'flex',
-    flexBasis: '70%',
+    flexBasis: '80%',
     flex: 1,
   },
   button_column: {
     flexDirection: 'column',
     display: 'flex',
-    flexBasis: '30%',
+    flexBasis: '20%',
     flex: 1,
   },
   answer_text: {

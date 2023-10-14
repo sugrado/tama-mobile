@@ -31,7 +31,6 @@ const AnswerModal = ({
 }: AnswerModalProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const handleCompleted = async (selectedItem: any, _: number) => {
-    console.log(selectedItem.id);
     // TODO: go to api and save data
     // axiosInstance
     //   .post(`daily-questions`, {

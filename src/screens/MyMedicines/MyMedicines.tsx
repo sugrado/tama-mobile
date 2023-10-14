@@ -99,7 +99,7 @@ const dummyData = [
     appointmentOrder: 2,
     doctorNote: 'günde 1 kez öğlen',
     startDate: '30.08.2021',
-    usageTime: '24 ay',
+    usageTime: 'Ömür Boyu',
   },
   {
     id: 3,
