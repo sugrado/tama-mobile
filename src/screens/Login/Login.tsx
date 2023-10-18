@@ -9,6 +9,7 @@ import {
 } from 'react-native-paper';
 import {Styles} from './Login.style';
 import {useAuth} from '../../contexts/AuthContext';
+import {COLORS} from '../../constants';
 
 function Login() {
   const {login} = useAuth();
@@ -51,7 +52,7 @@ function Login() {
               value={username}
               onChangeText={input => setUsername(input)}
               theme={{
-                colors: {primary: 'green'},
+                colors: {primary: COLORS.PRIMARY_THEME},
                 dark: false,
               }}
               style={Styles.input}
@@ -69,7 +70,7 @@ function Login() {
               value={password}
               onChangeText={input => setPassword(input)}
               theme={{
-                colors: {primary: 'green'},
+                colors: {primary: COLORS.PRIMARY_THEME},
                 dark: false,
               }}
               secureTextEntry={true}
@@ -92,7 +93,7 @@ function Login() {
             onPress={() => handleLogin()}
             style={Styles.loginButton}
             theme={{dark: false}}
-            buttonColor="#4D7E3E"
+            buttonColor={COLORS.THEME_GREEN}
             icon="login-variant">
             Giriş Yap
           </Button>

@@ -1,6 +1,7 @@
 import React from 'react';
 import {KeyboardTypeOptions, Text} from 'react-native';
 import {TextInput} from 'react-native-paper';
+import {COLORS} from '../../constants';
 
 type SugradoTextAreaProps = {
   label: string;
@@ -33,7 +34,7 @@ export default function SugradoTextArea({
       keyboardType={keyboardType}
       secureTextEntry={secureTextEntry}
       theme={{
-        colors: {primary: 'green'},
+        colors: {primary: COLORS.PRIMARY_THEME},
       }}
       outlineColor="transparent"
       disabled={disabled}

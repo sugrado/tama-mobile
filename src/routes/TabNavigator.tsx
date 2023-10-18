@@ -3,7 +3,7 @@ import Profile from '../screens/Profile/Profile';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import MyMedicines from '../screens/MyMedicines/MyMedicines';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {PAGE_NAMES} from '../constants';
+import {COLORS, PAGE_NAMES} from '../constants';
 import HomeStackNavigator from './HomeStackNavigator';
 import AppointmentTopTabNavigator from './AppointmentTopTabNavigator';
 import ConsentConfirmation from '../components/modals/ConsentConfirmation';
@@ -33,7 +33,7 @@ export default function TabNavigator({consentAccepted}: TabNavigatorProps) {
                 />
               );
             },
-            tabBarActiveTintColor: '#4D7E3E',
+            tabBarActiveTintColor: COLORS.THEME_GREEN,
             tabBarInactiveTintColor: 'gray',
             tabBarStyle: {
               backgroundColor: '#fff',

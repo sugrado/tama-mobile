@@ -1,11 +1,11 @@
 import {StyleSheet} from 'react-native';
-import {DIMENSIONS} from '../../constants';
+import {COLORS, DIMENSIONS} from '../../constants';
 
 export const Styles = StyleSheet.create({
   forgot_password: {width: '100%', alignItems: 'flex-end'},
   forgot_password_text: {
     fontWeight: 'bold',
-    color: '#4D7E3E',
+    color: COLORS.THEME_GREEN,
   },
   loginButton: {width: '100%', marginTop: 30},
   firstAppointmentButton: {width: '100%', marginTop: 30},
@@ -19,7 +19,7 @@ export const Styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 30,
     paddingBottom: 30,
-    backgroundColor: '#4D7E3E',
+    backgroundColor: COLORS.THEME_GREEN,
   },
   login_header_logo: {
     height: (DIMENSIONS.HEIGHT * 1.2) / 10,

@@ -24,7 +24,7 @@ export default function Navigation() {
 
   return (
     <NavigationContainer>
-      <StatusBar backgroundColor="#4D7E3E" />
+      <StatusBar backgroundColor={COLORS.THEME_GREEN} />
       {userToken === null ? (
         <AuthStackNavigator />
       ) : (

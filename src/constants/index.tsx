@@ -31,6 +31,7 @@ export const COLORS = {
   TRANSPARENT_RED: '#ffe6e6',
   DARK_RED: '#880808',
   TEXT: 'rgb(197, 240, 194)',
+  PRIMARY_THEME: 'green',
 };
 
 export const STORAGE_TOKEN_KEY = 'userToken';
