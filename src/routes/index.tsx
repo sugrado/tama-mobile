@@ -14,7 +14,7 @@ export default function Navigation() {
       <View style={styles.loading_container}>
         <ActivityIndicator
           animating={true}
-          color={COLORS.THEME_GREEN}
+          color={COLORS.THEME_COLOR}
           size="large"
         />
         <Text style={styles.loading_text}>Yükleniyor...</Text>
@@ -24,7 +24,7 @@ export default function Navigation() {
 
   return (
     <NavigationContainer>
-      <StatusBar backgroundColor={COLORS.THEME_GREEN} />
+      <StatusBar backgroundColor={COLORS.THEME_COLOR} />
       {userToken === null ? (
         <AuthStackNavigator />
       ) : (

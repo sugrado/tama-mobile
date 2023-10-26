@@ -31,13 +31,13 @@ const Home = ({navigation}: any) => {
           onPress={() => {
             navigation.navigate(PAGE_NAMES.HOME.DAILY_QUESTIONS);
           }}
-          backgroundColor={COLORS.TRANSPARENT_RED}
+          backgroundColor={COLORS.CARD_UNSUCCESS_BACKGROUND}
         />
         <Text style={styles.card_title}>Tamamlananlar</Text>
         <HomeCard
           icon="medical-bag"
           headerText="Günlük İlaç Takibi"
-          statusColor={COLORS.THEME_GREEN}
+          statusColor={COLORS.THEME_COLOR}
           statusText="Tamamlandı"
           bodyText="Bugün kullanman gereken ilaçları takip etmeyi unutma!"
           footerText={
@@ -64,7 +64,7 @@ const Home = ({navigation}: any) => {
 
 const styles = StyleSheet.create({
   scroll_container: {
-    backgroundColor: COLORS.THEME_GREEN,
+    backgroundColor: COLORS.THEME_COLOR,
     flex: 1,
   },
   header: {

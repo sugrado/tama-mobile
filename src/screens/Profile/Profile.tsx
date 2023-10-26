@@ -163,7 +163,7 @@ export default function Profile() {
 
 const styles = StyleSheet.create({
   scroll_container: {
-    backgroundColor: COLORS.THEME_GREEN,
+    backgroundColor: COLORS.THEME_COLOR,
     flex: 1,
   },
   header: {

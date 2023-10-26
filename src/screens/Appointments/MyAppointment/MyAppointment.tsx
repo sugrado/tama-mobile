@@ -126,11 +126,11 @@ const styles = StyleSheet.create({
   },
   card_red: {
     margin: 10,
-    backgroundColor: COLORS.TRANSPARENT_RED,
+    backgroundColor: COLORS.CARD_UNSUCCESS_BACKGROUND,
   },
   card_green: {
     margin: 10,
-    backgroundColor: COLORS.THEME_TRANSPARENT_COLOR,
+    backgroundColor: COLORS.CARD_SUCCESS_BACKGROUND,
   },
   card_content: {
     alignItems: 'center',

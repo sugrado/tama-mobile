@@ -34,7 +34,7 @@ const SugradoModal = ({
 
 const styles = StyleSheet.create({
   modal_container: {
-    backgroundColor: COLORS.THEME_TRANSPARENT_COLOR,
+    backgroundColor: COLORS.MODAL_BACKGROUND_COLOR,
     padding: 20,
     margin: 20,
     borderRadius: 20,

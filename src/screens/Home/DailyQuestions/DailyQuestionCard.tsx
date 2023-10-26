@@ -54,7 +54,7 @@ const DailyQuestionCard = ({
             <IconButton
               style={styles.button_column}
               icon="file-document-edit-outline"
-              iconColor={COLORS.THEME_GREEN}
+              iconColor={COLORS.THEME_COLOR}
               size={24}
               onPress={onPress}
             />
@@ -68,7 +68,7 @@ const DailyQuestionCard = ({
 const styles = StyleSheet.create({
   card: {
     margin: 10,
-    borderLeftColor: COLORS.THEME_GREEN,
+    borderLeftColor: COLORS.THEME_COLOR,
     borderLeftWidth: 5,
   },
   cardHeader: {

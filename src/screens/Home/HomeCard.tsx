@@ -23,7 +23,7 @@ const HomeCard = ({
   footerText,
   statusText,
   statusColor,
-  backgroundColor = COLORS.THEME_TRANSPARENT_COLOR,
+  backgroundColor = COLORS.CARD_SUCCESS_BACKGROUND,
   onPress,
 }: HomeCardProps) => {
   return (
@@ -66,7 +66,7 @@ const HomeCard = ({
 const styles = StyleSheet.create({
   card: {
     margin: 10,
-    borderLeftColor: COLORS.THEME_GREEN,
+    borderLeftColor: COLORS.THEME_COLOR,
     borderLeftWidth: 5,
   },
   cardHeader: {

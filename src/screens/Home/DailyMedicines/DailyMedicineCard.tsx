@@ -37,7 +37,7 @@ const DailyMedicineCard = ({
                 {time.used && (
                   <FontAwesome5
                     name="check-circle"
-                    color={COLORS.THEME_GREEN}
+                    color={COLORS.THEME_COLOR}
                     size={16}
                   />
                 )}
@@ -48,7 +48,7 @@ const DailyMedicineCard = ({
             <IconButton
               style={styles.button_column}
               icon="file-document-edit-outline"
-              iconColor={COLORS.THEME_GREEN}
+              iconColor={COLORS.THEME_COLOR}
               size={24}
               onPress={onPress}
             />
@@ -62,7 +62,7 @@ const DailyMedicineCard = ({
 const styles = StyleSheet.create({
   card: {
     margin: 10,
-    borderLeftColor: COLORS.THEME_GREEN,
+    borderLeftColor: COLORS.THEME_COLOR,
     borderLeftWidth: 5,
   },
   cardBody: {

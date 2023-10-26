@@ -33,7 +33,7 @@ export default function TabNavigator({consentAccepted}: TabNavigatorProps) {
                 />
               );
             },
-            tabBarActiveTintColor: COLORS.THEME_GREEN,
+            tabBarActiveTintColor: COLORS.NAVIGATION_ACTIVE_COLOR,
             tabBarInactiveTintColor: 'gray',
             tabBarStyle: {
               backgroundColor: '#fff',

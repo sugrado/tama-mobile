@@ -33,12 +33,12 @@ const DailyQuestions = () => {
               answer={question.answer}
               statusText={question.answered ? 'Cevaplandı' : 'Cevaplanmadı'}
               statusColor={
-                question.answered ? COLORS.THEME_GREEN : COLORS.DARK_RED
+                question.answered ? COLORS.THEME_COLOR : COLORS.DARK_RED
               }
               backgroundColor={
                 question.answered
-                  ? COLORS.THEME_TRANSPARENT_COLOR
-                  : COLORS.TRANSPARENT_RED
+                  ? COLORS.CARD_SUCCESS_BACKGROUND
+                  : COLORS.CARD_SUCCESS_BACKGROUND
               }
               bodyText={question.description}
               onPress={() => {

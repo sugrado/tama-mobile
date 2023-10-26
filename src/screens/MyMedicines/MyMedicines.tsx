@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     borderWidth: 1,
-    backgroundColor: COLORS.THEME_TRANSPARENT_COLOR,
-    borderColor: COLORS.THEME_GREEN,
+    backgroundColor: COLORS.CARD_SUCCESS_BACKGROUND,
+    borderColor: COLORS.THEME_COLOR,
   },
   history_icon: {
     marginEnd: 10,

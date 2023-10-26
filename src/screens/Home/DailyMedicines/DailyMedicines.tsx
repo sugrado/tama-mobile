@@ -33,8 +33,8 @@ const DailyMedicines = () => {
               allUsed={allUsed}
               backgroundColor={
                 allUsed
-                  ? COLORS.THEME_TRANSPARENT_COLOR
-                  : COLORS.TRANSPARENT_RED
+                  ? COLORS.CARD_SUCCESS_BACKGROUND
+                  : COLORS.CARD_UNSUCCESS_BACKGROUND
               }
               medicine={medicine}
               onPress={() => {

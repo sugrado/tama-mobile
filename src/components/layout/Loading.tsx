@@ -12,7 +12,7 @@ const Loading = ({loading}: LoadingProps) => {
     <Modal transparent={true} animationType="fade" visible={loading}>
       <TouchableOpacity activeOpacity={1} style={styles.container}>
         <View style={styles.content}>
-          <ActivityIndicator size="large" color={COLORS.THEME_GREEN} />
+          <ActivityIndicator size="large" color={COLORS.THEME_COLOR} />
         </View>
       </TouchableOpacity>
     </Modal>

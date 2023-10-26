@@ -13,9 +13,9 @@ const Item = ({item}: ItemProps) => (
     style={{
       ...styles.item_container,
       backgroundColor: item.went
-        ? COLORS.THEME_TRANSPARENT_COLOR
-        : COLORS.TRANSPARENT_RED,
-      borderColor: item.went ? COLORS.THEME_GREEN : COLORS.DARK_RED,
+        ? COLORS.CARD_SUCCESS_BACKGROUND
+        : COLORS.CARD_UNSUCCESS_BACKGROUND,
+      borderColor: item.went ? COLORS.THEME_COLOR : COLORS.DARK_RED,
     }}>
     <Text style={styles.selector_column}>#{item.id}</Text>
     <View style={styles.info_column}>

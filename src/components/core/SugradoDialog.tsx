@@ -38,7 +38,7 @@ const SugradoDialog = ({
           />
           <SugradoButton
             title={actionText}
-            buttonColor={COLORS.THEME_GREEN}
+            buttonColor={COLORS.THEME_COLOR}
             onPress={action}
           />
         </Dialog.Actions>
@@ -49,7 +49,7 @@ const SugradoDialog = ({
 
 const styles = StyleSheet.create({
   dialog: {
-    backgroundColor: COLORS.THEME_TRANSPARENT_COLOR,
+    backgroundColor: COLORS.DIALOG_BACKGROUND_COLOR,
   },
 });
 

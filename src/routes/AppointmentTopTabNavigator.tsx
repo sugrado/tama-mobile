@@ -12,7 +12,7 @@ const AppointmentTopTabNavigator = () => {
       screenOptions={{
         animationEnabled: true,
         tabBarIndicatorStyle: {
-          backgroundColor: COLORS.THEME_GREEN,
+          backgroundColor: COLORS.THEME_COLOR,
           borderRadius: 50,
           height: 4,
         },

@@ -93,7 +93,7 @@ function Login() {
             onPress={() => handleLogin()}
             style={Styles.loginButton}
             theme={{dark: false}}
-            buttonColor={COLORS.THEME_GREEN}
+            buttonColor={COLORS.THEME_COLOR}
             icon="login-variant">
             Giriş Yap
           </Button>

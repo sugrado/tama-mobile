@@ -5,7 +5,7 @@ export const Styles = StyleSheet.create({
   forgot_password: {width: '100%', alignItems: 'flex-end'},
   forgot_password_text: {
     fontWeight: 'bold',
-    color: COLORS.THEME_GREEN,
+    color: COLORS.THEME_COLOR,
   },
   loginButton: {width: '100%', marginTop: 30},
   firstAppointmentButton: {width: '100%', marginTop: 30},
@@ -19,7 +19,7 @@ export const Styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: 30,
     paddingBottom: 30,
-    backgroundColor: COLORS.THEME_GREEN,
+    backgroundColor: COLORS.THEME_COLOR,
   },
   login_header_logo: {
     height: (DIMENSIONS.HEIGHT * 1.2) / 10,

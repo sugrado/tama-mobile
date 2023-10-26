@@ -16,7 +16,7 @@ export default function SugradoButton({
   title,
   icon,
   style,
-  buttonColor = COLORS.THEME_GREEN,
+  buttonColor = COLORS.THEME_COLOR,
   disabled = false,
 }: SugradoButtonProps) {
   return (
