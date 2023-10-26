@@ -5,7 +5,7 @@ export const Styles = StyleSheet.create({
   forgot_password: {width: '100%', alignItems: 'flex-end'},
   forgot_password_text: {
     fontWeight: 'bold',
-    color: COLORS.THEME_COLOR,
+    color: COLORS.BUTTON_COLOR,
   },
   loginButton: {width: '100%', marginTop: 30},
   firstAppointmentButton: {width: '100%', marginTop: 30},

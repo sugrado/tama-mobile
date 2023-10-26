@@ -46,7 +46,7 @@ const HomeCard = ({
                 style={styles.cardHeaderElementIcon}
                 color={statusColor}
               />
-              <Text style={styles.cardHeaderElementText}>{statusText}</Text>
+              <Text style={{color: statusColor}}>{statusText}</Text>
             </View>
           )}
         </View>

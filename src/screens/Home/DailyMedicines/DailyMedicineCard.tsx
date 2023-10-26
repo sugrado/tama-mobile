@@ -48,7 +48,7 @@ const DailyMedicineCard = ({
             <IconButton
               style={styles.button_column}
               icon="file-document-edit-outline"
-              iconColor={COLORS.THEME_COLOR}
+              iconColor={COLORS.BUTTON_COLOR}
               size={24}
               onPress={onPress}
             />

@@ -38,7 +38,7 @@ const DailyQuestions = () => {
               backgroundColor={
                 question.answered
                   ? COLORS.CARD_SUCCESS_BACKGROUND
-                  : COLORS.CARD_SUCCESS_BACKGROUND
+                  : COLORS.CARD_UNSUCCESS_BACKGROUND
               }
               bodyText={question.description}
               onPress={() => {

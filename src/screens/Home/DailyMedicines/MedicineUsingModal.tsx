@@ -102,7 +102,7 @@ const Item = ({item, onSelected}: ItemProps) => (
         )}
         <IconButton
           icon="check-circle"
-          iconColor={COLORS.THEME_COLOR}
+          iconColor="#4d7e3e"
           size={24}
           onPress={() => {
             onSelected(item.id, true);

@@ -93,7 +93,7 @@ function Login() {
             onPress={() => handleLogin()}
             style={Styles.loginButton}
             theme={{dark: false}}
-            buttonColor={COLORS.THEME_COLOR}
+            buttonColor={COLORS.BUTTON_COLOR}
             icon="login-variant">
             Giriş Yap
           </Button>
@@ -102,7 +102,7 @@ function Login() {
             onPress={() => console.log('pressed')}
             style={Styles.firstAppointmentButton}
             theme={{dark: false}}
-            buttonColor="#2b5758"
+            buttonColor="#9065e6"
             textColor="#fff"
             icon="calendar-plus">
             İlk Randevu

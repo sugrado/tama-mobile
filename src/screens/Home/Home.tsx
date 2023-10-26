@@ -24,7 +24,7 @@ const Home = ({navigation}: any) => {
         <HomeCard
           icon="notebook-check-outline"
           headerText="Günlük Halet-i Ruhiye"
-          statusColor="red"
+          statusColor={COLORS.DARK_RED}
           statusText="Bekliyor"
           bodyText="Cevaplaman gereken 3 adet soru seni bekliyor!"
           footerText="Kalan Süre: 2 saat"

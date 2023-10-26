@@ -38,7 +38,7 @@ const SugradoDialog = ({
           />
           <SugradoButton
             title={actionText}
-            buttonColor={COLORS.THEME_COLOR}
+            buttonColor={COLORS.BUTTON_COLOR}
             onPress={action}
           />
         </Dialog.Actions>

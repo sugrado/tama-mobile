@@ -16,16 +16,21 @@ export default function SugradoButton({
   title,
   icon,
   style,
-  buttonColor = COLORS.THEME_COLOR,
+  buttonColor = COLORS.BUTTON_COLOR,
   disabled = false,
 }: SugradoButtonProps) {
+  const styles = [
+    style,
+    {borderColor: disabled ? 'gray' : COLORS.BUTTON_COLOR},
+  ];
   return (
     <Button
-      mode="contained"
+      mode="outlined"
       onPress={onPress}
-      style={style}
+      style={styles}
+      buttonColor="white"
+      textColor={COLORS.BUTTON_COLOR}
       theme={{dark: false}}
-      buttonColor={buttonColor}
       icon={icon}
       disabled={disabled}>
       {title}
