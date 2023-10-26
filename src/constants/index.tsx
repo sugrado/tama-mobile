@@ -3,6 +3,8 @@ import {Dimensions} from 'react-native';
 export const PAGE_NAMES = {
   AUTH: {
     LOGIN: 'login',
+    FORGOT_PASSWORD: 'forgotPassword',
+    FIRST_APPOINTMENT: 'firstAppointment',
   },
   HOME: {
     HOME_STACK: 'homeStack',

@@ -9,9 +9,9 @@ import {
 } from 'react-native-paper';
 import {Styles} from './Login.style';
 import {useAuth} from '../../contexts/AuthContext';
-import {COLORS} from '../../constants';
+import {COLORS, PAGE_NAMES} from '../../constants';
 
-function Login() {
+function Login({navigation}: any) {
   const {login} = useAuth();
   const [username, setUsername] = useState<string | undefined>(undefined);
   const [password, setPassword] = useState<string | undefined>(undefined);
@@ -84,7 +84,10 @@ function Login() {
             </HelperText>
           </View>
           <View style={Styles.forgot_password}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate(PAGE_NAMES.AUTH.FORGOT_PASSWORD);
+              }}>
               <Text style={Styles.forgot_password_text}>Şifremi Unuttum</Text>
             </TouchableOpacity>
           </View>
@@ -99,7 +102,9 @@ function Login() {
           </Button>
           <Button
             mode="elevated"
-            onPress={() => console.log('pressed')}
+            onPress={() => {
+              navigation.navigate(PAGE_NAMES.AUTH.FIRST_APPOINTMENT);
+            }}
             style={Styles.firstAppointmentButton}
             theme={{dark: false}}
             buttonColor="#9065e6"
