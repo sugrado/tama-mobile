@@ -22,12 +22,12 @@ const MyMedicinesTopTabNavigator = () => {
         },
       }}>
       <TopTabs.Screen
-        name={PAGE_NAMES.MY_MEDICINES.MY_MEDICINES}
+        name={PAGE_NAMES.PATIENT.MY_MEDICINES.MY_MEDICINES}
         component={MyMedicines}
         options={{title: 'İlaçlarım', tabBarLabel: 'İlaçlarım'}}
       />
       <TopTabs.Screen
-        name={PAGE_NAMES.MY_MEDICINES.SIDE_EFFECTS}
+        name={PAGE_NAMES.PATIENT.MY_MEDICINES.SIDE_EFFECTS}
         component={SideEffects}
         options={{title: 'Yan Etkiler', tabBarLabel: 'Yan Etkiler'}}
       />

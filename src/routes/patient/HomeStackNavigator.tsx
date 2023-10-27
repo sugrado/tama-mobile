@@ -9,13 +9,13 @@ const HomeStack = createStackNavigator();
 
 const HomeStackNavigator = () => (
   <HomeStack.Navigator
-    initialRouteName={PAGE_NAMES.HOME.HOME}
+    initialRouteName={PAGE_NAMES.PATIENT.HOME.HOME}
     screenOptions={{
       headerShown: false,
     }}>
-    <HomeStack.Screen name={PAGE_NAMES.HOME.HOME} component={Home} />
+    <HomeStack.Screen name={PAGE_NAMES.PATIENT.HOME.HOME} component={Home} />
     <HomeStack.Screen
-      name={PAGE_NAMES.HOME.DAILY_QUESTIONS}
+      name={PAGE_NAMES.PATIENT.HOME.DAILY_QUESTIONS}
       component={DailyQuestions}
       options={{
         headerShown: true,
@@ -23,7 +23,7 @@ const HomeStackNavigator = () => (
       }}
     />
     <HomeStack.Screen
-      name={PAGE_NAMES.HOME.DAILY_MEDICINES}
+      name={PAGE_NAMES.PATIENT.HOME.DAILY_MEDICINES}
       component={DailyMedicines}
       options={{headerShown: true, title: 'Günlük İlaçlar'}}
     />

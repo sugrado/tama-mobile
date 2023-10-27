@@ -19,29 +19,31 @@ export const PAGE_NAMES = {
       LOGIN: 'patientRelativeLogin',
     },
   },
-  AUTH: {
-    LOGIN: 'login',
-    FORGOT_PASSWORD: 'forgotPassword',
-    FIRST_APPOINTMENT: 'firstAppointment',
+  PATIENT: {
+    AUTH: {
+      LOGIN: 'patientLogin',
+      FORGOT_PASSWORD: 'patientForgotPassword',
+      FIRST_APPOINTMENT: 'firstAppointment',
+    },
+    HOME: {
+      HOME_STACK: 'homeStack',
+      HOME: 'home',
+      DAILY_QUESTIONS: 'dailyQuestions',
+      DAILY_MEDICINES: 'dailyMedicines',
+    },
+    MY_MEDICINES: {
+      MY_MEDICINES_TOP_TAB: 'myMedicinesTopTab',
+      MY_MEDICINES: 'myMedicines',
+      SIDE_EFFECTS: 'sideEffects',
+    },
+    APPOINTMENTS: {
+      APPOINTMENT_TOP_TAB: 'appointmentTopTab',
+      NEW_APPOINTMENT: 'newAppointment',
+      PAST_APPOINTMENTS: 'pastAppointments',
+    },
+    PROFILE: 'profile',
+    PSYCHOEDUCATION: 'psychoeducation',
   },
-  HOME: {
-    HOME_STACK: 'homeStack',
-    HOME: 'home',
-    DAILY_QUESTIONS: 'dailyQuestions',
-    DAILY_MEDICINES: 'dailyMedicines',
-  },
-  MY_MEDICINES: {
-    MY_MEDICINES_TOP_TAB: 'myMedicinesTopTab',
-    MY_MEDICINES: 'myMedicines',
-    SIDE_EFFECTS: 'sideEffects',
-  },
-  APPOINTMENTS: {
-    APPOINTMENT_TOP_TAB: 'appointmentTopTab',
-    NEW_APPOINTMENT: 'newAppointment',
-    PAST_APPOINTMENTS: 'pastAppointments',
-  },
-  PROFILE: 'profile',
-  PSYCHOEDUCATION: 'psychoeducation',
 };
 
 export const DIMENSIONS = {

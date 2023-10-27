@@ -22,12 +22,12 @@ const AppointmentTopTabNavigator = () => {
         },
       }}>
       <TopTabs.Screen
-        name={PAGE_NAMES.APPOINTMENTS.NEW_APPOINTMENT}
+        name={PAGE_NAMES.PATIENT.APPOINTMENTS.NEW_APPOINTMENT}
         component={NewAppointment}
         options={{title: 'Randevum', tabBarLabel: 'Randevum'}}
       />
       <TopTabs.Screen
-        name={PAGE_NAMES.APPOINTMENTS.PAST_APPOINTMENTS}
+        name={PAGE_NAMES.PATIENT.APPOINTMENTS.PAST_APPOINTMENTS}
         component={PastAppointments}
         options={{title: 'Geçmiş Randevular', tabBarLabel: 'Geçmiş Randevular'}}
       />

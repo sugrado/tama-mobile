@@ -20,7 +20,7 @@ export default function TabNavigator({consentAccepted}: TabNavigatorProps) {
     <>
       {consentAccepted ? (
         <Tab.Navigator
-          initialRouteName={PAGE_NAMES.HOME.HOME_STACK}
+          initialRouteName={PAGE_NAMES.PATIENT.HOME.HOME_STACK}
           screenOptions={({route}) => ({
             tabBarHideOnKeyboard: true,
             unmountOnBlur: true,
@@ -46,27 +46,27 @@ export default function TabNavigator({consentAccepted}: TabNavigatorProps) {
             },
           })}>
           <Tab.Screen
-            name={PAGE_NAMES.MY_MEDICINES.MY_MEDICINES_TOP_TAB}
+            name={PAGE_NAMES.PATIENT.MY_MEDICINES.MY_MEDICINES_TOP_TAB}
             component={MyMedicinesTopTabNavigator}
             options={{title: 'İlaçlarım', tabBarLabel: 'İlaçlarım'}}
           />
           <Tab.Screen
-            name={PAGE_NAMES.PSYCHOEDUCATION}
+            name={PAGE_NAMES.PATIENT.PSYCHOEDUCATION}
             component={Psychoeducation}
             options={{title: 'Psikoeğitim', tabBarLabel: 'Psikoeğitim'}}
           />
           <Tab.Screen
-            name={PAGE_NAMES.HOME.HOME_STACK}
+            name={PAGE_NAMES.PATIENT.HOME.HOME_STACK}
             component={HomeStackNavigator}
             options={{title: 'Ana Sayfa', tabBarLabel: 'Ana Sayfa'}}
           />
           <Tab.Screen
-            name={PAGE_NAMES.APPOINTMENTS.APPOINTMENT_TOP_TAB}
+            name={PAGE_NAMES.PATIENT.APPOINTMENTS.APPOINTMENT_TOP_TAB}
             component={AppointmentTopTabNavigator}
             options={{title: 'Randevu', tabBarLabel: 'Randevu'}}
           />
           <Tab.Screen
-            name={PAGE_NAMES.PROFILE}
+            name={PAGE_NAMES.PATIENT.PROFILE}
             component={Profile}
             options={{title: 'Profil', tabBarLabel: 'Profil'}}
           />
@@ -80,15 +80,15 @@ export default function TabNavigator({consentAccepted}: TabNavigatorProps) {
 
 const getIconNameByPage = (name: string, focused: boolean) => {
   switch (name) {
-    case PAGE_NAMES.HOME.HOME_STACK:
+    case PAGE_NAMES.PATIENT.HOME.HOME_STACK:
       return focused ? 'home' : 'home-outline';
-    case PAGE_NAMES.MY_MEDICINES.MY_MEDICINES_TOP_TAB:
+    case PAGE_NAMES.PATIENT.MY_MEDICINES.MY_MEDICINES_TOP_TAB:
       return focused ? 'medical' : 'medical-outline';
-    case PAGE_NAMES.APPOINTMENTS.APPOINTMENT_TOP_TAB:
+    case PAGE_NAMES.PATIENT.APPOINTMENTS.APPOINTMENT_TOP_TAB:
       return focused ? 'calendar' : 'calendar-outline';
-    case PAGE_NAMES.PROFILE:
+    case PAGE_NAMES.PATIENT.PROFILE:
       return focused ? 'person' : 'person-outline';
-    case PAGE_NAMES.PSYCHOEDUCATION:
+    case PAGE_NAMES.PATIENT.PSYCHOEDUCATION:
       return focused ? 'book' : 'book-outline';
     default:
       throw new Error('Invalid page name');

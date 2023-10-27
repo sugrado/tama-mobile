@@ -9,20 +9,20 @@ const AuthStack = createStackNavigator();
 
 const AuthStackNavigator = () => (
   <AuthStack.Navigator
-    initialRouteName={PAGE_NAMES.AUTH.LOGIN}
+    initialRouteName={PAGE_NAMES.PATIENT.AUTH.LOGIN}
     screenOptions={{
       headerShown: false,
     }}>
-    <AuthStack.Screen name={PAGE_NAMES.AUTH.LOGIN} component={Login} />
+    <AuthStack.Screen name={PAGE_NAMES.PATIENT.AUTH.LOGIN} component={Login} />
     <AuthStack.Screen
-      name={PAGE_NAMES.AUTH.FIRST_APPOINTMENT}
+      name={PAGE_NAMES.PATIENT.AUTH.FIRST_APPOINTMENT}
       component={FirstAppointment}
       options={{
         headerShown: true,
       }}
     />
     <AuthStack.Screen
-      name={PAGE_NAMES.AUTH.FORGOT_PASSWORD}
+      name={PAGE_NAMES.PATIENT.AUTH.FORGOT_PASSWORD}
       component={ForgotPassword}
       options={{
         headerShown: true,

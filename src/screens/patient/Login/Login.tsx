@@ -86,7 +86,7 @@ function Login({navigation}: any) {
           <View style={Styles.forgot_password}>
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate(PAGE_NAMES.AUTH.FORGOT_PASSWORD);
+                navigation.navigate(PAGE_NAMES.PATIENT.AUTH.FORGOT_PASSWORD);
               }}>
               <Text style={Styles.forgot_password_text}>Şifremi Unuttum</Text>
             </TouchableOpacity>
@@ -103,7 +103,7 @@ function Login({navigation}: any) {
           <Button
             mode="elevated"
             onPress={() => {
-              navigation.navigate(PAGE_NAMES.AUTH.FIRST_APPOINTMENT);
+              navigation.navigate(PAGE_NAMES.PATIENT.AUTH.FIRST_APPOINTMENT);
             }}
             style={Styles.firstAppointmentButton}
             theme={{dark: false}}
