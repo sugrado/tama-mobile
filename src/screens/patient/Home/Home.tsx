@@ -29,7 +29,7 @@ const Home = ({navigation}: any) => {
           bodyText="Cevaplaman gereken 3 adet soru seni bekliyor!"
           footerText="Kalan Süre: 2 saat"
           onPress={() => {
-            navigation.navigate(PAGE_NAMES.HOME.DAILY_QUESTIONS);
+            navigation.navigate(PAGE_NAMES.PATIENT.HOME.DAILY_QUESTIONS);
           }}
           backgroundColor={COLORS.CARD_UNSUCCESS_BACKGROUND}
         />
@@ -44,7 +44,7 @@ const Home = ({navigation}: any) => {
             'A İlacı: 13:30, 19:30' + '\n' + 'B İlacı: 12:00, 18:00, 00:00'
           }
           onPress={() => {
-            navigation.navigate(PAGE_NAMES.HOME.DAILY_MEDICINES);
+            navigation.navigate(PAGE_NAMES.PATIENT.HOME.DAILY_MEDICINES);
           }}
         />
         <Text style={styles.card_title}>Yaklaşan Aktiviteler</Text>
@@ -54,7 +54,9 @@ const Home = ({navigation}: any) => {
           bodyText="Yaklaşan randevunu unutma!"
           footerText={'30 Ağustos 2023 14:30 - Dr. Anıl İBİŞ'}
           onPress={() => {
-            navigation.navigate(PAGE_NAMES.APPOINTMENTS.APPOINTMENT_TOP_TAB);
+            navigation.navigate(
+              PAGE_NAMES.PATIENT.APPOINTMENTS.APPOINTMENT_TOP_TAB,
+            );
           }}
         />
       </View>

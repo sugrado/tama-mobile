@@ -1,8 +1,8 @@
 import React from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {COLORS, PAGE_NAMES} from '../../constants';
-import NewAppointment from '../../screens/patient/Appointments/MyAppointment/NewAppointment';
 import PastAppointments from '../../screens/patient/Appointments/PastAppointments/PastAppointments';
+import MyAppointment from '../../screens/patient/Appointments/MyAppointment/MyAppointment';
 
 const TopTabs = createMaterialTopTabNavigator();
 
@@ -23,7 +23,7 @@ const AppointmentTopTabNavigator = () => {
       }}>
       <TopTabs.Screen
         name={PAGE_NAMES.PATIENT.APPOINTMENTS.NEW_APPOINTMENT}
-        component={NewAppointment}
+        component={MyAppointment}
         options={{title: 'Randevum', tabBarLabel: 'Randevum'}}
       />
       <TopTabs.Screen
