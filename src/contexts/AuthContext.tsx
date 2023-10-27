@@ -6,7 +6,7 @@ import {
   STORAGE_USER_INFO_KEY,
 } from '../constants';
 import axiosInstance from '../api/axios';
-import {LoginDto, UserInfoDto} from '../dtos/auth.dto';
+import {LoginDto, UserInfoDto, UserRoles} from '../dtos/auth.dto';
 
 type AuthContextType = {
   isLoading: boolean;
@@ -39,6 +39,7 @@ export const AuthProvider = ({children}: any) => {
           email: 'john@doe.com',
           username: 'johndoe',
           consentAccepted: false,
+          role: UserRoles.Patient,
         } as UserInfoDto,
         token: 'myToken',
         refreshToken: 'myRefreshToken',

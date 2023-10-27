@@ -1,6 +1,24 @@
 import {Dimensions} from 'react-native';
 
 export const PAGE_NAMES = {
+  PORTALS: {
+    WELCOME: 'welcome',
+    PATIENT: 'patient',
+    DOCTOR: 'doctor',
+    PATIENT_RELATIVE: 'patientRelative',
+  },
+  DOCTOR: {
+    AUTH: {
+      LOGIN: 'doctorLogin',
+    },
+    HOME: 'home',
+  },
+  PATIENT_RELATIVE: {
+    HOME: 'home',
+    AUTH: {
+      LOGIN: 'patientRelativeLogin',
+    },
+  },
   AUTH: {
     LOGIN: 'login',
     FORGOT_PASSWORD: 'forgotPassword',

@@ -1,11 +1,14 @@
 import React from 'react';
-import TabNavigator from './TabNavigator';
-import AuthStackNavigator from './AuthStackNavigator';
 import {NavigationContainer} from '@react-navigation/native';
 import {useAuth} from '../contexts/AuthContext';
 import {ActivityIndicator, Text} from 'react-native-paper';
 import {StatusBar, StyleSheet, View} from 'react-native';
 import {COLORS} from '../constants';
+import WelcomeStackNavigator from './WelcomeStackNavigator';
+import {UserInfoDto, UserRoles} from '../dtos/auth.dto';
+import * as PatientTabNav from './patient/TabNavigator';
+import * as DoctorTabNav from './doctor/TabNavigator';
+import * as PatientRelativeTabNav from './patient-relative/TabNavigator';
 
 export default function Navigation() {
   const {isLoading, userToken, userInfo} = useAuth();
@@ -25,14 +28,25 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <StatusBar backgroundColor={COLORS.THEME_COLOR} />
-      {userToken === null ? (
-        <AuthStackNavigator />
-      ) : (
-        <TabNavigator consentAccepted={userInfo.consentAccepted} />
-      )}
+      {userToken === null ? <WelcomeStackNavigator /> : getPortal(userInfo)}
     </NavigationContainer>
   );
 }
+
+const getPortal = (userInfo: UserInfoDto) => {
+  switch (userInfo.role) {
+    case UserRoles.Patient:
+      return (
+        <PatientTabNav.default consentAccepted={userInfo.consentAccepted} />
+      );
+    case UserRoles.Doctor:
+      return <DoctorTabNav.default />;
+    case UserRoles.PatientRelative:
+      return <PatientRelativeTabNav.default />;
+    default:
+      return <WelcomeStackNavigator />;
+  }
+};
 
 const styles = StyleSheet.create({
   loading_container: {

@@ -13,4 +13,11 @@ export class UserInfoDto {
   email: string;
   username: string;
   consentAccepted: boolean;
+  role: UserRoles;
+}
+
+export enum UserRoles {
+  Doctor,
+  Patient,
+  PatientRelative,
 }
