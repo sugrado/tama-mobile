@@ -60,8 +60,8 @@ const ForgotPassword = () => {
           <View style={Styles.form}>
             <Text style={styles.information_text}>
               Şifrenizi yenilemek için e-posta adresinize tek kullanımlık bir
-              bağlantı gönderilecektir. Gelen bağlantıya tıklayarak yeni bir
-              şifre belirleyebilirsiniz.
+              bağlantı gönderilecektir. Bu bağlantı ile yeni bir şifre
+              belirleyebilirsiniz.
             </Text>
             <View style={Styles.form_field}>
               <TextInput

@@ -12,13 +12,18 @@ export const PAGE_NAMES = {
     DAILY_QUESTIONS: 'dailyQuestions',
     DAILY_MEDICINES: 'dailyMedicines',
   },
-  MY_MEDICINES: 'myMedicines',
+  MY_MEDICINES: {
+    MY_MEDICINES_TOP_TAB: 'myMedicinesTopTab',
+    MY_MEDICINES: 'myMedicines',
+    SIDE_EFFECTS: 'sideEffects',
+  },
   APPOINTMENTS: {
     APPOINTMENT_TOP_TAB: 'appointmentTopTab',
     NEW_APPOINTMENT: 'newAppointment',
     PAST_APPOINTMENTS: 'pastAppointments',
   },
   PROFILE: 'profile',
+  PSYCHOEDUCATION: 'psychoeducation',
 };
 
 export const DIMENSIONS = {

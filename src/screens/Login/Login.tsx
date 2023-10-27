@@ -107,7 +107,7 @@ function Login({navigation}: any) {
             }}
             style={Styles.firstAppointmentButton}
             theme={{dark: false}}
-            buttonColor="#9065e6"
+            buttonColor={COLORS.THEME_COLOR}
             textColor="#fff"
             icon="calendar-plus">
             İlk Randevu
