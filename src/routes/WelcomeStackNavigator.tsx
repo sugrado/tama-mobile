@@ -10,20 +10,18 @@ const WelcomeStack = createStackNavigator();
 
 const WelcomeStackNavigator = () => {
   return (
-    <WelcomeStack.Navigator
-      initialRouteName={PAGE_NAMES.PORTALS.WELCOME}
-      screenOptions={{
-        headerShown: false,
-      }}>
+    <WelcomeStack.Navigator initialRouteName={PAGE_NAMES.PORTALS.WELCOME}>
       <WelcomeStack.Screen
         name={PAGE_NAMES.PORTALS.WELCOME}
         component={WelcomeScreen}
+        options={{
+          headerShown: false,
+        }}
       />
       <WelcomeStack.Screen
         name={PAGE_NAMES.PORTALS.PATIENT}
         component={PatientAuthStack.default}
         options={{
-          headerShown: true,
           headerTransparent: true,
           headerTitle: '',
           headerTintColor: '#fff',
@@ -40,7 +38,6 @@ const WelcomeStackNavigator = () => {
         name={PAGE_NAMES.PORTALS.DOCTOR}
         component={DoctorAuthStack.default}
         options={{
-          headerShown: true,
           headerTransparent: true,
           headerTitle: '',
           headerTintColor: '#fff',
@@ -57,7 +54,6 @@ const WelcomeStackNavigator = () => {
         name={PAGE_NAMES.PORTALS.PATIENT_RELATIVE}
         component={PatientRelativeAuthStack.default}
         options={{
-          headerShown: true,
           headerTransparent: true,
           headerTitle: '',
           headerTintColor: '#fff',

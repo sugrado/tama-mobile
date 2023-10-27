@@ -1,31 +1,106 @@
-import {View} from 'react-native';
+import {Image, SafeAreaView, StyleSheet, View} from 'react-native';
 import React from 'react';
-import SugradoButton from '../components/core/SugradoButton';
-import {PAGE_NAMES} from '../constants';
+import {COLORS, DIMENSIONS, PAGE_NAMES} from '../constants';
+import {Button, Text} from 'react-native-paper';
 
 const WelcomeScreen = ({navigation}: any) => {
   return (
-    <View>
-      <SugradoButton
-        title="Hasta"
-        onPress={() => {
-          navigation.navigate(PAGE_NAMES.PORTALS.PATIENT);
-        }}
-      />
-      <SugradoButton
-        title="Hasta Yakını"
-        onPress={() => {
-          navigation.navigate(PAGE_NAMES.PORTALS.PATIENT_RELATIVE);
-        }}
-      />
-      <SugradoButton
-        title="Doktor"
-        onPress={() => {
-          navigation.navigate(PAGE_NAMES.PORTALS.DOCTOR);
-        }}
-      />
-    </View>
+    <SafeAreaView style={styles.container}>
+      <View style={styles.header}>
+        <Image
+          style={styles.header_image}
+          source={require('../assets/icon_transparent.png')}
+        />
+      </View>
+      <Text variant="bodyLarge" style={styles.header_text}>
+        TAMA'ya Hoşgeldiniz!{'\n'}Lütfen giriş yapmak istediğiniz portalı
+        seçiniz.
+      </Text>
+      <View style={styles.body}>
+        <Button
+          onPress={() => {
+            navigation.navigate(PAGE_NAMES.PORTALS.PATIENT);
+          }}
+          style={styles.body_element}
+          buttonColor={COLORS.BUTTON_COLOR}
+          textColor="white"
+          theme={{dark: false}}>
+          Hasta
+        </Button>
+        <Button
+          onPress={() => {
+            navigation.navigate(PAGE_NAMES.PORTALS.PATIENT_RELATIVE);
+          }}
+          style={styles.body_element}
+          buttonColor={COLORS.BUTTON_COLOR}
+          textColor="white"
+          theme={{dark: false}}>
+          Hasta Yakını
+        </Button>
+        <Button
+          onPress={() => {
+            navigation.navigate(PAGE_NAMES.PORTALS.DOCTOR);
+          }}
+          buttonColor={COLORS.BUTTON_COLOR}
+          textColor="white"
+          theme={{dark: false}}>
+          Doktor
+        </Button>
+      </View>
+      <View style={styles.footer}>
+        <Image
+          style={styles.footer_logo}
+          source={require('../assets/neu_logo.png')}
+        />
+        <Text variant="bodyMedium" style={styles.footer_text}>
+          Necmettin Erbakan Üniversitesi{'\n'}Tıp Fakültesi Ruh Sağlığı ve
+          Hastalıkları{'\n'}Ana Bilim Dalı
+        </Text>
+      </View>
+    </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: 'column',
+    flex: 1,
+    justifyContent: 'space-evenly',
+    backgroundColor: COLORS.THEME_COLOR,
+    alignItems: 'center',
+    padding: 10,
+  },
+  header: {
+    alignItems: 'center',
+  },
+  header_text: {
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  header_image: {
+    height: (DIMENSIONS.HEIGHT * 25) / 100,
+    resizeMode: 'contain',
+  },
+  body: {
+    width: '70%',
+  },
+  body_element: {
+    marginBottom: 20,
+  },
+  footer: {
+    alignItems: 'center',
+  },
+  footer_text: {
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
+  footer_logo: {
+    width: 70,
+    height: 70,
+    marginBottom: 10,
+  },
+});
 
 export default WelcomeScreen;
