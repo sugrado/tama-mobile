@@ -10,61 +10,36 @@ const WelcomeStack = createStackNavigator();
 
 const WelcomeStackNavigator = () => {
   return (
-    <WelcomeStack.Navigator initialRouteName={PAGE_NAMES.PORTALS.WELCOME}>
+    <WelcomeStack.Navigator
+      initialRouteName={PAGE_NAMES.PORTALS.WELCOME}
+      screenOptions={{
+        headerShown: false,
+        headerTransparent: true,
+        headerTitle: '',
+        headerTintColor: '#fff',
+        cardStyleInterpolator: ({current: {progress}}) => {
+          return {
+            cardStyle: {
+              opacity: progress,
+            },
+          };
+        },
+      }}>
       <WelcomeStack.Screen
         name={PAGE_NAMES.PORTALS.WELCOME}
         component={WelcomeScreen}
-        options={{
-          headerShown: false,
-        }}
       />
       <WelcomeStack.Screen
         name={PAGE_NAMES.PORTALS.PATIENT}
         component={PatientAuthStack.default}
-        options={{
-          headerTransparent: true,
-          headerTitle: '',
-          headerTintColor: '#fff',
-          cardStyleInterpolator: ({current: {progress}}) => {
-            return {
-              cardStyle: {
-                opacity: progress,
-              },
-            };
-          },
-        }}
       />
       <WelcomeStack.Screen
         name={PAGE_NAMES.PORTALS.DOCTOR}
         component={DoctorAuthStack.default}
-        options={{
-          headerTransparent: true,
-          headerTitle: '',
-          headerTintColor: '#fff',
-          cardStyleInterpolator: ({current: {progress}}) => {
-            return {
-              cardStyle: {
-                opacity: progress,
-              },
-            };
-          },
-        }}
       />
       <WelcomeStack.Screen
         name={PAGE_NAMES.PORTALS.PATIENT_RELATIVE}
         component={PatientRelativeAuthStack.default}
-        options={{
-          headerTransparent: true,
-          headerTitle: '',
-          headerTintColor: '#fff',
-          cardStyleInterpolator: ({current: {progress}}) => {
-            return {
-              cardStyle: {
-                opacity: progress,
-              },
-            };
-          },
-        }}
       />
     </WelcomeStack.Navigator>
   );

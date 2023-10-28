@@ -11,32 +11,26 @@ const AuthStackNavigator = () => (
   <AuthStack.Navigator
     initialRouteName={PAGE_NAMES.PATIENT.AUTH.LOGIN}
     screenOptions={{
-      headerShown: false,
+      headerShown: true,
+      headerTransparent: true,
+      headerTitle: '',
+      headerTintColor: '#fff',
+      cardStyleInterpolator: ({current: {progress}}) => {
+        return {
+          cardStyle: {
+            opacity: progress,
+          },
+        };
+      },
     }}>
     <AuthStack.Screen name={PAGE_NAMES.PATIENT.AUTH.LOGIN} component={Login} />
     <AuthStack.Screen
       name={PAGE_NAMES.PATIENT.AUTH.FIRST_APPOINTMENT}
       component={FirstAppointment}
-      options={{
-        headerShown: true,
-      }}
     />
     <AuthStack.Screen
       name={PAGE_NAMES.PATIENT.AUTH.FORGOT_PASSWORD}
       component={ForgotPassword}
-      options={{
-        headerShown: true,
-        headerTransparent: true,
-        headerTitle: '',
-        headerTintColor: '#fff',
-        cardStyleInterpolator: ({current: {progress}}) => {
-          return {
-            cardStyle: {
-              opacity: progress,
-            },
-          };
-        },
-      }}
     />
   </AuthStack.Navigator>
 );
