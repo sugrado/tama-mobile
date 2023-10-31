@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, View, ScrollView, Image} from 'react-native';
-import {Text} from 'react-native-paper';
+import {StyleSheet} from 'react-native';
 import {useAuth} from '../../../contexts/AuthContext';
-import {COLORS, DIMENSIONS} from '../../../constants';
-import SugradoText from '../../../components/core/SugradoText';
+import {COLORS} from '../../../constants';
+import SugradoTextInput from '../../../components/core/SugradoTextInput';
 import Loading from '../../../components/layout/Loading';
 import SugradoTextArea from '../../../components/core/SugradoTextArea';
 import SugradoButton from '../../../components/core/SugradoButton';
 import SugradoDialog from '../../../components/core/SugradoDialog';
+import TopSmallIconLayout from '../../../components/layout/TopSmallIconLayout';
 
 export default function Profile() {
   const {logout} = useAuth();
@@ -64,128 +64,98 @@ export default function Profile() {
   return (
     <>
       {loading && <Loading loading={loading} />}
-      <ScrollView
-        style={styles.scroll_container}
-        showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          <Image
-            source={require('../../../assets/icon_transparent.png')}
-            style={styles.header_logo}
-          />
-          <Text variant="titleMedium" style={styles.header_text}>
-            TAMA - Profil Bilgileri
-          </Text>
-        </View>
-        <View style={styles.content}>
-          <SugradoText
-            style={styles.input}
-            label="Ad"
-            value={firstName}
-            disabled={true}
-          />
-          <SugradoText
-            style={styles.input}
-            label="Soyad"
-            value={lastName}
-            disabled={true}
-          />
-          <SugradoText
-            style={styles.input}
-            label="Email"
-            value={email}
-            valueChange={e => {
-              setEmail(e);
-            }}
-            keyboardType="email-address"
-          />
-          <SugradoText
-            style={styles.input}
-            label="Yakınınızın Emaili"
-            value={relativeEmail}
-            valueChange={e => {
-              setRelativeEmail(e);
-            }}
-            keyboardType="email-address"
-          />
-          <SugradoTextArea
-            style={styles.input}
-            label="Adres"
-            value={address}
-            valueChange={e => {
-              setAddress(e);
-            }}
-          />
-          <SugradoText
-            style={styles.input}
-            label="Günlük Çay Tüketimi (ml)"
-            value={dailyTeaConsumption}
-            valueChange={e => {
-              setDailyTeaConsumption(e);
-            }}
-            keyboardType="numeric"
-          />
-          <SugradoText
-            style={styles.input}
-            label="Günlük Kahve Tüketimi (ml)"
-            value={dailyCoffeeConsumption}
-            valueChange={e => {
-              setDailyCoffeeConsumption(e);
-            }}
-            keyboardType="numeric"
-          />
-          <SugradoButton
-            title="Değişiklikleri Kaydet"
-            onPress={handleSaveChanges}
-            style={styles.save_button}
-            icon="content-save"
-          />
-          <SugradoButton
-            title="Çıkış Yap"
-            onPress={showLogoutDialog}
-            style={styles.save_button}
-            icon="logout"
-            buttonColor={COLORS.DARK_RED}
-          />
-          <SugradoDialog
-            title="Çıkış Yap"
-            body="Hesabınızdan çıkış yapmak istediğinizden emin misiniz?"
-            visible={logoutDialogVisible}
-            action={handleLogout}
-            actionText="Evet"
-            cancelAction={() => setLogoutDialogVisible(false)}
-            cancelText="Hayır"
-          />
-        </View>
-      </ScrollView>
+      <TopSmallIconLayout pageName="Profil Bilgileri">
+        <SugradoTextInput
+          label="Ad"
+          style={styles.input}
+          placeholder="Ad"
+          value={firstName}
+          disabled={true}
+        />
+        <SugradoTextInput
+          label="Soyad"
+          style={styles.input}
+          placeholder="Soyad"
+          value={lastName}
+          disabled={true}
+        />
+        <SugradoTextInput
+          label="Email"
+          style={styles.input}
+          placeholder="Email"
+          value={email}
+          valueChange={e => {
+            setEmail(e);
+          }}
+          keyboardType="email-address"
+        />
+        <SugradoTextInput
+          label="Yakınınızın Emaili"
+          style={styles.input}
+          placeholder="Yakınınızın Emaili"
+          value={relativeEmail}
+          valueChange={e => {
+            setRelativeEmail(e);
+          }}
+          keyboardType="email-address"
+        />
+        <SugradoTextArea
+          label="Adres"
+          style={styles.input}
+          placeholder="Adres"
+          value={address}
+          valueChange={e => {
+            setAddress(e);
+          }}
+        />
+        <SugradoTextInput
+          label="Günlük Çay Tüketimi (ml)"
+          style={styles.input}
+          placeholder="Günlük Çay Tüketimi (ml)"
+          value={dailyTeaConsumption}
+          valueChange={e => {
+            setDailyTeaConsumption(e);
+          }}
+          keyboardType="numeric"
+        />
+        <SugradoTextInput
+          label="Günlük Kahve Tüketimi (ml)"
+          style={styles.input}
+          placeholder="Günlük Kahve Tüketimi (ml)"
+          value={dailyCoffeeConsumption}
+          valueChange={e => {
+            setDailyCoffeeConsumption(e);
+          }}
+          keyboardType="numeric"
+        />
+        <SugradoButton
+          title="Değişiklikleri Kaydet"
+          onPress={handleSaveChanges}
+          style={styles.save_button}
+          icon="content-save"
+        />
+        <SugradoButton
+          title="Çıkış Yap"
+          onPress={showLogoutDialog}
+          style={styles.save_button}
+          icon="logout"
+          buttonColor={COLORS.DARK_RED}
+        />
+        <SugradoDialog
+          title="Çıkış Yap"
+          body="Hesabınızdan çıkış yapmak istediğinizden emin misiniz?"
+          visible={logoutDialogVisible}
+          action={handleLogout}
+          actionText="Evet"
+          cancelAction={() => setLogoutDialogVisible(false)}
+          cancelText="Hayır"
+        />
+      </TopSmallIconLayout>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  scroll_container: {
-    backgroundColor: COLORS.THEME_COLOR,
-    flex: 1,
-  },
-  header: {
-    height: (DIMENSIONS.AVAILABLE_HEIGHT * 15) / 100,
-    padding: 10,
-    alignItems: 'center',
-  },
-  header_text: {
-    color: COLORS.TEXT,
-  },
-  header_logo: {
-    resizeMode: 'contain',
-    height: '60%',
-    width: 100,
-  },
-  content: {
-    backgroundColor: 'white',
-    borderTopRightRadius: 30,
-    borderBottomLeftRadius: 30,
-    paddingBottom: 20,
-    flex: 1,
-  },
   input: {
     marginTop: 10,
     width: '75%',

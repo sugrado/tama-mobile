@@ -1,15 +1,9 @@
 import React, {useState} from 'react';
-import {Image, View, SafeAreaView, StyleSheet, Keyboard} from 'react-native';
-import {
-  Button,
-  TextInput,
-  Text,
-  HelperText,
-  Snackbar,
-} from 'react-native-paper';
-import {Styles} from './Login.style';
+import {View, StyleSheet, Keyboard} from 'react-native';
+import {Button, TextInput, Text, HelperText} from 'react-native-paper';
 import {COLORS} from '../../../constants';
 import Loading from '../../../components/layout/Loading';
+import TopBigIconLayout from '../../../components/layout/TopBigIconLayout';
 
 const ForgotPassword = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -27,14 +21,16 @@ const ForgotPassword = () => {
       return;
     }
     if (!usernameOrEmail) {
-      showSnackBar('Lütfen kullanıcı adı ve parolanızı eksiksiz doldurun.');
+      showSnackBar('Lütfen kullanıcı adı veya e-posta bilginizi doğru girin.');
       return;
     }
     setLoading(true);
     // TODO: api request
     setLoading(false);
     Keyboard.dismiss();
-    showSnackBar('Şifre sıfırlama bağlantısı gönderildi.');
+    showSnackBar(
+      'Şifre sıfırlama bağlantısı gönderildi. Lütfen mail kutunuzu kontrol edin.',
+    );
   };
 
   const showSnackBar = (text: string) => {
@@ -45,69 +41,42 @@ const ForgotPassword = () => {
   return (
     <>
       {loading && <Loading loading={loading} />}
-      <SafeAreaView style={Styles.login_container}>
-        <View style={Styles.login_header}>
-          <Image
-            style={Styles.login_header_logo}
-            source={require('../../../assets/icon_transparent.png')}
+      <TopBigIconLayout
+        pageName="Parolamı Unuttum"
+        snackbarVisible={snackbarVisible}
+        warningText={snackbarText}
+        setSnackbarVisible={() => {
+          setSnackbarVisible(false);
+        }}>
+        <Text style={styles.information_text}>
+          Şifrenizi yenilemek için e-posta adresinize tek kullanımlık bir
+          bağlantı gönderilecektir. Bu bağlantı ile yeni bir şifre
+          belirleyebilirsiniz.
+        </Text>
+        <View>
+          <TextInput
+            label="Kullanıcı adı veya e-posta"
+            value={usernameOrEmail}
+            onChangeText={input => setUsernameOrEmail(input)}
+            theme={{
+              colors: {primary: COLORS.PRIMARY_THEME},
+              dark: false,
+            }}
+            style={styles.input}
           />
-          <Text style={Styles.login_header_text}>
-            <Text style={Styles.login_header_text_bold}>{'TAMA - '}</Text>
-            {'Parolamı Unuttum'}
-          </Text>
+          <HelperText padding="none" type="error" visible={hasUsernameErrors()}>
+            Kullanıcı adı geçersiz!
+          </HelperText>
         </View>
-        <View style={Styles.login_wrapper}>
-          <View style={Styles.form}>
-            <Text style={styles.information_text}>
-              Şifrenizi yenilemek için e-posta adresinize tek kullanımlık bir
-              bağlantı gönderilecektir. Bu bağlantı ile yeni bir şifre
-              belirleyebilirsiniz.
-            </Text>
-            <View style={Styles.form_field}>
-              <TextInput
-                label="Kullanıcı adı veya e-posta"
-                value={usernameOrEmail}
-                onChangeText={input => setUsernameOrEmail(input)}
-                theme={{
-                  colors: {primary: COLORS.PRIMARY_THEME},
-                  dark: false,
-                }}
-                style={Styles.input}
-              />
-              <HelperText
-                padding="none"
-                type="error"
-                visible={hasUsernameErrors()}>
-                Kullanıcı adı geçersiz!
-              </HelperText>
-            </View>
-            <Button
-              mode="contained"
-              onPress={handleSendPasswordResetEmail}
-              theme={{dark: false}}
-              buttonColor={COLORS.BUTTON_COLOR}
-              icon="refresh">
-              Şifremi Yenile
-            </Button>
-          </View>
-          <View style={Styles.footer}>
-            <Image
-              style={Styles.footer_logo}
-              source={require('../../../assets/neu_logo.png')}
-            />
-            <Text variant="bodySmall" style={Styles.login_footer_text}>
-              Necmettin Erbakan Üniversitesi{'\n'}Tıp Fakültesi Ruh Sağlığı ve
-              Hastalıkları{'\n'}Ana Bilim Dalı
-            </Text>
-            <Snackbar
-              visible={snackbarVisible}
-              duration={2000}
-              onDismiss={() => setSnackbarVisible(false)}>
-              {snackbarText}
-            </Snackbar>
-          </View>
-        </View>
-      </SafeAreaView>
+        <Button
+          mode="contained"
+          onPress={handleSendPasswordResetEmail}
+          theme={{dark: false}}
+          buttonColor={COLORS.BUTTON_COLOR}
+          icon="refresh">
+          Şifremi Yenile
+        </Button>
+      </TopBigIconLayout>
     </>
   );
 };
@@ -118,6 +87,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#808080',
   },
+  input: {backgroundColor: '#fff'},
 });
 
 export default ForgotPassword;
