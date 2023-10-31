@@ -1,22 +1,28 @@
 import React, {ReactNode} from 'react';
-import {KeyboardTypeOptions, StyleSheet, View} from 'react-native';
+import {
+  KeyboardTypeOptions,
+  StyleProp,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {Text, TextInput} from 'react-native-paper';
 import {COLORS} from '../../constants';
 
-type SugradoTextAreaProps = {
+type SugradoTextProps = {
   keyboardType?: KeyboardTypeOptions | undefined;
   value: any;
   valueChange?: (input: string) => void;
-  style?: any;
+  style?: StyleProp<ViewStyle>;
   secureTextEntry?: boolean;
   disabled?: boolean;
-  placeholder: string;
-  label?: string;
   right?: ReactNode;
+  placeholder: string;
   onBlur?: () => void;
+  label?: string;
 };
 
-export default function SugradoTextArea({
+export default function SugradoTextInput({
   keyboardType = 'default',
   value,
   label,
@@ -27,12 +33,11 @@ export default function SugradoTextArea({
   right,
   placeholder,
   onBlur,
-}: SugradoTextAreaProps) {
+}: SugradoTextProps) {
   return (
     <View style={style}>
       <Text style={styles.label}>{label}</Text>
       <TextInput
-        multiline={true}
         style={styles.input}
         mode="outlined"
         value={value}
@@ -46,7 +51,6 @@ export default function SugradoTextArea({
         }}
         disabled={disabled}
         right={right}
-        contentStyle={styles.content}
       />
     </View>
   );
@@ -60,8 +64,5 @@ const styles = StyleSheet.create({
   label: {
     marginLeft: 5,
     marginBottom: 3,
-  },
-  content: {
-    marginVertical: 10,
   },
 });

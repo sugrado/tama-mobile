@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {FlatList, View, StyleSheet} from 'react-native';
-import {Text, TextInput} from 'react-native-paper';
+import {Searchbar, Text} from 'react-native-paper';
 import {COLORS} from '../../../../constants';
-import SugradoText from '../../../../components/core/SugradoText';
 import Loading from '../../../../components/layout/Loading';
 import SugradoButton from '../../../../components/core/SugradoButton';
 
@@ -65,30 +64,20 @@ export default function PastAppointments() {
     <>
       {loading && <Loading loading={loading} />}
       <View style={styles.search_container}>
-        <SugradoText
+        <Searchbar
           style={styles.search_bar}
-          label="Ara"
-          value={searchText}
-          valueChange={e => {
+          placeholder="Randevu numarası giriniz"
+          onChangeText={e => {
             setSearchText(e);
           }}
+          onClearIconPress={() => {
+            setLoading(true);
+            setSearchText('');
+            setAppointments(dummyData);
+            setLoading(false);
+          }}
+          value={searchText}
           keyboardType="numeric"
-          right={
-            searchText && (
-              <TextInput.Icon
-                style={styles.search_clear_icon}
-                icon="close-circle"
-                color="gray"
-                onPress={() => {
-                  setLoading(true);
-                  setSearchText('');
-                  setAppointments(dummyData);
-                  setLoading(false);
-                }}
-              />
-            )
-          }
-          placeholder="Randevu numarası giriniz..."
         />
         <SugradoButton
           style={styles.filter_button}
@@ -146,13 +135,10 @@ const styles = StyleSheet.create({
   },
   search_bar: {
     width: '67%',
-  },
-  search_clear_icon: {
-    marginTop: 20,
+    backgroundColor: COLORS.MODAL_BACKGROUND_COLOR,
   },
   filter_button: {
     width: '30%',
-    marginTop: 10,
   },
   no_data_text: {
     textAlign: 'center',
