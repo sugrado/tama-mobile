@@ -46,6 +46,17 @@ export const PAGE_NAMES = {
   },
 };
 
+export const FORM_ERROR_MESSAGES = {
+  REQUIRED: 'Bu alan zorunludur.',
+  MIN_LENGTH: (length: Number) =>
+    `Bu alan en az ${length} karakter uzunluğunda olmalıdır.`,
+  MAX_LENGTH: (length: Number) =>
+    `Bu alan en fazla ${length} karakter uzunluğunda olmalıdır.`,
+  EMAIL: 'Geçerli bir e-posta adresi giriniz.',
+  IDENTITY_NUMBER: 'Kimlik numarası geçerli ve 11 haneli olmalıdır.',
+  DATE: 'Geçerli bir tarih formatı girin (örn. 19.10.2019)',
+};
+
 export const DIMENSIONS = {
   HEIGHT: Dimensions.get('window').height,
   WIDTH: Dimensions.get('window').width,
@@ -65,6 +76,10 @@ export const COLORS = {
   DARK_RED: '#880808',
   TEXT: 'white',
   PRIMARY_THEME: 'purple',
+};
+
+export const REGEXES = {
+  DATE: /(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[1,2])\.(19|20)\d{2}/,
 };
 
 export const STORAGE_TOKEN_KEY = 'userToken';
