@@ -9,16 +9,12 @@ import SugradoModal from '../../../../components/core/SugradoModal';
 import Loading from '../../../../components/layout/Loading';
 
 class FormValues {
-  hospitalId: string;
-  departmentId: string;
   doctorId: string;
   date: string;
   time: string;
 }
 
 class CreatedAppointmentDto {
-  hospitalName: string;
-  departmentName: string;
   doctorFullName: string;
   date: string;
   time: string;
@@ -31,8 +27,6 @@ type NewAppointmentProps = {
 const NewAppointment = ({onAppointmentCreated}: NewAppointmentProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [doctors, setDoctors] = useState<SelectBoxData[] | null>(null);
-  const [hospitals, setHospitals] = useState<SelectBoxData[] | null>(null);
-  const [departments, setDepartments] = useState<SelectBoxData[] | null>(null);
   const [dates, setDates] = useState<SelectBoxData[] | null>(null);
   const [times, setTimes] = useState<SelectBoxData[] | null>(null);
 
@@ -46,7 +40,7 @@ const NewAppointment = ({onAppointmentCreated}: NewAppointmentProps) => {
   } as FormValues);
 
   useEffect(() => {
-    setHospitals(dummyData.hospitals);
+    setDoctors(dummyData.doctors);
   }, []);
   const showModal = () => setModalVisible(true);
   const hideModal = () => {
@@ -70,19 +64,7 @@ const NewAppointment = ({onAppointmentCreated}: NewAppointmentProps) => {
   };
 
   const isFormValid = () =>
-    formValues.hospitalId &&
-    formValues.departmentId &&
-    formValues.doctorId &&
-    formValues.date &&
-    formValues.time;
-
-  const loadDepartmentsByHospital = async (hospitalId: string) => {
-    // TODO: backend request and filter departments by hospital
-    setLoading(true);
-    await wait(5000);
-    setLoading(false);
-    setDepartments(dummyData.departments);
-  };
+    formValues.doctorId && formValues.date && formValues.time;
 
   function wait(ms: any) {
     return new Promise((resolve, _) => {
@@ -92,14 +74,12 @@ const NewAppointment = ({onAppointmentCreated}: NewAppointmentProps) => {
     });
   }
 
-  const loadDoctorsByDepartment = (departmentId: string) => {
-    // TODO: backend request and filter doctors by department
-    setDoctors(dummyData.doctors);
-  };
-
-  const loadDatesByDoctor = (doctorId: string) => {
+  const loadDatesByDoctor = async (doctorId: string) => {
     // TODO: backend request and filter dates by doctor
+    setLoading(true);
+    await wait(5000);
     setDates(dummyData.dates);
+    setLoading(false);
   };
 
   const loadTimesByDate = (date: string) => {
@@ -118,33 +98,11 @@ const NewAppointment = ({onAppointmentCreated}: NewAppointmentProps) => {
         style={styles.new_appointment_button}
       />
       <SugradoModal visible={modalVisible} onDismiss={hideModal}>
-        <Text
-          variant="titleLarge"
-          style={{textAlign: 'center', marginBottom: 25}}>
+        <Text variant="titleLarge" style={styles.modal_header_text}>
           Randevu Oluştur
         </Text>
         <ScrollView>
           <SugradoSelectBox
-            data={hospitals || []}
-            label="Hastane Seçiniz"
-            displayValue={item => item.value}
-            onSelected={(selectedItem, _) => {
-              setFormValues({...formValues, hospitalId: selectedItem.id});
-              loadDepartmentsByHospital(selectedItem.id);
-            }}
-          />
-          <SugradoSelectBox
-            disabled={!formValues.hospitalId}
-            data={departments || []}
-            label="Bölüm Seçiniz"
-            displayValue={item => item.value}
-            onSelected={(selectedItem, _) => {
-              setFormValues({...formValues, departmentId: selectedItem.id});
-              loadDoctorsByDepartment(selectedItem.id);
-            }}
-          />
-          <SugradoSelectBox
-            disabled={!formValues.departmentId}
             data={doctors || []}
             label="Doktorunuzu Seçiniz"
             displayValue={item => item.value}
@@ -204,23 +162,15 @@ const styles = StyleSheet.create({
   modal_footer_button: {
     marginHorizontal: 5,
   },
+  modal_header_text: {
+    textAlign: 'center',
+    marginBottom: 25,
+  },
 });
 
 export default NewAppointment;
 
 const dummyData = {
-  hospitals: [
-    {
-      id: '1',
-      value: 'Necmettin Erbakan Üniversitesi Tıp Fakültesi Hastanesi',
-    },
-  ] as SelectBoxData[],
-  departments: [
-    {
-      id: '1',
-      value: 'Ruh Sağlığı ve Hastalıkları Ana Bilim Dalı',
-    },
-  ] as SelectBoxData[],
   doctors: [
     {
       id: '1',

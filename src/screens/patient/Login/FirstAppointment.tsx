@@ -1,4 +1,4 @@
-import {View, StyleSheet, ScrollView, Image} from 'react-native';
+import {StyleSheet} from 'react-native';
 import React, {useState} from 'react';
 import {useForm} from 'react-hook-form';
 import {
@@ -11,7 +11,6 @@ import SugradoTextInput from '../../../components/core/SugradoTextInput';
 import SugradoFormField from '../../../components/core/SugradoFormField';
 import SugradoButton from '../../../components/core/SugradoButton';
 import Loading from '../../../components/layout/Loading';
-import {Text} from 'react-native-paper';
 import TopSmallIconLayout from '../../../components/layout/TopSmallIconLayout';
 
 const FirstAppointment = () => {
@@ -22,66 +21,119 @@ const FirstAppointment = () => {
     formState: {errors},
   } = useForm({
     defaultValues: {
-      firstName: '',
-      lastName: '',
-      identityNumber: '',
-      birthAt: '',
+      personalInfo: {
+        firstName: '',
+        lastName: '',
+        identityNumber: '',
+        birthAt: '',
+        phoneNumber: '',
+        email: '',
+      },
+      appointmentInfo: {
+        doctorId: '',
+        date: '',
+        time: '',
+      },
     },
   });
 
   const rules = {
-    firstName: {
-      required: {
-        value: true,
-        message: FORM_ERROR_MESSAGES.REQUIRED,
+    personalInfo: {
+      firstName: {
+        required: {
+          value: true,
+          message: FORM_ERROR_MESSAGES.REQUIRED,
+        },
+        minLength: {
+          value: 2,
+          message: FORM_ERROR_MESSAGES.MIN_LENGTH(2),
+        },
+        maxLength: {
+          value: 20,
+          message: FORM_ERROR_MESSAGES.MAX_LENGTH(20),
+        },
       },
-      minLength: {
-        value: 2,
-        message: FORM_ERROR_MESSAGES.MIN_LENGTH(2),
+      lastName: {
+        required: {
+          value: true,
+          message: FORM_ERROR_MESSAGES.REQUIRED,
+        },
+        minLength: {
+          value: 2,
+          message: FORM_ERROR_MESSAGES.MIN_LENGTH(2),
+        },
+        maxLength: {
+          value: 20,
+          message: FORM_ERROR_MESSAGES.MAX_LENGTH(20),
+        },
       },
-      maxLength: {
-        value: 20,
-        message: FORM_ERROR_MESSAGES.MAX_LENGTH(20),
+      identityNumber: {
+        required: {
+          value: true,
+          message: FORM_ERROR_MESSAGES.REQUIRED,
+        },
+        maxLength: {
+          value: 11,
+          message: FORM_ERROR_MESSAGES.IDENTITY_NUMBER,
+        },
+        minLength: {
+          value: 11,
+          message: FORM_ERROR_MESSAGES.IDENTITY_NUMBER,
+        },
+      },
+      birthAt: {
+        required: {
+          value: true,
+          message: FORM_ERROR_MESSAGES.REQUIRED,
+        },
+        pattern: {
+          value: REGEXES.DATE,
+          message: FORM_ERROR_MESSAGES.DATE,
+        },
+      },
+      phoneNumber: {
+        required: {
+          value: true,
+          message: FORM_ERROR_MESSAGES.REQUIRED,
+        },
+        maxLength: {
+          value: 10,
+          message: FORM_ERROR_MESSAGES.PHONE_NUMBER,
+        },
+        minLength: {
+          value: 10,
+          message: FORM_ERROR_MESSAGES.PHONE_NUMBER,
+        },
+      },
+      email: {
+        required: {
+          value: true,
+          message: FORM_ERROR_MESSAGES.REQUIRED,
+        },
+        pattern: {
+          value: REGEXES.EMAIL,
+          message: FORM_ERROR_MESSAGES.EMAIL,
+        },
       },
     },
-    lastName: {
-      required: {
-        value: true,
-        message: FORM_ERROR_MESSAGES.REQUIRED,
+    appointmentInfo: {
+      doctorId: {
+        required: {
+          value: true,
+          message: FORM_ERROR_MESSAGES.REQUIRED,
+        },
       },
-      minLength: {
-        value: 2,
-        message: FORM_ERROR_MESSAGES.MIN_LENGTH(2),
+      date: {
+        required: {
+          value: true,
+          message: FORM_ERROR_MESSAGES.REQUIRED,
+        },
       },
-      maxLength: {
-        value: 20,
-        message: FORM_ERROR_MESSAGES.MAX_LENGTH(20),
-      },
-    },
-    identityNumber: {
-      required: {
-        value: true,
-        message: FORM_ERROR_MESSAGES.REQUIRED,
-      },
-      maxLength: {
-        value: 11,
-        message: FORM_ERROR_MESSAGES.IDENTITY_NUMBER,
-      },
-      minLength: {
-        value: 11,
-        message: FORM_ERROR_MESSAGES.IDENTITY_NUMBER,
-      },
-    },
-    birthAt: {
-      required: {
-        value: true,
-        message: FORM_ERROR_MESSAGES.REQUIRED,
-      },
-      validate: (value: string) => {
-        if (!REGEXES.DATE.test(value)) {
-          return FORM_ERROR_MESSAGES.DATE;
-        }
-        return true;
+      time: {
+        required: {
+          value: true,
+          message: FORM_ERROR_MESSAGES.REQUIRED,
+        },
       },
     },
   };
@@ -99,12 +151,12 @@ const FirstAppointment = () => {
       <TopSmallIconLayout pageName="İlk Randevu">
         <SugradoFormField
           control={control}
-          name="firstName"
-          rules={rules.firstName}
-          error={errors.firstName}
+          name="personalInfo.firstName"
+          style={styles.input}
+          rules={rules.personalInfo.firstName}
+          error={errors.personalInfo && errors.personalInfo.firstName}
           render={({field: {onChange, onBlur, value}}) => (
             <SugradoTextInput
-              style={styles.input}
               label="Ad"
               placeholder="Örn: Ali"
               onBlur={onBlur}
@@ -115,12 +167,12 @@ const FirstAppointment = () => {
         />
         <SugradoFormField
           control={control}
-          name="lastName"
-          rules={rules.lastName}
-          error={errors.lastName}
+          name="personalInfo.lastName"
+          rules={rules.personalInfo.lastName}
+          error={errors.personalInfo && errors.personalInfo.lastName}
+          style={styles.input}
           render={({field: {onChange, onBlur, value}}) => (
             <SugradoTextInput
-              style={styles.input}
               label="Soyad"
               placeholder="Örn: Yılmaz"
               onBlur={onBlur}
@@ -131,12 +183,12 @@ const FirstAppointment = () => {
         />
         <SugradoFormField
           control={control}
-          name="identityNumber"
-          rules={rules.identityNumber}
-          error={errors.identityNumber}
+          name="personalInfo.identityNumber"
+          rules={rules.personalInfo.identityNumber}
+          error={errors.personalInfo && errors.personalInfo.identityNumber}
+          style={styles.input}
           render={({field: {onChange, onBlur, value}}) => (
             <SugradoTextInput
-              style={styles.input}
               label="TC Kimlik Numarası"
               placeholder="Örn: 12345678910"
               onBlur={onBlur}
@@ -148,17 +200,51 @@ const FirstAppointment = () => {
         />
         <SugradoFormField
           control={control}
-          name="birthAt"
-          rules={rules.birthAt}
-          error={errors.birthAt}
+          name="personalInfo.birthAt"
+          rules={rules.personalInfo.birthAt}
+          error={errors.personalInfo && errors.personalInfo.birthAt}
+          style={styles.input}
           render={({field: {onChange, onBlur, value}}) => (
             <SugradoTextInput
-              style={styles.input}
               label="Doğum Tarihi"
               placeholder="Örn: 01.01.1990"
               onBlur={onBlur}
               valueChange={onChange}
               value={value}
+            />
+          )}
+        />
+        <SugradoFormField
+          control={control}
+          name="personalInfo.email"
+          rules={rules.personalInfo.email}
+          error={errors.personalInfo && errors.personalInfo.email}
+          style={styles.input}
+          render={({field: {onChange, onBlur, value}}) => (
+            <SugradoTextInput
+              label="E-posta"
+              placeholder="Örn: örnek@mail.com"
+              onBlur={onBlur}
+              valueChange={onChange}
+              value={value}
+              keyboardType="email-address"
+            />
+          )}
+        />
+        <SugradoFormField
+          control={control}
+          name="personalInfo.phoneNumber"
+          rules={rules.personalInfo.phoneNumber}
+          error={errors.personalInfo && errors.personalInfo.phoneNumber}
+          style={styles.input}
+          render={({field: {onChange, onBlur, value}}) => (
+            <SugradoTextInput
+              label="Telefon"
+              placeholder="550_______"
+              onBlur={onBlur}
+              valueChange={onChange}
+              value={value}
+              keyboardType="phone-pad"
             />
           )}
         />
@@ -199,7 +285,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   input: {
-    marginTop: 10,
+    marginTop: 15,
     width: '75%',
     alignSelf: 'center',
   },

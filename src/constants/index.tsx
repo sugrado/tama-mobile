@@ -23,7 +23,7 @@ export const PAGE_NAMES = {
     AUTH: {
       LOGIN: 'patientLogin',
       FORGOT_PASSWORD: 'patientForgotPassword',
-      FIRST_APPOINTMENT: 'firstAppointment',
+      FIRST_APPOINTMENT: 'patientFirstAppointment',
     },
     HOME: {
       HOME_STACK: 'homeStack',
@@ -55,6 +55,7 @@ export const FORM_ERROR_MESSAGES = {
   EMAIL: 'Geçerli bir e-posta adresi giriniz.',
   IDENTITY_NUMBER: 'Kimlik numarası geçerli ve 11 haneli olmalıdır.',
   DATE: 'Geçerli bir tarih formatı girin (örn. 19.10.2019)',
+  PHONE_NUMBER: 'Geçerli bir telefon numarası girin.',
 };
 
 export const DIMENSIONS = {
@@ -80,6 +81,7 @@ export const COLORS = {
 
 export const REGEXES = {
   DATE: /(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[1,2])\.(19|20)\d{2}/,
+  EMAIL: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
 };
 
 export const STORAGE_TOKEN_KEY = 'userToken';
