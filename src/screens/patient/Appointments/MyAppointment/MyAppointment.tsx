@@ -26,8 +26,6 @@ export default function MyAppointment(/*{navigation}: any*/) {
     //TODO: Get appointment from backend
     setLoading(true);
     setAppointment({
-      hospital: 'Necmettin Erbakan Üniversitesi Tıp Fakültesi Hastanesi',
-      department: 'Psikiyatri Ana Bilim Dalı',
       date: '30 Ağustos 2023',
       time: '14:30',
       doctor: 'Dr. Anıl İBİŞ',
@@ -63,10 +61,6 @@ export default function MyAppointment(/*{navigation}: any*/) {
               Randevu Bilgileriniz
             </Text>
             <Text variant="bodyMedium" style={styles.card_body_success_text}>
-              Hastane: {appointment.hospital}
-              {'\n'}
-              Bölüm: {appointment.department}
-              {'\n'}
               Doktor: {appointment.doctor}
               {'\n'}
               Tarih: {appointment.date}
@@ -106,8 +100,6 @@ export default function MyAppointment(/*{navigation}: any*/) {
               onAppointmentCreated={a =>
                 setAppointment({
                   date: a.date,
-                  hospital: a.hospitalName,
-                  department: a.departmentName,
                   doctor: a.doctorFullName,
                   time: a.time,
                 } as MyAppointmentDto)
@@ -137,6 +129,7 @@ const styles = StyleSheet.create({
   },
   card_body_success_text: {
     marginVertical: 15,
+    textAlign: 'center',
   },
   card_body_fail_text: {
     textAlign: 'center',

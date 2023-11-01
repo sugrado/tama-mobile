@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import SugradoButton from '../../../../components/core/SugradoButton';
 import {Text} from 'react-native-paper';
 import {StyleSheet, ScrollView, View} from 'react-native';
@@ -7,12 +7,9 @@ import SugradoSelectBox, {
 } from '../../../../components/core/SugradoSelectBox';
 import SugradoModal from '../../../../components/core/SugradoModal';
 import Loading from '../../../../components/layout/Loading';
-
-class FormValues {
-  doctorId: string;
-  date: string;
-  time: string;
-}
+import {useForm} from 'react-hook-form';
+import {FORM_ERROR_MESSAGES} from '../../../../constants';
+import SugradoFormField from '../../../../components/core/SugradoFormField';
 
 class CreatedAppointmentDto {
   doctorFullName: string;
@@ -29,42 +26,72 @@ const NewAppointment = ({onAppointmentCreated}: NewAppointmentProps) => {
   const [doctors, setDoctors] = useState<SelectBoxData[] | null>(null);
   const [dates, setDates] = useState<SelectBoxData[] | null>(null);
   const [times, setTimes] = useState<SelectBoxData[] | null>(null);
-
+  const doctorDropdownRef: any = useRef();
+  const dateDropdownRef: any = useRef();
+  const timeDropdownRef: any = useRef();
   const [modalVisible, setModalVisible] = useState<boolean>(false);
-  const [formValues, setFormValues] = useState<FormValues>({
-    hospitalId: '',
-    departmentId: '',
-    doctorId: '',
-    date: '',
-    time: '',
-  } as FormValues);
 
   useEffect(() => {
     setDoctors(dummyData.doctors);
   }, []);
-  const showModal = () => setModalVisible(true);
+
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+    setValue,
+    reset: resetForm,
+    getValues,
+  } = useForm({
+    defaultValues: {
+      doctorId: '',
+      date: '',
+      time: '',
+    },
+  });
+
+  const rules = {
+    doctorId: {
+      required: {
+        value: true,
+        message: FORM_ERROR_MESSAGES.REQUIRED,
+      },
+    },
+    date: {
+      required: {
+        value: true,
+        message: FORM_ERROR_MESSAGES.REQUIRED,
+      },
+    },
+    time: {
+      required: {
+        value: true,
+        message: FORM_ERROR_MESSAGES.REQUIRED,
+      },
+    },
+  };
+
+  const showModal = () => {
+    resetForm();
+    setModalVisible(true);
+  };
+
   const hideModal = () => {
-    setFormValues({} as FormValues);
     setModalVisible(false);
   };
 
-  const handleNewAppointment = () => {
-    if (!isFormValid()) {
-      return;
-    }
-    // TODO: backend request and set incoming values to createdAppointment
+  const onSubmit = (data: any) => {
+    setLoading(true);
+    // TODO: API call
+    console.log(data);
     onAppointmentCreated({
-      hospitalName: 'Necmettin Erbakan Üniversitesi Tıp Fakültesi Hastanesi',
-      departmentName: 'Ruh Sağlığı ve Hastalıkları Ana Bilim Dalı',
       doctorFullName: 'Eduardo Wayon',
       date: '2023-10-5',
       time: '10:00',
     } as CreatedAppointmentDto);
     hideModal();
+    setLoading(false);
   };
-
-  const isFormValid = () =>
-    formValues.doctorId && formValues.date && formValues.time;
 
   function wait(ms: any) {
     return new Promise((resolve, _) => {
@@ -77,15 +104,31 @@ const NewAppointment = ({onAppointmentCreated}: NewAppointmentProps) => {
   const loadDatesByDoctor = async (doctorId: string) => {
     // TODO: backend request and filter dates by doctor
     setLoading(true);
-    await wait(5000);
+    resetDate();
+    resetTime();
+    await wait(2000);
     setDates(dummyData.dates);
     setLoading(false);
   };
 
   const loadTimesByDate = (date: string) => {
     // TODO: backend request and filter times by date
-    // TODO: global activity indicator going to be added
+    setLoading(true);
+    resetTime();
     setTimes(dummyData.times);
+    setLoading(false);
+  };
+
+  const resetTime = () => {
+    timeDropdownRef.current && timeDropdownRef.current.reset();
+    setValue('time', '');
+    setTimes(null);
+  };
+
+  const resetDate = () => {
+    dateDropdownRef.current && dateDropdownRef.current.reset();
+    setValue('date', '');
+    setDates(null);
   };
 
   return (
@@ -102,33 +145,69 @@ const NewAppointment = ({onAppointmentCreated}: NewAppointmentProps) => {
           Randevu Oluştur
         </Text>
         <ScrollView>
-          <SugradoSelectBox
-            data={doctors || []}
-            label="Doktorunuzu Seçiniz"
-            displayValue={item => item.value}
-            onSelected={(selectedItem, _) => {
-              setFormValues({...formValues, doctorId: selectedItem.id});
-              loadDatesByDoctor(selectedItem.id);
-            }}
+          <SugradoFormField
+            control={control}
+            name="doctorId"
+            rules={rules.doctorId}
+            style={styles.input}
+            error={errors && errors.doctorId}
+            render={({field: {onChange, onBlur}}) => (
+              <SugradoSelectBox
+                innerRef={doctorDropdownRef}
+                data={doctors || []}
+                label="Doktor"
+                btnDefaultText="Doktorunuzu Seçiniz"
+                displayValue={item => item.value}
+                onSelected={(selectedItem, _) => {
+                  onChange(selectedItem.id);
+                  loadDatesByDoctor(selectedItem.id);
+                }}
+                onBlur={onBlur}
+              />
+            )}
           />
-          <SugradoSelectBox
-            disabled={!formValues.doctorId}
-            data={dates || []}
-            label="Tarih Seçiniz"
-            displayValue={item => item.value}
-            onSelected={(selectedItem, _) => {
-              setFormValues({...formValues, date: selectedItem.id});
-              loadTimesByDate(selectedItem.id);
-            }}
+          <SugradoFormField
+            control={control}
+            name="date"
+            rules={rules.date}
+            style={styles.input}
+            error={errors && errors.date}
+            render={({field: {onChange, onBlur}}) => (
+              <SugradoSelectBox
+                innerRef={dateDropdownRef}
+                disabled={getValues('doctorId') === ''}
+                data={dates || []}
+                label="Tarih"
+                btnDefaultText="Tarih Seçiniz"
+                displayValue={item => item.value}
+                onSelected={(selectedItem, _) => {
+                  onChange(selectedItem.id);
+                  loadTimesByDate(selectedItem.id);
+                }}
+                onBlur={onBlur}
+              />
+            )}
           />
-          <SugradoSelectBox
-            disabled={!formValues.date}
-            data={times || []}
-            label="Saat Seçiniz"
-            displayValue={item => item.value}
-            onSelected={(selectedItem, _) => {
-              setFormValues({...formValues, time: selectedItem.id});
-            }}
+          <SugradoFormField
+            control={control}
+            name="time"
+            style={styles.input}
+            rules={rules.time}
+            error={errors && errors.time}
+            render={({field: {onChange, onBlur}}) => (
+              <SugradoSelectBox
+                innerRef={timeDropdownRef}
+                disabled={getValues('date') === ''}
+                data={times || []}
+                label="Saat"
+                btnDefaultText="Saat Seçiniz"
+                displayValue={item => item.value}
+                onSelected={(selectedItem, _) => {
+                  onChange(selectedItem.id);
+                }}
+                onBlur={onBlur}
+              />
+            )}
           />
           <View style={styles.modal_footer}>
             <SugradoButton
@@ -138,10 +217,9 @@ const NewAppointment = ({onAppointmentCreated}: NewAppointmentProps) => {
               style={styles.modal_footer_button}
             />
             <SugradoButton
-              onPress={handleNewAppointment}
               title="Tamamla"
+              onPress={handleSubmit(onSubmit)}
               style={styles.modal_footer_button}
-              disabled={!isFormValid()}
             />
           </View>
         </ScrollView>
@@ -156,6 +234,7 @@ const styles = StyleSheet.create({
     width: '80%',
   },
   modal_footer: {
+    marginTop: 25,
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },
@@ -165,6 +244,12 @@ const styles = StyleSheet.create({
   modal_header_text: {
     textAlign: 'center',
     marginBottom: 25,
+  },
+  field: {
+    marginBottom: 10,
+  },
+  input: {
+    marginTop: 15,
   },
 });
 
