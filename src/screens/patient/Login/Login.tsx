@@ -82,18 +82,6 @@ function Login({navigation}: any) {
         icon="login-variant">
         Giriş Yap
       </Button>
-      <Button
-        mode="elevated"
-        onPress={() => {
-          navigation.navigate(PAGE_NAMES.PATIENT.AUTH.FIRST_APPOINTMENT);
-        }}
-        style={styles.firstAppointmentButton}
-        theme={{dark: false}}
-        buttonColor={COLORS.THEME_COLOR}
-        textColor="#fff"
-        icon="calendar-plus">
-        İlk Randevu
-      </Button>
     </TopBigIconLayout>
   );
 }
@@ -105,7 +93,6 @@ const styles = StyleSheet.create({
     color: COLORS.BUTTON_COLOR,
   },
   loginButton: {width: '100%', marginTop: 30},
-  firstAppointmentButton: {width: '100%', marginTop: 30},
   input: {backgroundColor: '#fff'},
 });
 

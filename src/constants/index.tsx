@@ -23,7 +23,6 @@ export const PAGE_NAMES = {
     AUTH: {
       LOGIN: 'patientLogin',
       FORGOT_PASSWORD: 'patientForgotPassword',
-      FIRST_APPOINTMENT: 'patientFirstAppointment',
     },
     HOME: {
       HOME_STACK: 'homeStack',
