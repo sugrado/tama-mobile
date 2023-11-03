@@ -13,17 +13,16 @@ const WelcomeScreen = ({navigation}: any) => {
         />
       </View>
       <Text variant="bodyLarge" style={styles.header_text}>
-        TAMA'ya Hoşgeldiniz!{'\n'}Lütfen giriş yapmak istediğiniz portalı
-        seçiniz.
+        TAMA'ya Hoşgeldiniz!{'\n'}Lütfen giriş yöntemini seçiniz.
       </Text>
       <View style={styles.body}>
         <Button
           onPress={() => {
             navigation.navigate(PAGE_NAMES.PORTALS.PATIENT);
           }}
-          style={styles.body_element}
-          buttonColor={COLORS.BUTTON_COLOR}
-          textColor="white"
+          style={[styles.body_element, styles.button]}
+          buttonColor={COLORS.TEXT}
+          textColor={COLORS.BUTTON_COLOR}
           theme={{dark: false}}>
           Hasta
         </Button>
@@ -31,9 +30,9 @@ const WelcomeScreen = ({navigation}: any) => {
           onPress={() => {
             navigation.navigate(PAGE_NAMES.PORTALS.PATIENT_RELATIVE);
           }}
-          style={styles.body_element}
-          buttonColor={COLORS.BUTTON_COLOR}
-          textColor="white"
+          style={[styles.body_element, styles.button]}
+          buttonColor={COLORS.TEXT}
+          textColor={COLORS.BUTTON_COLOR}
           theme={{dark: false}}>
           Hasta Yakını
         </Button>
@@ -41,8 +40,9 @@ const WelcomeScreen = ({navigation}: any) => {
           onPress={() => {
             navigation.navigate(PAGE_NAMES.PORTALS.DOCTOR);
           }}
-          buttonColor={COLORS.BUTTON_COLOR}
-          textColor="white"
+          style={styles.button}
+          buttonColor={COLORS.TEXT}
+          textColor={COLORS.BUTTON_COLOR}
           theme={{dark: false}}>
           Doktor
         </Button>
@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     width: '70%',
   },
   body_element: {
-    marginBottom: 20,
+    marginBottom: 30,
   },
   footer: {
     alignItems: 'center',
@@ -100,6 +100,9 @@ const styles = StyleSheet.create({
     width: 70,
     height: 70,
     marginBottom: 10,
+  },
+  button: {
+    borderRadius: 8,
   },
 });
 
