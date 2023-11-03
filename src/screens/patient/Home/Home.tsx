@@ -4,15 +4,18 @@ import HomeCard from './HomeCard';
 import {COLORS, DIMENSIONS, PAGE_NAMES} from '../../../constants';
 import {Image} from 'react-native';
 import {Text} from 'react-native-paper';
+import {useAuth} from '../../../contexts/AuthContext';
 
 const Home = ({navigation}: any) => {
+  const {userInfo} = useAuth();
   return (
     <ScrollView
       style={styles.scroll_container}
       showsVerticalScrollIndicator={false}>
       <View style={styles.header}>
         <Text variant="headlineSmall" style={styles.header_text}>
-          TAMA'ya Hoşgeldin!{'\n'}Görkem Rıdvan
+          TAMA'ya Hoşgeldin!{'\n'}
+          {userInfo.firstName}
         </Text>
         <Image
           source={require('../../../assets/icon_transparent.png')}

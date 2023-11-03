@@ -6,14 +6,26 @@ import {
   STORAGE_USER_INFO_KEY,
 } from '../constants';
 import axiosInstance from '../api/axios';
-import {LoginDto, UserInfoDto, UserRoles} from '../dtos/auth.dto';
+import {
+  LoginDto,
+  UserRoles,
+  TokenDto,
+  LoggedResponse,
+  LoggedUserType,
+  LoggedDoctorDto,
+  LoggedPatientDto,
+  LoggedPatientRelativeDto,
+} from '../dtos/auth.dto';
 
 type AuthContextType = {
   isLoading: boolean;
-  userToken: string | null;
-  userInfo: UserInfoDto;
-  login: (username: string, password: string) => void;
-  setConsentStatus: () => void;
+  accessToken: string | null;
+  refreshToken: string | null;
+  userInfo: LoggedUserType;
+  doctorLogin: (email: string, password: string) => void;
+  patientLogin: (username: string, password: string) => void;
+  patientRelativeLogin: (email: string, password: string) => void;
+  setPatientConsentStatus: () => void;
   logout: () => void;
 };
 
@@ -21,48 +33,70 @@ export const AuthContext = createContext({} as AuthContextType);
 
 export const AuthProvider = ({children}: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [userToken, setUserToken] = useState<string | null>(null);
-  const [userInfo, setUserInfo] = useState<UserInfoDto>({} as UserInfoDto);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [refreshToken, setRefreshToken] = useState<string | null>(null);
+  const [userInfo, setUserInfo] = useState<LoggedUserType>(
+    {} as LoggedUserType,
+  );
 
-  const login = async (username: string, password: string) => {
+  const doctorLogin = async (email: string, password: string) => {
     setIsLoading(true);
-    // TODO: Login request
-    // const loginResponse = await axiosInstance.post(
-    //   'auth/login',
-    //   new LoginDto(username, password),
-    // );
-    const loginResponse = {
-      data: {
-        userInfo: {
-          firstName: 'John',
-          lastName: 'Doe',
-          email: 'john@doe.com',
-          username: 'johndoe',
-          consentAccepted: false,
-          role: UserRoles.Patient,
-        } as UserInfoDto,
-        token: 'myToken',
-        refreshToken: 'myRefreshToken',
-      },
-    };
-    setUserInfo(loginResponse.data.userInfo);
-    setUserToken(loginResponse.data.token);
-    await setStorageItems(loginResponse.data);
-
+    const loginRes: LoggedResponse = await login(
+      email,
+      password,
+      UserRoles.Doctor,
+    );
+    setUserInfo(loginRes.doctor as LoggedDoctorDto);
+    console.log('apiye istek atıldı ve setlendi:', userInfo);
     setIsLoading(false);
   };
 
-  const setConsentStatus = async () => {
-    // axiosInstance
-    //   .patch('users/set-consent-status', {accepted: true})
-    //   .then(res => {
-    //     setUserInfo({...userInfo, consentAccepted: true} as UserInfoDto);
-    //   })
-    //   .catch(err => {});
-    const updatedUserInfo: UserInfoDto = {
+  const patientLogin = async (username: string, password: string) => {
+    setIsLoading(true);
+    const loginRes: LoggedResponse = await login(
+      username,
+      password,
+      UserRoles.Patient,
+    );
+    setUserInfo(loginRes.patient as LoggedPatientDto);
+    setIsLoading(false);
+  };
+
+  const patientRelativeLogin = async (email: string, password: string) => {
+    setIsLoading(true);
+    const loginRes: LoggedResponse = await login(
+      email,
+      password,
+      UserRoles.PatientRelative,
+    );
+    setUserInfo(loginRes.patientRelative as LoggedPatientRelativeDto);
+    setIsLoading(false);
+  };
+
+  async function login(
+    credential: string,
+    password: string,
+    role: UserRoles,
+  ): Promise<LoggedResponse> {
+    const loginResponse = await axiosInstance.post<LoggedResponse>(
+      'auth/login',
+      {credential, password, role} as LoginDto,
+    );
+    setAccessToken(loginResponse.data.tokens.accessToken.token);
+    setRefreshToken(loginResponse.data.tokens.refreshToken.token);
+    await setStorageItems(
+      loginResponse.data.tokens.accessToken,
+      loginResponse.data.tokens.refreshToken,
+    );
+    return loginResponse.data;
+  }
+
+  const setPatientConsentStatus = async () => {
+    await axiosInstance.patch('patients/accept-consent', null);
+    const updatedUserInfo: LoggedPatientDto = {
       ...userInfo,
       consentAccepted: true,
-    };
+    } as LoggedPatientDto;
     setUserInfo(updatedUserInfo);
     await AsyncStorage.removeItem(STORAGE_USER_INFO_KEY);
     await AsyncStorage.setItem(
@@ -74,10 +108,11 @@ export const AuthProvider = ({children}: any) => {
   const logout = async () => {
     setIsLoading(true);
     // TODO: Logout request
-    // const loginResponse = await axiosInstance.post(
+    // const logoutResponse = await axiosInstance.post(
     //   'auth/logout',
     // );
-    setUserToken(null);
+    setAccessToken(null);
+    setRefreshToken(null);
     await removeStorageItems();
     setIsLoading(false);
   };
@@ -86,10 +121,14 @@ export const AuthProvider = ({children}: any) => {
     try {
       setIsLoading(true);
       let info = await AsyncStorage.getItem(STORAGE_USER_INFO_KEY);
-      let token = await AsyncStorage.getItem(STORAGE_TOKEN_KEY);
+      let accessTokenStorage = await AsyncStorage.getItem(STORAGE_TOKEN_KEY);
+      let refreshTokenStorage = await AsyncStorage.getItem(
+        STORAGE_REFRESH_TOKEN_KEY,
+      );
 
-      if (info && token) {
-        setUserToken(token);
+      if (info && accessTokenStorage && refreshTokenStorage) {
+        setAccessToken(accessToken);
+        setRefreshToken(refreshToken);
         setUserInfo(JSON.parse(info));
       }
 
@@ -103,21 +142,18 @@ export const AuthProvider = ({children}: any) => {
     isLoggedIn();
   }, []);
 
-  async function setStorageItems(responseData: any) {
-    await AsyncStorage.setItem(STORAGE_TOKEN_KEY, responseData.token);
-    await AsyncStorage.setItem(
-      STORAGE_USER_INFO_KEY,
-      JSON.stringify(responseData.userInfo),
-    );
+  async function setStorageItems(accToken: TokenDto, refToken: TokenDto) {
+    await AsyncStorage.setItem(STORAGE_USER_INFO_KEY, JSON.stringify(userInfo));
+    await AsyncStorage.setItem(STORAGE_TOKEN_KEY, JSON.stringify(accToken));
     await AsyncStorage.setItem(
       STORAGE_REFRESH_TOKEN_KEY,
-      responseData.refreshToken,
+      JSON.stringify(refToken),
     );
   }
 
   async function removeStorageItems() {
-    await AsyncStorage.removeItem(STORAGE_TOKEN_KEY);
     await AsyncStorage.removeItem(STORAGE_USER_INFO_KEY);
+    await AsyncStorage.removeItem(STORAGE_TOKEN_KEY);
     await AsyncStorage.removeItem(STORAGE_REFRESH_TOKEN_KEY);
   }
 
@@ -126,11 +162,14 @@ export const AuthProvider = ({children}: any) => {
       value={
         {
           isLoading,
-          userToken,
+          accessToken,
+          refreshToken,
           userInfo,
-          login,
+          doctorLogin,
+          patientLogin,
+          patientRelativeLogin,
           logout,
-          setConsentStatus,
+          setPatientConsentStatus,
         } as AuthContextType
       }>
       {children}

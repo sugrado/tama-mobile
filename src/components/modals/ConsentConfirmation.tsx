@@ -8,13 +8,13 @@ import {useAuth} from '../../contexts/AuthContext';
 
 const ConsentConfirmation = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const {setConsentStatus} = useAuth();
+  const {setPatientConsentStatus} = useAuth();
 
   const handleAccept = async () => {
     setLoading(true);
     // TODO: Go to api and patch logged user consent accept
     await wait(2000);
-    setConsentStatus();
+    setPatientConsentStatus();
     setLoading(false);
   };
 

@@ -1,3 +1,3 @@
 export const API_URL = __DEV__
-  ? 'http://localhost:3008/api/'
+  ? 'https://6f5a-88-241-38-217.ngrok-free.app/api/'
   : 'https://demos.gorkemarik.com/tama/api/';

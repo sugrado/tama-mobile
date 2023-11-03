@@ -6,9 +6,11 @@ import {COLORS, PAGE_NAMES} from '../../../constants';
 import TopBigIconLayout from '../../../components/layout/TopBigIconLayout';
 
 function Login({navigation}: any) {
-  const {login} = useAuth();
-  const [username, setUsername] = useState<string | undefined>(undefined);
-  const [password, setPassword] = useState<string | undefined>(undefined);
+  const {patientLogin} = useAuth();
+  const [username, setUsername] = useState<string | undefined>(
+    'gorkem.arik' /*undefined */,
+  );
+  const [password, setPassword] = useState<string | undefined>('Passw0rd');
   const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   const hasUsernameErrors = () => username !== undefined && username.length < 3;
@@ -23,7 +25,7 @@ function Login({navigation}: any) {
       return;
     }
 
-    login(String(username), String(password));
+    patientLogin(String(username), String(password));
   };
 
   return (
