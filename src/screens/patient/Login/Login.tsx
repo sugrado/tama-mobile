@@ -16,7 +16,7 @@ function Login({navigation}: any) {
   const hasUsernameErrors = () => username !== undefined && username.length < 3;
   const hasPasswordErrors = () => password !== undefined && password.length < 8;
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     if (hasUsernameErrors() || hasPasswordErrors()) {
       return;
     }
@@ -25,7 +25,7 @@ function Login({navigation}: any) {
       return;
     }
 
-    patientLogin(String(username), String(password));
+    await patientLogin(String(username), String(password));
   };
 
   return (

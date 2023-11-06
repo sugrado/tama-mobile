@@ -12,9 +12,8 @@ const ConsentConfirmation = () => {
 
   const handleAccept = async () => {
     setLoading(true);
-    // TODO: Go to api and patch logged user consent accept
     await wait(2000);
-    setPatientConsentStatus();
+    await setPatientConsentStatus();
     setLoading(false);
   };
 

@@ -22,7 +22,6 @@ axiosInstance.interceptors.request.use(
     if (parsedToken?.token) {
       config.headers.Authorization = `Bearer ${parsedToken.token}`;
     }
-    console.log(parsedToken?.token);
     return config;
   },
   error => {

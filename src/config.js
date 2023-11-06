@@ -1,3 +1,4 @@
+let ngrokUrl = 'https://69fb-88-241-40-138.ngrok-free.app';
 export const API_URL = __DEV__
-  ? 'https://6f5a-88-241-38-217.ngrok-free.app/api/'
+  ? `${ngrokUrl}/api/`
   : 'https://demos.gorkemarik.com/tama/api/';

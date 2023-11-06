@@ -49,8 +49,8 @@ export default function Profile() {
     console.log('updated');
   };
 
-  const handleLogout = () => {
-    logout();
+  const handleLogout = async (): Promise<void> => {
+    await logout();
   };
 
   // TODO: Form validation
