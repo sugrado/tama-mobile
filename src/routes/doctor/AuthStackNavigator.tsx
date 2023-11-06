@@ -9,7 +9,17 @@ const AuthStackNavigator = () => (
   <AuthStack.Navigator
     initialRouteName={PAGE_NAMES.DOCTOR.AUTH.LOGIN}
     screenOptions={{
-      headerShown: false,
+      headerShown: true,
+      headerTransparent: true,
+      headerTitle: '',
+      headerTintColor: '#fff',
+      cardStyleInterpolator: ({current: {progress}}) => {
+        return {
+          cardStyle: {
+            opacity: progress,
+          },
+        };
+      },
     }}>
     <AuthStack.Screen name={PAGE_NAMES.DOCTOR.AUTH.LOGIN} component={Login} />
   </AuthStack.Navigator>
