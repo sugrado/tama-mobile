@@ -30,4 +30,14 @@ axiosInstance.interceptors.request.use(
   },
 );
 
+//     //TODO: Error handling
+// axiosInstance.interceptors.response.use(
+//   response => {
+//     return response;
+//   },
+//   error => {
+//     return Promise.reject(error);
+//   },
+// );
+
 export default axiosInstance;

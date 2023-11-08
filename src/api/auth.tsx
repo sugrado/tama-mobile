@@ -1,6 +1,11 @@
 import {AxiosResponse} from 'axios';
 import axiosInstance from '../api/axios';
-import {LoggedResponse, LoginDto, UserRoles} from '../dtos/auth.dto';
+import {
+  LoggedResponse,
+  LoginDto,
+  PreparedTokensDto,
+  UserRoles,
+} from '../dtos/auth.dto';
 
 export const login = async (
   credential: string,
@@ -13,6 +18,14 @@ export const login = async (
       password,
       role,
     } as LoginDto);
+  return loginRes.data;
+};
+
+export const refreshTokens = async (refreshToken: string) => {
+  const loginRes: AxiosResponse<PreparedTokensDto> = await axiosInstance.put(
+    'auth/refresh-token',
+    {refreshToken},
+  );
   return loginRes.data;
 };
 
