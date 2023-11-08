@@ -1,13 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {createContext, useState, useEffect} from 'react';
 import {
-  STORAGE_REFRESH_TOKEN_KEY,
-  STORAGE_TOKEN_KEY,
-  STORAGE_USER_INFO_KEY,
-} from '../constants';
-import axiosInstance from '../api/axios';
-import {
-  LoginDto,
   UserRoles,
   TokenDto,
   LoggedResponse,
@@ -16,6 +9,13 @@ import {
   LoggedPatientDto,
   LoggedPatientRelativeDto,
 } from '../dtos/auth.dto';
+import {
+  removeAuthDataFromStorage,
+  saveAuthDataToStorage,
+} from '../utils/storage';
+import {STORAGE_KEYS} from '../constants';
+import {login, revokeToken} from '../api/auth';
+import {acceptConsent} from '../api/patient';
 
 type AuthContextType = {
   isLoading: boolean;
@@ -33,11 +33,13 @@ export const AuthContext = createContext({} as AuthContextType);
 
 export const AuthProvider = ({children}: any) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [refreshToken, setRefreshToken] = useState<string | null>(null);
-  const [userInfo, setUserInfo] = useState<LoggedUserType | null>(
-    {} as LoggedUserType,
-  );
+  const [accessToken, setAccessToken] = useState<TokenDto | null>(null);
+  const [refreshToken, setRefreshToken] = useState<TokenDto | null>(null);
+  const [userInfo, setUserInfo] = useState<LoggedUserType | null>(null);
+
+  useEffect(() => {
+    isLoggedIn();
+  }, []);
 
   const doctorLogin = async (
     email: string,
@@ -49,7 +51,7 @@ export const AuthProvider = ({children}: any) => {
       password,
       UserRoles.Doctor,
     );
-    setUserInfo(loginRes.doctor as LoggedDoctorDto);
+    await setStatesAndStorageItems<LoggedDoctorDto>(loginRes, 'doctor');
     setIsLoading(false);
   };
 
@@ -63,7 +65,7 @@ export const AuthProvider = ({children}: any) => {
       password,
       UserRoles.Patient,
     );
-    setUserInfo(loginRes.patient as LoggedPatientDto);
+    await setStatesAndStorageItems<LoggedPatientDto>(loginRes, 'patient');
     setIsLoading(false);
   };
 
@@ -77,64 +79,52 @@ export const AuthProvider = ({children}: any) => {
       password,
       UserRoles.PatientRelative,
     );
-    setUserInfo(loginRes.patientRelative as LoggedPatientRelativeDto);
+    await setStatesAndStorageItems<LoggedPatientRelativeDto>(
+      loginRes,
+      'patientRelative',
+    );
     setIsLoading(false);
   };
 
-  const login = async (
-    credential: string,
-    password: string,
-    role: UserRoles,
-  ): Promise<LoggedResponse> => {
-    const loginResponse = await axiosInstance.post<LoggedResponse>(
-      'auth/login',
-      {credential, password, role} as LoginDto,
-    );
-    setAccessToken(loginResponse.data.tokens.accessToken.token);
-    setRefreshToken(loginResponse.data.tokens.refreshToken.token);
-    await setStorageItems(
-      loginResponse.data.tokens.accessToken,
-      loginResponse.data.tokens.refreshToken,
-    );
-    return loginResponse.data;
-  };
-
   const setPatientConsentStatus = async (): Promise<void> => {
-    await axiosInstance.patch('patients/accept-consent');
+    await acceptConsent();
     const updatedUserInfo: LoggedPatientDto = {
       ...userInfo,
       consentAccepted: true,
     } as LoggedPatientDto;
     setUserInfo(updatedUserInfo);
-    await AsyncStorage.removeItem(STORAGE_USER_INFO_KEY);
+    await AsyncStorage.removeItem(STORAGE_KEYS.USER_INFO);
     await AsyncStorage.setItem(
-      STORAGE_USER_INFO_KEY,
+      STORAGE_KEYS.USER_INFO,
       JSON.stringify(updatedUserInfo),
     );
   };
 
   const logout = async (): Promise<void> => {
     setIsLoading(true);
-    await axiosInstance.put('auth/revoke-token');
+    await revokeToken();
     setUserInfo(null);
     setAccessToken(null);
     setRefreshToken(null);
-    await removeStorageItems();
+    await removeAuthDataFromStorage();
     setIsLoading(false);
   };
 
+  // Private functions
   const isLoggedIn = async (): Promise<void> => {
     try {
       setIsLoading(true);
-      let info = await AsyncStorage.getItem(STORAGE_USER_INFO_KEY);
-      let accessTokenStorage = await AsyncStorage.getItem(STORAGE_TOKEN_KEY);
+      let info = await AsyncStorage.getItem(STORAGE_KEYS.USER_INFO);
+      let accessTokenStorage = await AsyncStorage.getItem(
+        STORAGE_KEYS.ACCESS_TOKEN,
+      );
       let refreshTokenStorage = await AsyncStorage.getItem(
-        STORAGE_REFRESH_TOKEN_KEY,
+        STORAGE_KEYS.REFRESH_TOKEN,
       );
 
       if (info && accessTokenStorage && refreshTokenStorage) {
-        setAccessToken(accessTokenStorage);
-        setRefreshToken(refreshTokenStorage);
+        setAccessToken(JSON.parse(accessTokenStorage));
+        setRefreshToken(JSON.parse(refreshTokenStorage));
         setUserInfo(JSON.parse(info));
       }
 
@@ -144,27 +134,21 @@ export const AuthProvider = ({children}: any) => {
     }
   };
 
-  useEffect(() => {
-    isLoggedIn();
-  }, []);
+  const setStatesAndStorageItems = async <TUser extends LoggedUserType>(
+    loginRes: LoggedResponse,
+    userTypeKey: 'doctor' | 'patient' | 'patientRelative',
+  ): Promise<void> => {
+    const {tokens, [userTypeKey]: user} = loginRes;
+    setAccessToken(tokens.accessToken);
+    setRefreshToken(tokens.refreshToken);
+    setUserInfo(user as TUser);
 
-  async function setStorageItems(
-    accToken: TokenDto,
-    refToken: TokenDto,
-  ): Promise<void> {
-    await AsyncStorage.setItem(STORAGE_USER_INFO_KEY, JSON.stringify(userInfo));
-    await AsyncStorage.setItem(STORAGE_TOKEN_KEY, JSON.stringify(accToken));
-    await AsyncStorage.setItem(
-      STORAGE_REFRESH_TOKEN_KEY,
-      JSON.stringify(refToken),
+    await saveAuthDataToStorage(
+      tokens.accessToken as TokenDto,
+      tokens.refreshToken as TokenDto,
+      user as TUser,
     );
-  }
-
-  async function removeStorageItems(): Promise<void> {
-    await AsyncStorage.removeItem(STORAGE_USER_INFO_KEY);
-    await AsyncStorage.removeItem(STORAGE_TOKEN_KEY);
-    await AsyncStorage.removeItem(STORAGE_REFRESH_TOKEN_KEY);
-  }
+  };
 
   return (
     <AuthContext.Provider
