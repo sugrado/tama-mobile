@@ -1,8 +1,8 @@
 import axios from 'axios';
 import {API_URL} from '../config';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {STORAGE_TOKEN_KEY} from '../constants';
 import {TokenDto} from '../dtos/auth.dto';
+import {STORAGE_KEYS} from '../constants';
 
 let headers = {'Content-Type': 'application/json'};
 
@@ -17,7 +17,7 @@ axiosInstance.interceptors.request.use(
     if (config.url === '/auth/login') {
       return config;
     }
-    const token = await AsyncStorage.getItem(STORAGE_TOKEN_KEY);
+    const token = await AsyncStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
     const parsedToken: TokenDto = token ? JSON.parse(token) : null;
     if (parsedToken?.token) {
       config.headers.Authorization = `Bearer ${parsedToken.token}`;
