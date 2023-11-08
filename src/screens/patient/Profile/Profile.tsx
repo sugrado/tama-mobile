@@ -1,136 +1,241 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet} from 'react-native';
 import {useAuth} from '../../../contexts/AuthContext';
-import {COLORS} from '../../../constants';
+import {COLORS, FORM_ERROR_MESSAGES, REGEXES} from '../../../constants';
 import SugradoTextInput from '../../../components/core/SugradoTextInput';
 import Loading from '../../../components/layout/Loading';
 import SugradoTextArea from '../../../components/core/SugradoTextArea';
 import SugradoButton from '../../../components/core/SugradoButton';
 import SugradoDialog from '../../../components/core/SugradoDialog';
 import TopSmallIconLayout from '../../../components/layout/TopSmallIconLayout';
+import SugradoFormField from '../../../components/core/SugradoFormField';
+import {useForm} from 'react-hook-form';
+import {profile} from '../../../api/patient';
 
 export default function Profile() {
   const {logout} = useAuth();
   const [logoutDialogVisible, setLogoutDialogVisible] =
     useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [firstName, setFirstName] = useState<string | null>(null);
-  const [lastName, setLastName] = useState<string | null>(null);
-  const [email, setEmail] = useState<string | null>(null);
-  const [relativeEmail, setRelativeEmail] = useState<string | null>(null);
-  const [address, setAddress] = useState<string | null>(null);
-  const [dailyTeaConsumption, setDailyTeaConsumption] = useState<string | null>(
-    null,
-  );
-  const [dailyCoffeeConsumption, setDailyCoffeeConsumption] = useState<
-    string | null
-  >(null);
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+    setValue,
+    getValues,
+  } = useForm({
+    defaultValues: {
+      user: {
+        firstName: '',
+        lastName: '',
+        email: '',
+      },
+      address: '',
+      dailyTeaConsumption: '',
+      dailyCoffeeConsumption: '',
+    },
+  });
 
   useEffect(() => {
-    // TODO: Go to API and get user data
+    const getMyInfo = async () => {
+      const response = await profile();
+      setValue('user.firstName', response.data.user.firstName);
+      setValue('user.lastName', response.data.user.lastName);
+      setValue('user.email', response.data.user.email);
+      setValue('address', response.data.address);
+      setValue(
+        'dailyTeaConsumption',
+        String(response.data.dailyTeaConsumption),
+      );
+      setValue(
+        'dailyCoffeeConsumption',
+        String(response.data.dailyCoffeeConsumption),
+      );
+    };
     setLoading(true);
-    setFirstName('Görkem Rıdvan');
-    setLastName('ARIK');
-    setEmail('gorkem@mail.com');
-    setRelativeEmail('ridvan@mail.com');
-    setAddress('Örnek Mah. Deneme Sok. No: 20/67 Keçiören/Ankara');
-    setDailyTeaConsumption('5');
-    setDailyCoffeeConsumption('3');
-    setLoading(false);
-  }, []);
+    getMyInfo().then(() => setLoading(false));
+  }, [setValue]);
+
+  const rules = {
+    firstName: {
+      required: {
+        value: true,
+        message: FORM_ERROR_MESSAGES.REQUIRED,
+      },
+      maxLength: {
+        value: 60,
+        message: FORM_ERROR_MESSAGES.MAX_LENGTH(60),
+      },
+    },
+    lastName: {
+      required: {
+        value: true,
+        message: FORM_ERROR_MESSAGES.REQUIRED,
+      },
+      maxLength: {
+        value: 60,
+        message: FORM_ERROR_MESSAGES.MAX_LENGTH(60),
+      },
+    },
+    email: {
+      required: {
+        value: true,
+        message: FORM_ERROR_MESSAGES.REQUIRED,
+      },
+      pattern: {
+        value: REGEXES.EMAIL,
+        message: FORM_ERROR_MESSAGES.EMAIL,
+      },
+      maxLength: {
+        value: 60,
+        message: FORM_ERROR_MESSAGES.MAX_LENGTH(60),
+      },
+    },
+    address: {
+      required: {
+        value: true,
+        message: FORM_ERROR_MESSAGES.REQUIRED,
+      },
+      maxLength: {
+        value: 250,
+        message: FORM_ERROR_MESSAGES.MAX_LENGTH(250),
+      },
+    },
+    dailyTeaConsumption: {
+      required: {
+        value: true,
+        message: FORM_ERROR_MESSAGES.REQUIRED,
+      },
+      min: {
+        value: 0,
+        message: FORM_ERROR_MESSAGES.MIN_VALUE(0),
+      },
+    },
+    dailyCoffeeConsumption: {
+      required: {
+        value: true,
+        message: FORM_ERROR_MESSAGES.REQUIRED,
+      },
+      min: {
+        value: 0,
+        message: FORM_ERROR_MESSAGES.MIN_VALUE(0),
+      },
+    },
+  };
 
   const showLogoutDialog = () => setLogoutDialogVisible(true);
-
-  const handleSaveChanges = () => {
-    if (!isFormValid) {
-      return;
-    }
-    // TODO: Go to api and patch user data
-    console.log('updated');
+  const onSubmit = async (data: any) => {
+    console.log(data);
   };
 
   const handleLogout = async (): Promise<void> => {
     await logout();
   };
 
-  // TODO: Form validation
-  const isFormValid = () =>
-    email &&
-    relativeEmail &&
-    address &&
-    dailyTeaConsumption &&
-    dailyCoffeeConsumption;
-
   return (
     <>
       {loading && <Loading loading={loading} />}
       <TopSmallIconLayout pageName="Profil Bilgileri">
-        <SugradoTextInput
-          label="Ad"
+        <SugradoFormField
+          control={control}
+          rules={rules.firstName}
+          error={errors.user && errors.user.firstName}
+          name="user.firstName"
           style={styles.input}
-          placeholder="Ad"
-          value={firstName}
-          disabled={true}
+          render={() => (
+            <SugradoTextInput
+              label="Ad"
+              placeholder="Ad"
+              value={getValues('user.firstName')}
+              disabled={true}
+            />
+          )}
         />
-        <SugradoTextInput
-          label="Soyad"
+        <SugradoFormField
+          control={control}
+          rules={rules.lastName}
+          error={errors.user && errors.user.lastName}
+          name="user.lastName"
           style={styles.input}
-          placeholder="Soyad"
-          value={lastName}
-          disabled={true}
+          render={() => (
+            <SugradoTextInput
+              label="Soyad"
+              placeholder="Soyad"
+              value={getValues('user.lastName')}
+              disabled={true}
+            />
+          )}
         />
-        <SugradoTextInput
-          label="Email"
+        <SugradoFormField
+          control={control}
+          rules={rules.email}
+          error={errors.user && errors.user.email}
+          name="user.email"
           style={styles.input}
-          placeholder="Email"
-          value={email}
-          valueChange={e => {
-            setEmail(e);
-          }}
-          keyboardType="email-address"
+          render={({field: {onChange, onBlur, value}}: any) => (
+            <SugradoTextInput
+              label="Email"
+              placeholder="Örn: ornek@email.com"
+              value={value}
+              valueChange={onChange}
+              onBlur={onBlur}
+              keyboardType="email-address"
+            />
+          )}
         />
-        <SugradoTextInput
-          label="Yakınınızın Emaili"
+        <SugradoFormField
+          control={control}
+          rules={rules.address}
+          error={errors.address}
+          name="address"
           style={styles.input}
-          placeholder="Yakınınızın Emaili"
-          value={relativeEmail}
-          valueChange={e => {
-            setRelativeEmail(e);
-          }}
-          keyboardType="email-address"
+          render={({field: {onChange, onBlur, value}}: any) => (
+            <SugradoTextArea
+              label="Adres"
+              placeholder="Örn: Örnek Mah. Örnek Sok. Örnek Apt. No: 1 D: 1 Keçiören/Ankara"
+              value={value}
+              valueChange={onChange}
+              onBlur={onBlur}
+            />
+          )}
         />
-        <SugradoTextArea
-          label="Adres"
+        <SugradoFormField
+          control={control}
+          rules={rules.dailyTeaConsumption}
+          error={errors.dailyTeaConsumption}
+          name="dailyTeaConsumption"
           style={styles.input}
-          placeholder="Adres"
-          value={address}
-          valueChange={e => {
-            setAddress(e);
-          }}
+          render={({field: {onChange, onBlur, value}}: any) => (
+            <SugradoTextInput
+              label="Günlük Çay Tüketimi (ml)"
+              placeholder="Örn: 200"
+              value={value}
+              valueChange={onChange}
+              onBlur={onBlur}
+              keyboardType="numeric"
+            />
+          )}
         />
-        <SugradoTextInput
-          label="Günlük Çay Tüketimi (ml)"
+        <SugradoFormField
+          control={control}
+          rules={rules.dailyCoffeeConsumption}
+          error={errors.dailyCoffeeConsumption}
+          name="dailyCoffeeConsumption"
           style={styles.input}
-          placeholder="Günlük Çay Tüketimi (ml)"
-          value={dailyTeaConsumption}
-          valueChange={e => {
-            setDailyTeaConsumption(e);
-          }}
-          keyboardType="numeric"
-        />
-        <SugradoTextInput
-          label="Günlük Kahve Tüketimi (ml)"
-          style={styles.input}
-          placeholder="Günlük Kahve Tüketimi (ml)"
-          value={dailyCoffeeConsumption}
-          valueChange={e => {
-            setDailyCoffeeConsumption(e);
-          }}
-          keyboardType="numeric"
+          render={({field: {onChange, onBlur, value}}: any) => (
+            <SugradoTextInput
+              label="Günlük Kahve Tüketimi (ml)"
+              placeholder="Örn: 400"
+              value={value}
+              valueChange={onChange}
+              onBlur={onBlur}
+              keyboardType="numeric"
+            />
+          )}
         />
         <SugradoButton
           title="Değişiklikleri Kaydet"
-          onPress={handleSaveChanges}
+          onPress={handleSubmit(onSubmit)}
           style={styles.save_button}
           icon="content-save"
         />

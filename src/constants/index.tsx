@@ -51,6 +51,8 @@ export const FORM_ERROR_MESSAGES = {
     `Bu alan en az ${length} karakter uzunluğunda olmalıdır.`,
   MAX_LENGTH: (length: Number) =>
     `Bu alan en fazla ${length} karakter uzunluğunda olmalıdır.`,
+  MIN_VALUE: (value: Number) => `Bu alan en az ${value} olmalıdır.`,
+  MAX_VALUE: (value: Number) => `Bu alan en fazla ${value} olmalıdır.`,
   EMAIL: 'Geçerli bir e-posta adresi giriniz.',
   IDENTITY_NUMBER: 'Kimlik numarası geçerli ve 11 haneli olmalıdır.',
   DATE: 'Geçerli bir tarih formatı girin (örn. 19.10.2019)',
