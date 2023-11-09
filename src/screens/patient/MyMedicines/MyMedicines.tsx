@@ -43,7 +43,7 @@ export default function MyMedicines() {
 
   return (
     <>
-      {loading && <Loading loading={loading} />}
+      {loading && <Loading loading={loading} fillBackground={true} />}
       {medicines && medicines.length > 0 ? (
         <FlatList
           data={medicines}

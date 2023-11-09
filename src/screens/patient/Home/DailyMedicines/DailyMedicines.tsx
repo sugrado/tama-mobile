@@ -24,7 +24,7 @@ const DailyMedicines = () => {
 
   return (
     <>
-      {loading && <Loading loading={loading} />}
+      {loading && <Loading loading={loading} fillBackground={true} />}
       {medicines.map(medicine => {
         const allUsed = medicine.times.every((time: any) => time.used);
         return (

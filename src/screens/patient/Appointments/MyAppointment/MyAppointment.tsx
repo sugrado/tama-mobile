@@ -53,7 +53,7 @@ export default function MyAppointment(/*{navigation}: any*/) {
 
   return (
     <View>
-      {loading && <Loading loading={loading} />}
+      {loading && <Loading loading={loading} fillBackground={true} />}
       {appointment ? (
         <Card style={styles.card_green}>
           <Card.Content style={styles.card_content}>

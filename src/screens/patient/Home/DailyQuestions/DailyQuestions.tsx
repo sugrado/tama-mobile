@@ -24,7 +24,7 @@ const DailyQuestions = () => {
 
   return (
     <>
-      {loading && <Loading loading={loading} />}
+      {loading && <Loading loading={loading} fillBackground={true} />}
       {questions.map(question => {
         return (
           <View key={question.id}>
