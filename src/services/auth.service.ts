@@ -13,22 +13,18 @@ import {
 } from '../utils/storage';
 
 export const checkIsLoggedIn = async (): Promise<UserWithTokensDto | null> => {
-  try {
-    let user = await getUserInfoFromStorage();
-    let accToken = await getAccessTokenFromStorage();
-    let refToken = await getRefreshTokenFromStorage();
-    if (user && accToken && refToken) {
-      return {
-        user,
-        accessToken: accToken,
-        refreshToken: refToken,
-      } as UserWithTokensDto;
-    }
-    return null;
-  } catch (error) {
-    console.log('eerr', error);
-    return null;
+  let user = await getUserInfoFromStorage();
+  let accToken = await getAccessTokenFromStorage();
+  let refToken = await getRefreshTokenFromStorage();
+  if (user && accToken && refToken) {
+    return {
+      user,
+      accessToken: accToken,
+      refreshToken: refToken,
+    } as UserWithTokensDto;
   }
+  await removeAuthDataFromStorage();
+  return null;
 };
 
 export const refreshTokensIfExpired = async (
@@ -46,7 +42,12 @@ export const refreshTokensIfExpired = async (
     );
     return userWithTokens.user;
   } else if (accExpr < now && refExpr > now) {
-    await refreshTokensThenResetDeviceData(userWithTokens);
+    const refreshResult = await refreshTokensThenResetDeviceData(
+      userWithTokens,
+    );
+    if (refreshResult == null) {
+      return null;
+    }
     return userWithTokens.user;
   } else {
     await removeAuthDataFromStorage();
@@ -60,12 +61,12 @@ export const refreshTokensThenResetDeviceData = async (
   const refreshedTokens = await refreshTokens(
     userWithTokens.refreshToken.token,
   );
+  await removeAuthDataFromStorage();
 
   if (!refreshedTokens) {
     return null;
   }
 
-  await removeAuthDataFromStorage();
   await saveAuthDataToStorage(
     refreshedTokens.accessToken,
     refreshedTokens.refreshToken,

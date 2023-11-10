@@ -48,25 +48,24 @@ export const AuthProvider = ({
   const [userInfo, setUserInfo] = useState<LoggedUserType | null>(null);
 
   useEffect(() => {
-    console.log('auth effect çalışıyor');
-    setIsLoading(true);
-    checkIsLoggedIn().then(async res => {
-      if (res == null) {
-        setUserInfo(null);
-        await removeAuthDataFromStorage();
-        setIsLoading(false);
-        onCheckCompleted();
-        return;
+    const checkLoggedStatus = async (): Promise<void> => {
+      setIsLoading(true);
+      let userToSet: LoggedUserType | null;
+      const loggedStatus = await checkIsLoggedIn();
+      if (loggedStatus === null) {
+        userToSet = null;
+      } else {
+        userToSet = await refreshTokensIfExpired({
+          accessToken: loggedStatus.accessToken,
+          refreshToken: loggedStatus.refreshToken,
+          user: loggedStatus.user,
+        } as UserWithTokensDto);
       }
-      const refreshUserResult = await refreshTokensIfExpired({
-        accessToken: res.accessToken,
-        refreshToken: res.refreshToken,
-        user: res.user,
-      } as UserWithTokensDto);
-      setUserInfo(refreshUserResult);
+      setUserInfo(userToSet);
       setIsLoading(false);
       onCheckCompleted();
-    });
+    };
+    checkLoggedStatus();
   }, [onCheckCompleted]);
 
   const doctorLogin = async (
@@ -141,6 +140,7 @@ export const AuthProvider = ({
     setIsLoading(false);
   };
 
+  // Private functions
   const clearAuthDataFromDevice = async (): Promise<void> => {
     setUserInfo(null);
     await removeAuthDataFromStorage();

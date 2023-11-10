@@ -2,10 +2,7 @@ import axios, {AxiosResponse, InternalAxiosRequestConfig} from 'axios';
 import {useEffect} from 'react';
 import {useAuth} from './AuthContext';
 import {API_URL} from '../config';
-import {
-  getAccessTokenFromStorage,
-  removeAuthDataFromStorage,
-} from '../utils/storage';
+import {getAccessTokenFromStorage} from '../utils/storage';
 import {
   checkIsLoggedIn,
   refreshTokensThenResetDeviceData,
@@ -54,7 +51,6 @@ const AxiosInterceptor = ({children}: AxiosInterceptorProps) => {
         const checkedResult = await checkIsLoggedIn();
         if (checkedResult === null) {
           setUserInfo(null);
-          await removeAuthDataFromStorage();
           return;
         }
 
@@ -62,14 +58,12 @@ const AxiosInterceptor = ({children}: AxiosInterceptorProps) => {
           checkedResult,
         );
         if (preparedTokens === null) {
-          await removeAuthDataFromStorage();
           setUserInfo(null); // otomatik login sayfasına yönlendiriliyor
           return;
         }
-        if (preparedTokens.accessToken) {
-          originalRequest.headers.Authorization = `Bearer ${preparedTokens.accessToken.token}`;
-          return await axiosInstance(originalRequest);
-        }
+
+        originalRequest.headers.Authorization = `Bearer ${preparedTokens.accessToken.token}`;
+        return await axiosInstance(originalRequest);
       } else if (error.response.status === 403) {
         // TODO
       } else if (error.response.status === 400) {

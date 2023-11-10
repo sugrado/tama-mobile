@@ -15,7 +15,7 @@ const Home = ({navigation}: any) => {
       <View style={styles.header}>
         <Text variant="headlineSmall" style={styles.header_text}>
           TAMA'ya Hoşgeldin!{'\n'}
-          {userInfo.firstName}
+          {userInfo!.firstName}
         </Text>
         <Image
           source={require('../../../assets/icon_transparent.png')}
