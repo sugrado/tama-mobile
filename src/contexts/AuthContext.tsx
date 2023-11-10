@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {createContext, useState, useEffect} from 'react';
 import {
   UserRoles,
@@ -6,27 +5,32 @@ import {
   LoggedResponse,
   LoggedUserType,
   LoggedPatientDto,
-  PreparedTokensDto,
+  LoggedDoctorDto,
+  LoggedPatientRelativeDto,
+  UserWithTokensDto,
 } from '../dtos/auth.dto';
 import {
   removeAuthDataFromStorage,
+  removeUserInfoFromStorage,
   saveAuthDataToStorage,
+  setUserInfoToStorage,
 } from '../utils/storage';
-import {STORAGE_KEYS} from '../constants';
-import {login, refreshTokens, revokeToken} from '../api/auth';
+import {login, revokeToken} from '../api/auth';
 import {acceptConsent} from '../api/patient';
+import {
+  checkIsLoggedIn,
+  refreshTokensIfExpired,
+} from '../services/auth.service';
 
 type AuthContextType = {
   isLoading: boolean;
-  accessToken: TokenDto | null;
-  refreshToken: TokenDto | null;
   userInfo: LoggedUserType | null;
+  setUserInfo: React.Dispatch<React.SetStateAction<LoggedUserType | null>>;
   doctorLogin: (email: string, password: string) => Promise<void>;
   patientLogin: (username: string, password: string) => Promise<void>;
   patientRelativeLogin: (email: string, password: string) => Promise<void>;
   setPatientConsentStatus: () => Promise<void>;
   logout: () => Promise<void>;
-  isLoggedIn: () => boolean;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -41,16 +45,29 @@ export const AuthProvider = ({
   onCheckCompleted,
 }: AuthProviderProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const [accessToken, setAccessToken] = useState<TokenDto | null>(null);
-  const [refreshToken, setRefreshToken] = useState<TokenDto | null>(null);
   const [userInfo, setUserInfo] = useState<LoggedUserType | null>(null);
 
   useEffect(() => {
-    checkIsLoggedIn();
-  }, []);
-
-  const isLoggedIn = (): boolean =>
-    accessToken != null && refreshToken != null && userInfo != null;
+    console.log('auth effect çalışıyor');
+    setIsLoading(true);
+    checkIsLoggedIn().then(async res => {
+      if (res == null) {
+        setUserInfo(null);
+        await removeAuthDataFromStorage();
+        setIsLoading(false);
+        onCheckCompleted();
+        return;
+      }
+      const refreshUserResult = await refreshTokensIfExpired({
+        accessToken: res.accessToken,
+        refreshToken: res.refreshToken,
+        user: res.user,
+      } as UserWithTokensDto);
+      setUserInfo(refreshUserResult);
+      setIsLoading(false);
+      onCheckCompleted();
+    });
+  }, [onCheckCompleted]);
 
   const doctorLogin = async (
     email: string,
@@ -65,7 +82,7 @@ export const AuthProvider = ({
     await setStatesAndStorageItems(
       loginRes.tokens.accessToken,
       loginRes.tokens.refreshToken,
-      loginRes.doctor,
+      loginRes.doctor as LoggedDoctorDto,
     );
     setIsLoading(false);
   };
@@ -83,7 +100,7 @@ export const AuthProvider = ({
     await setStatesAndStorageItems(
       loginRes.tokens.accessToken,
       loginRes.tokens.refreshToken,
-      loginRes.patient,
+      loginRes.patient as LoggedPatientDto,
     );
     setIsLoading(false);
   };
@@ -101,7 +118,7 @@ export const AuthProvider = ({
     await setStatesAndStorageItems(
       loginRes.tokens.accessToken,
       loginRes.tokens.refreshToken,
-      loginRes.patientRelative,
+      loginRes.patientRelative as LoggedPatientRelativeDto,
     );
     setIsLoading(false);
   };
@@ -113,11 +130,8 @@ export const AuthProvider = ({
       consentAccepted: true,
     } as LoggedPatientDto;
     setUserInfo(updatedUserInfo);
-    await AsyncStorage.removeItem(STORAGE_KEYS.USER_INFO);
-    await AsyncStorage.setItem(
-      STORAGE_KEYS.USER_INFO,
-      JSON.stringify(updatedUserInfo),
-    );
+    await removeUserInfoFromStorage();
+    await setUserInfoToStorage(updatedUserInfo);
   };
 
   const logout = async (): Promise<void> => {
@@ -127,80 +141,17 @@ export const AuthProvider = ({
     setIsLoading(false);
   };
 
-  //Private methods
-  const checkIsLoggedIn = async (): Promise<void> => {
-    try {
-      setIsLoading(true);
-      let info = await AsyncStorage.getItem(STORAGE_KEYS.USER_INFO);
-      let accessTokenStorage = await AsyncStorage.getItem(
-        STORAGE_KEYS.ACCESS_TOKEN,
-      );
-      let refreshTokenStorage = await AsyncStorage.getItem(
-        STORAGE_KEYS.REFRESH_TOKEN,
-      );
-
-      const parsedAccessToken: TokenDto | null =
-        accessTokenStorage && JSON.parse(accessTokenStorage);
-      const parsedRefreshToken: TokenDto | null =
-        refreshTokenStorage && JSON.parse(refreshTokenStorage);
-      const parsedInfo: LoggedUserType | null = info && JSON.parse(info);
-
-      if (parsedInfo && parsedAccessToken && parsedRefreshToken) {
-        await checkTokensValidity(
-          parsedInfo,
-          parsedAccessToken,
-          parsedRefreshToken,
-        );
-      }
-
-      setIsLoading(false);
-      onCheckCompleted();
-    } catch (error) {
-      console.log('eerr', error);
-    }
-  };
-
-  const checkTokensValidity = async (
-    user: LoggedUserType,
-    accToken: TokenDto,
-    refToken: TokenDto,
-  ): Promise<void> => {
-    const now = new Date();
-    const accExpr = new Date(accToken.expiration);
-    const refExpr = new Date(refToken.expiration);
-
-    if (accExpr > now && refExpr > now) {
-      await setStatesAndStorageItems(accToken, refToken, user);
-    } else if (accExpr < now && refExpr > now) {
-      const refreshedTokens: PreparedTokensDto = await refreshTokens(
-        refToken.token,
-      );
-      await setStatesAndStorageItems(
-        refreshedTokens.accessToken,
-        refreshedTokens.refreshToken,
-        user,
-      );
-    } else {
-      await clearAuthDataFromDevice();
-    }
-  };
-
   const clearAuthDataFromDevice = async (): Promise<void> => {
     setUserInfo(null);
-    setAccessToken(null);
-    setRefreshToken(null);
     await removeAuthDataFromStorage();
   };
 
   const setStatesAndStorageItems = async (
     accToken: TokenDto,
     refToken: TokenDto,
-    user: any,
+    user: LoggedUserType,
   ): Promise<void> => {
-    setAccessToken(accToken);
-    setRefreshToken(refToken);
     setUserInfo(user);
-
     await saveAuthDataToStorage(accToken, refToken, user);
   };
 
@@ -209,15 +160,13 @@ export const AuthProvider = ({
       value={
         {
           isLoading,
-          accessToken,
-          refreshToken,
           userInfo,
+          setUserInfo,
           doctorLogin,
           patientLogin,
           patientRelativeLogin,
           logout,
           setPatientConsentStatus,
-          isLoggedIn,
         } as AuthContextType
       }>
       {children}
