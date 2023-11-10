@@ -45,3 +45,9 @@ export class TokenDto {
   token: string;
   expiration: Date;
 }
+
+export class UserWithTokensDto {
+  accessToken: TokenDto;
+  refreshToken: TokenDto;
+  user: LoggedUserType;
+}

@@ -11,7 +11,7 @@ import * as DoctorTabNav from './doctor/TabNavigator';
 import * as PatientRelativeTabNav from './patient-relative/TabNavigator';
 
 export default function Navigation() {
-  const {isLoading, isLoggedIn, userInfo} = useAuth();
+  const {isLoading, userInfo} = useAuth();
   if (isLoading) {
     return (
       <View style={styles.loading_container}>
@@ -28,7 +28,7 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <StatusBar backgroundColor={COLORS.THEME_COLOR} />
-      {isLoggedIn() ? getPortal(userInfo!) : <WelcomeStackNavigator />}
+      {userInfo != null ? getPortal(userInfo) : <WelcomeStackNavigator />}
     </NavigationContainer>
   );
 }

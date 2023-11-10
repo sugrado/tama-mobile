@@ -1,11 +1,11 @@
 import {AxiosResponse} from 'axios';
-import axiosInstance from '../api/axios';
 import {
   LoggedResponse,
   LoginDto,
   PreparedTokensDto,
   UserRoles,
 } from '../dtos/auth.dto';
+import axiosInstance from '../contexts/AxiosInterceptor';
 
 export const login = async (
   credential: string,
@@ -22,11 +22,15 @@ export const login = async (
 };
 
 export const refreshTokens = async (refreshToken: string) => {
-  const loginRes: AxiosResponse<PreparedTokensDto> = await axiosInstance.put(
-    'auth/refresh-token',
-    {refreshToken},
-  );
-  return loginRes.data;
+  try {
+    const loginRes: AxiosResponse<PreparedTokensDto> = await axiosInstance.put(
+      'auth/refresh-token',
+      {refreshToken},
+    );
+    return loginRes.data;
+  } catch (error) {
+    return null;
+  }
 };
 
 export const revokeToken = async (): Promise<void> => {

@@ -38,22 +38,24 @@ export default function Profile() {
 
   useEffect(() => {
     const getMyInfo = async () => {
+      setLoading(true);
       const response = await profile();
-      setValue('user.firstName', response.data.user.firstName);
-      setValue('user.lastName', response.data.user.lastName);
-      setValue('user.email', response.data.user.email);
-      setValue('address', response.data.address);
-      setValue(
-        'dailyTeaConsumption',
-        String(response.data.dailyTeaConsumption),
-      );
+      if (response == null) {
+        setLoading(false);
+        return;
+      }
+      setValue('user.firstName', response.user.firstName);
+      setValue('user.lastName', response.user.lastName);
+      setValue('user.email', response.user.email);
+      setValue('address', response.address);
+      setValue('dailyTeaConsumption', String(response.dailyTeaConsumption));
       setValue(
         'dailyCoffeeConsumption',
-        String(response.data.dailyCoffeeConsumption),
+        String(response.dailyCoffeeConsumption),
       );
+      setLoading(false);
     };
-    setLoading(true);
-    getMyInfo().then(() => setLoading(false));
+    getMyInfo().then(() => {});
   }, [setValue]);
 
   const rules = {
