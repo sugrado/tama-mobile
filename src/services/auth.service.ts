@@ -63,17 +63,17 @@ export const refreshTokensThenResetDeviceData = async (
   );
   await removeAuthDataFromStorage();
 
-  if (!refreshedTokens) {
+  if (refreshedTokens.error) {
     return null;
   }
 
   await saveAuthDataToStorage(
-    refreshedTokens.accessToken,
-    refreshedTokens.refreshToken,
+    refreshedTokens.data!.accessToken,
+    refreshedTokens.data!.refreshToken,
     userWithTokens.user,
   );
   return {
-    accessToken: refreshedTokens.accessToken,
-    refreshToken: refreshedTokens.refreshToken,
+    accessToken: refreshedTokens.data!.accessToken,
+    refreshToken: refreshedTokens.data!.refreshToken,
   } as PreparedTokensDto;
 };

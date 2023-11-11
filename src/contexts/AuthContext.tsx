@@ -2,7 +2,6 @@ import React, {createContext, useState, useEffect} from 'react';
 import {
   UserRoles,
   TokenDto,
-  LoggedResponse,
   LoggedUserType,
   LoggedPatientDto,
   LoggedDoctorDto,
@@ -73,15 +72,15 @@ export const AuthProvider = ({
     password: string,
   ): Promise<void> => {
     setIsLoading(true);
-    const loginRes: LoggedResponse = await login(
-      email,
-      password,
-      UserRoles.Doctor,
-    );
+    const loginRes = await login(email, password, UserRoles.Doctor);
+    if (loginRes.error) {
+      setIsLoading(false);
+      return;
+    }
     await setStatesAndStorageItems(
-      loginRes.tokens.accessToken,
-      loginRes.tokens.refreshToken,
-      loginRes.doctor as LoggedDoctorDto,
+      loginRes.data!.tokens.accessToken,
+      loginRes.data!.tokens.refreshToken,
+      loginRes.data!.doctor as LoggedDoctorDto,
     );
     setIsLoading(false);
   };
@@ -91,15 +90,15 @@ export const AuthProvider = ({
     password: string,
   ): Promise<void> => {
     setIsLoading(true);
-    const loginRes: LoggedResponse = await login(
-      username,
-      password,
-      UserRoles.Patient,
-    );
+    const loginRes = await login(username, password, UserRoles.Patient);
+    if (loginRes.error) {
+      setIsLoading(false);
+      return;
+    }
     await setStatesAndStorageItems(
-      loginRes.tokens.accessToken,
-      loginRes.tokens.refreshToken,
-      loginRes.patient as LoggedPatientDto,
+      loginRes.data!.tokens.accessToken,
+      loginRes.data!.tokens.refreshToken,
+      loginRes.data!.patient as LoggedPatientDto,
     );
     setIsLoading(false);
   };
@@ -109,15 +108,15 @@ export const AuthProvider = ({
     password: string,
   ): Promise<void> => {
     setIsLoading(true);
-    const loginRes: LoggedResponse = await login(
-      email,
-      password,
-      UserRoles.PatientRelative,
-    );
+    const loginRes = await login(email, password, UserRoles.PatientRelative);
+    if (loginRes.error) {
+      setIsLoading(false);
+      return;
+    }
     await setStatesAndStorageItems(
-      loginRes.tokens.accessToken,
-      loginRes.tokens.refreshToken,
-      loginRes.patientRelative as LoggedPatientRelativeDto,
+      loginRes.data!.tokens.accessToken,
+      loginRes.data!.tokens.refreshToken,
+      loginRes.data!.patientRelative as LoggedPatientRelativeDto,
     );
     setIsLoading(false);
   };
