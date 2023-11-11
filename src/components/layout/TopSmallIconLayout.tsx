@@ -34,10 +34,11 @@ const styles = StyleSheet.create({
   },
   header: {
     height: (DIMENSIONS.AVAILABLE_HEIGHT * 15) / 100,
-    padding: 10,
+    padding: 5,
     alignItems: 'center',
   },
   header_text: {
+    marginTop: 5,
     color: COLORS.TEXT,
   },
   header_logo: {

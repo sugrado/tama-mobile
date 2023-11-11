@@ -138,7 +138,11 @@ export default function Profile() {
 
   const handleLogout = async (): Promise<void> => {
     setLoading(true);
-    await logout();
+    const err = await logout();
+    console.log(err);
+    if (err) {
+      setError(err);
+    }
     setLoading(false);
   };
 

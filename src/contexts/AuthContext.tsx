@@ -35,7 +35,7 @@ type AuthContextType = {
     password: string,
   ) => Promise<CustomError | null>;
   setPatientConsentStatus: () => Promise<void>;
-  logout: () => Promise<void>;
+  logout: () => Promise<CustomError | null>;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -129,14 +129,18 @@ export const AuthProvider = ({
     await setUserInfoToStorage(updatedUserInfo);
   };
 
-  const logout = async (): Promise<void> => {
+  const logout = async (): Promise<CustomError | null> => {
     const loggedStatus = await checkIsLoggedIn();
     if (loggedStatus === null) {
       setUserInfo(null);
-      return;
+      return null;
     }
-    await revokeToken(loggedStatus.refreshToken.token);
+    const res = await revokeToken(loggedStatus.refreshToken.token);
+    if (res.error) {
+      return res.error;
+    }
     await clearAuthDataFromDevice();
+    return null;
   };
 
   // Private functions
