@@ -30,7 +30,6 @@ let headers = {'Content-Type': 'application/json'};
 const axiosInstance = axios.create({
   baseURL: API_URL,
   headers,
-  withCredentials: true,
 });
 
 const REQUEST_ERR_MSG =

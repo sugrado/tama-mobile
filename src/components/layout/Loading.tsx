@@ -1,6 +1,6 @@
 import {View, StyleSheet, Modal, TouchableOpacity} from 'react-native';
 import React from 'react';
-import {ActivityIndicator, Text} from 'react-native-paper';
+import {ActivityIndicator} from 'react-native-paper';
 import {COLORS, DIMENSIONS} from '../../constants';
 
 type LoadingProps = {
@@ -18,8 +18,11 @@ const Loading = ({loading, fillBackground = false}: LoadingProps) => {
         activeOpacity={1}
         style={[styles.container, backgroundStyle]}>
         <View style={styles.content}>
-          <ActivityIndicator size="large" color={COLORS.THEME_COLOR} />
-          <Text style={styles.loading_text}>Yükleniyor...</Text>
+          <ActivityIndicator
+            size="large"
+            color={COLORS.THEME_COLOR}
+            style={styles.indicator}
+          />
         </View>
       </TouchableOpacity>
     </Modal>
@@ -43,9 +46,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
   },
-  loading_text: {
-    marginTop: 10,
-    color: COLORS.THEME_COLOR,
+  indicator: {
+    backgroundColor: 'white',
+    padding: 10,
+    borderRadius: 50,
+    shadowColor: 'black',
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
 });
 
