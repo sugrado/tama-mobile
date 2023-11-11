@@ -11,12 +11,15 @@ import TopSmallIconLayout from '../../../components/layout/TopSmallIconLayout';
 import SugradoFormField from '../../../components/core/SugradoFormField';
 import {useForm} from 'react-hook-form';
 import {profile} from '../../../api/patient';
+import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
+import {CustomError} from '../../../utils/customErrors';
 
 export default function Profile() {
   const {logout} = useAuth();
   const [logoutDialogVisible, setLogoutDialogVisible] =
     useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<CustomError | null>(null);
   const {
     control,
     handleSubmit,
@@ -37,26 +40,29 @@ export default function Profile() {
   });
 
   useEffect(() => {
-    const getMyInfo = async () => {
-      setLoading(true);
-      const response = await profile();
-      if (response == null) {
-        setLoading(false);
-        return;
-      }
-      setValue('user.firstName', response.user.firstName);
-      setValue('user.lastName', response.user.lastName);
-      setValue('user.email', response.user.email);
-      setValue('address', response.address);
-      setValue('dailyTeaConsumption', String(response.dailyTeaConsumption));
-      setValue(
-        'dailyCoffeeConsumption',
-        String(response.dailyCoffeeConsumption),
-      );
+    getMyInfo();
+  }, []);
+
+  const getMyInfo = async () => {
+    setLoading(true);
+    const response = await profile();
+    if (response?.error) {
+      setError(response.error);
       setLoading(false);
-    };
-    getMyInfo().then(() => {});
-  }, [setValue]);
+      return;
+    }
+    setError(null);
+    setValue('user.firstName', response.data!.user.firstName);
+    setValue('user.lastName', response.data!.user.lastName);
+    setValue('user.email', response.data!.user.email);
+    setValue('address', response.data!.address);
+    setValue('dailyTeaConsumption', String(response.data!.dailyTeaConsumption));
+    setValue(
+      'dailyCoffeeConsumption',
+      String(response.data!.dailyCoffeeConsumption),
+    );
+    setLoading(false);
+  };
 
   const rules = {
     firstName: {
@@ -137,127 +143,131 @@ export default function Profile() {
   return (
     <>
       {loading && <Loading loading={loading} />}
-      <TopSmallIconLayout pageName="Profil Bilgileri">
-        <SugradoFormField
-          control={control}
-          rules={rules.firstName}
-          error={errors.user && errors.user.firstName}
-          name="user.firstName"
-          style={styles.input}
-          render={() => (
-            <SugradoTextInput
-              label="Ad"
-              placeholder="Ad"
-              value={getValues('user.firstName')}
-              disabled={true}
-            />
-          )}
-        />
-        <SugradoFormField
-          control={control}
-          rules={rules.lastName}
-          error={errors.user && errors.user.lastName}
-          name="user.lastName"
-          style={styles.input}
-          render={() => (
-            <SugradoTextInput
-              label="Soyad"
-              placeholder="Soyad"
-              value={getValues('user.lastName')}
-              disabled={true}
-            />
-          )}
-        />
-        <SugradoFormField
-          control={control}
-          rules={rules.email}
-          error={errors.user && errors.user.email}
-          name="user.email"
-          style={styles.input}
-          render={({field: {onChange, onBlur, value}}: any) => (
-            <SugradoTextInput
-              label="Email"
-              placeholder="Örn: ornek@email.com"
-              value={value}
-              valueChange={onChange}
-              onBlur={onBlur}
-              keyboardType="email-address"
-            />
-          )}
-        />
-        <SugradoFormField
-          control={control}
-          rules={rules.address}
-          error={errors.address}
-          name="address"
-          style={styles.input}
-          render={({field: {onChange, onBlur, value}}: any) => (
-            <SugradoTextArea
-              label="Adres"
-              placeholder="Örn: Örnek Mah. Örnek Sok. Örnek Apt. No: 1 D: 1 Keçiören/Ankara"
-              value={value}
-              valueChange={onChange}
-              onBlur={onBlur}
-            />
-          )}
-        />
-        <SugradoFormField
-          control={control}
-          rules={rules.dailyTeaConsumption}
-          error={errors.dailyTeaConsumption}
-          name="dailyTeaConsumption"
-          style={styles.input}
-          render={({field: {onChange, onBlur, value}}: any) => (
-            <SugradoTextInput
-              label="Günlük Çay Tüketimi (ml)"
-              placeholder="Örn: 200"
-              value={value}
-              valueChange={onChange}
-              onBlur={onBlur}
-              keyboardType="numeric"
-            />
-          )}
-        />
-        <SugradoFormField
-          control={control}
-          rules={rules.dailyCoffeeConsumption}
-          error={errors.dailyCoffeeConsumption}
-          name="dailyCoffeeConsumption"
-          style={styles.input}
-          render={({field: {onChange, onBlur, value}}: any) => (
-            <SugradoTextInput
-              label="Günlük Kahve Tüketimi (ml)"
-              placeholder="Örn: 400"
-              value={value}
-              valueChange={onChange}
-              onBlur={onBlur}
-              keyboardType="numeric"
-            />
-          )}
-        />
-        <SugradoButton
-          title="Değişiklikleri Kaydet"
-          onPress={handleSubmit(onSubmit)}
-          style={styles.save_button}
-          icon="content-save"
-        />
-        <SugradoButton
-          title="Çıkış Yap"
-          onPress={showLogoutDialog}
-          style={styles.save_button}
-          icon="logout"
-          buttonColor={COLORS.DARK_RED}
-        />
-        <SugradoDialog
-          title="Çıkış Yap"
-          body="Hesabınızdan çıkış yapmak istediğinizden emin misiniz?"
-          visible={logoutDialogVisible}
-          action={handleLogout}
-          actionText="Evet"
-          cancelAction={() => setLogoutDialogVisible(false)}
-          cancelText="Hayır"
-        />
-      </TopSmallIconLayout>
+      {error == null ? (
+        <TopSmallIconLayout pageName="Profil Bilgileri">
+          <SugradoFormField
+            control={control}
+            rules={rules.firstName}
+            error={errors.user && errors.user.firstName}
+            name="user.firstName"
+            style={styles.input}
+            render={() => (
+              <SugradoTextInput
+                label="Ad"
+                placeholder="Ad"
+                value={getValues('user.firstName')}
+                disabled={true}
+              />
+            )}
+          />
+          <SugradoFormField
+            control={control}
+            rules={rules.lastName}
+            error={errors.user && errors.user.lastName}
+            name="user.lastName"
+            style={styles.input}
+            render={() => (
+              <SugradoTextInput
+                label="Soyad"
+                placeholder="Soyad"
+                value={getValues('user.lastName')}
+                disabled={true}
+              />
+            )}
+          />
+          <SugradoFormField
+            control={control}
+            rules={rules.email}
+            error={errors.user && errors.user.email}
+            name="user.email"
+            style={styles.input}
+            render={({field: {onChange, onBlur, value}}: any) => (
+              <SugradoTextInput
+                label="Email"
+                placeholder="Örn: ornek@email.com"
+                value={value}
+                valueChange={onChange}
+                onBlur={onBlur}
+                keyboardType="email-address"
+              />
+            )}
+          />
+          <SugradoFormField
+            control={control}
+            rules={rules.address}
+            error={errors.address}
+            name="address"
+            style={styles.input}
+            render={({field: {onChange, onBlur, value}}: any) => (
+              <SugradoTextArea
+                label="Adres"
+                placeholder="Örn: Örnek Mah. Örnek Sok. Örnek Apt. No: 1 D: 1 Keçiören/Ankara"
+                value={value}
+                valueChange={onChange}
+                onBlur={onBlur}
+              />
+            )}
+          />
+          <SugradoFormField
+            control={control}
+            rules={rules.dailyTeaConsumption}
+            error={errors.dailyTeaConsumption}
+            name="dailyTeaConsumption"
+            style={styles.input}
+            render={({field: {onChange, onBlur, value}}: any) => (
+              <SugradoTextInput
+                label="Günlük Çay Tüketimi (ml)"
+                placeholder="Örn: 200"
+                value={value}
+                valueChange={onChange}
+                onBlur={onBlur}
+                keyboardType="numeric"
+              />
+            )}
+          />
+          <SugradoFormField
+            control={control}
+            rules={rules.dailyCoffeeConsumption}
+            error={errors.dailyCoffeeConsumption}
+            name="dailyCoffeeConsumption"
+            style={styles.input}
+            render={({field: {onChange, onBlur, value}}: any) => (
+              <SugradoTextInput
+                label="Günlük Kahve Tüketimi (ml)"
+                placeholder="Örn: 400"
+                value={value}
+                valueChange={onChange}
+                onBlur={onBlur}
+                keyboardType="numeric"
+              />
+            )}
+          />
+          <SugradoButton
+            title="Değişiklikleri Kaydet"
+            onPress={handleSubmit(onSubmit)}
+            style={styles.save_button}
+            icon="content-save"
+          />
+          <SugradoButton
+            title="Çıkış Yap"
+            onPress={showLogoutDialog}
+            style={styles.save_button}
+            icon="logout"
+            buttonColor={COLORS.DARK_RED}
+          />
+          <SugradoDialog
+            title="Çıkış Yap"
+            body="Hesabınızdan çıkış yapmak istediğinizden emin misiniz?"
+            visible={logoutDialogVisible}
+            action={handleLogout}
+            actionText="Evet"
+            cancelAction={() => setLogoutDialogVisible(false)}
+            cancelText="Hayır"
+          />
+        </TopSmallIconLayout>
+      ) : (
+        <SugradoErrorSnackbar error={error} retry={() => getMyInfo()} />
+      )}
     </>
   );
 }
