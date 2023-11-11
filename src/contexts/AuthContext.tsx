@@ -23,7 +23,6 @@ import {
 import {CustomError} from '../utils/customErrors';
 
 type AuthContextType = {
-  isLoading: boolean;
   userInfo: LoggedUserType | null;
   setUserInfo: React.Dispatch<React.SetStateAction<LoggedUserType | null>>;
   doctorLogin: (email: string, password: string) => Promise<CustomError | null>;
@@ -50,12 +49,10 @@ export const AuthProvider = ({
   children,
   onCheckCompleted,
 }: AuthProviderProps) => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [userInfo, setUserInfo] = useState<LoggedUserType | null>(null);
 
   useEffect(() => {
     const checkLoggedStatus = async (): Promise<void> => {
-      setIsLoading(true);
       let userToSet: LoggedUserType | null;
       const loggedStatus = await checkIsLoggedIn();
       if (loggedStatus === null) {
@@ -68,7 +65,6 @@ export const AuthProvider = ({
         } as UserWithTokensDto);
       }
       setUserInfo(userToSet);
-      setIsLoading(false);
       onCheckCompleted();
     };
     checkLoggedStatus();
@@ -78,10 +74,8 @@ export const AuthProvider = ({
     email: string,
     password: string,
   ): Promise<CustomError | null> => {
-    setIsLoading(true);
     const loginRes = await login(email, password, UserRoles.Doctor);
     if (loginRes?.error) {
-      setIsLoading(false);
       return loginRes.error;
     }
     await setStatesAndStorageItems(
@@ -89,7 +83,6 @@ export const AuthProvider = ({
       loginRes.data!.tokens.refreshToken,
       loginRes.data!.doctor as LoggedDoctorDto,
     );
-    setIsLoading(false);
     return null;
   };
 
@@ -97,10 +90,8 @@ export const AuthProvider = ({
     username: string,
     password: string,
   ): Promise<CustomError | null> => {
-    setIsLoading(true);
     const loginRes = await login(username, password, UserRoles.Patient);
     if (loginRes?.error) {
-      setIsLoading(false);
       return loginRes.error;
     }
     await setStatesAndStorageItems(
@@ -108,7 +99,6 @@ export const AuthProvider = ({
       loginRes.data!.tokens.refreshToken,
       loginRes.data!.patient as LoggedPatientDto,
     );
-    setIsLoading(false);
     return null;
   };
 
@@ -116,10 +106,8 @@ export const AuthProvider = ({
     email: string,
     password: string,
   ): Promise<CustomError | null> => {
-    setIsLoading(true);
     const loginRes = await login(email, password, UserRoles.PatientRelative);
     if (loginRes?.error) {
-      setIsLoading(false);
       return loginRes.error;
     }
     await setStatesAndStorageItems(
@@ -127,7 +115,6 @@ export const AuthProvider = ({
       loginRes.data!.tokens.refreshToken,
       loginRes.data!.patientRelative as LoggedPatientRelativeDto,
     );
-    setIsLoading(false);
     return null;
   };
 
@@ -143,10 +130,8 @@ export const AuthProvider = ({
   };
 
   const logout = async (): Promise<void> => {
-    setIsLoading(true);
     await revokeToken();
     await clearAuthDataFromDevice();
-    setIsLoading(false);
   };
 
   // Private functions
@@ -168,7 +153,6 @@ export const AuthProvider = ({
     <AuthContext.Provider
       value={
         {
-          isLoading,
           userInfo,
           setUserInfo,
           doctorLogin,
