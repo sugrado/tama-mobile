@@ -137,7 +137,9 @@ export default function Profile() {
   };
 
   const handleLogout = async (): Promise<void> => {
+    setLoading(true);
     await logout();
+    setLoading(false);
   };
 
   return (

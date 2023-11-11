@@ -25,7 +25,6 @@ const SugradoErrorSnackbar = ({
   const [message, setMessage] = useState<string>();
 
   useEffect(() => {
-    console.log('girdi', error);
     if (error) {
       setMessage(error.message);
       setVisible(true);

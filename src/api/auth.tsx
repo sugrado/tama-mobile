@@ -36,9 +36,11 @@ export const refreshTokens = async (
   }
 };
 
-export const revokeToken = async (): Promise<ApiErrorResponse> => {
+export const revokeToken = async (
+  refreshToken: string,
+): Promise<ApiErrorResponse> => {
   try {
-    await axiosInstance.put('auth/revoke-token');
+    await axiosInstance.put('auth/revoke-token', {refreshToken});
     return {error: null};
   } catch (error) {
     return {error: error as CustomError};

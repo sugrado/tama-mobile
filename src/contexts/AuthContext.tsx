@@ -130,7 +130,12 @@ export const AuthProvider = ({
   };
 
   const logout = async (): Promise<void> => {
-    await revokeToken();
+    const loggedStatus = await checkIsLoggedIn();
+    if (loggedStatus === null) {
+      setUserInfo(null);
+      return;
+    }
+    await revokeToken(loggedStatus.refreshToken.token);
     await clearAuthDataFromDevice();
   };
 
