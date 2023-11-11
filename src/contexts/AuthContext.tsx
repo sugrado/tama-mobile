@@ -20,14 +20,21 @@ import {
   checkIsLoggedIn,
   refreshTokensIfExpired,
 } from '../services/auth.service';
+import {CustomError} from '../utils/customErrors';
 
 type AuthContextType = {
   isLoading: boolean;
   userInfo: LoggedUserType | null;
   setUserInfo: React.Dispatch<React.SetStateAction<LoggedUserType | null>>;
-  doctorLogin: (email: string, password: string) => Promise<void>;
-  patientLogin: (username: string, password: string) => Promise<void>;
-  patientRelativeLogin: (email: string, password: string) => Promise<void>;
+  doctorLogin: (email: string, password: string) => Promise<CustomError | null>;
+  patientLogin: (
+    username: string,
+    password: string,
+  ) => Promise<CustomError | null>;
+  patientRelativeLogin: (
+    email: string,
+    password: string,
+  ) => Promise<CustomError | null>;
   setPatientConsentStatus: () => Promise<void>;
   logout: () => Promise<void>;
 };
@@ -70,12 +77,12 @@ export const AuthProvider = ({
   const doctorLogin = async (
     email: string,
     password: string,
-  ): Promise<void> => {
+  ): Promise<CustomError | null> => {
     setIsLoading(true);
     const loginRes = await login(email, password, UserRoles.Doctor);
-    if (loginRes.error) {
+    if (loginRes?.error) {
       setIsLoading(false);
-      return;
+      return loginRes.error;
     }
     await setStatesAndStorageItems(
       loginRes.data!.tokens.accessToken,
@@ -83,17 +90,18 @@ export const AuthProvider = ({
       loginRes.data!.doctor as LoggedDoctorDto,
     );
     setIsLoading(false);
+    return null;
   };
 
   const patientLogin = async (
     username: string,
     password: string,
-  ): Promise<void> => {
+  ): Promise<CustomError | null> => {
     setIsLoading(true);
     const loginRes = await login(username, password, UserRoles.Patient);
-    if (loginRes.error) {
+    if (loginRes?.error) {
       setIsLoading(false);
-      return;
+      return loginRes.error;
     }
     await setStatesAndStorageItems(
       loginRes.data!.tokens.accessToken,
@@ -101,17 +109,18 @@ export const AuthProvider = ({
       loginRes.data!.patient as LoggedPatientDto,
     );
     setIsLoading(false);
+    return null;
   };
 
   const patientRelativeLogin = async (
     email: string,
     password: string,
-  ): Promise<void> => {
+  ): Promise<CustomError | null> => {
     setIsLoading(true);
     const loginRes = await login(email, password, UserRoles.PatientRelative);
-    if (loginRes.error) {
+    if (loginRes?.error) {
       setIsLoading(false);
-      return;
+      return loginRes.error;
     }
     await setStatesAndStorageItems(
       loginRes.data!.tokens.accessToken,
@@ -119,6 +128,7 @@ export const AuthProvider = ({
       loginRes.data!.patientRelative as LoggedPatientRelativeDto,
     );
     setIsLoading(false);
+    return null;
   };
 
   const setPatientConsentStatus = async (): Promise<void> => {
