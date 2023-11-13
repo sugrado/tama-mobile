@@ -3,7 +3,6 @@ import {COLORS} from '../../../../constants';
 import DailyQuestionCard from './DailyQuestionCard';
 import AnswerModal from './AnswerModal';
 import Loading from '../../../../components/layout/Loading';
-import {View} from 'react-native';
 import {OptionDto, QuestionDto} from '../../../../dtos/question.dto';
 
 const DailyQuestions = () => {
@@ -27,7 +26,7 @@ const DailyQuestions = () => {
       {loading && <Loading loading={loading} fillBackground={true} />}
       {questions.map(question => {
         return (
-          <View key={question.id}>
+          <React.Fragment key={question.id}>
             <DailyQuestionCard
               answered={question.answered}
               answer={question.answer}
@@ -59,7 +58,7 @@ const DailyQuestions = () => {
                 toggleModal(question.id);
               }}
             />
-          </View>
+          </React.Fragment>
         );
       })}
     </>

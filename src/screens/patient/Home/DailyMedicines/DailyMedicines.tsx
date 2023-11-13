@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {COLORS} from '../../../../constants';
 import DailyMedicineCard from './DailyMedicineCard';
 import Loading from '../../../../components/layout/Loading';
-import {View} from 'react-native';
 import {DailyMedicineDto, TimeDto} from '../../../../dtos/dailyMedicine.dto';
 import MedicineUsingModal from './MedicineUsingModal';
 
@@ -28,7 +27,7 @@ const DailyMedicines = () => {
       {medicines.map(medicine => {
         const allUsed = medicine.times.every((time: any) => time.used);
         return (
-          <View key={medicine.id}>
+          <React.Fragment key={medicine.id}>
             <DailyMedicineCard
               allUsed={allUsed}
               backgroundColor={
@@ -56,7 +55,7 @@ const DailyMedicines = () => {
                 toggleModal(medicine.id);
               }}
             />
-          </View>
+          </React.Fragment>
         );
       })}
     </>
