@@ -10,6 +10,9 @@ import {
 import {getWithOptionsByMessage} from '../../../api/message';
 import {ActionKind, reducer} from './reducer';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import {CustomError} from '../../../utils/customErrors';
+import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
+import Loading from '../../../components/layout/Loading';
 
 const users = {
   patient: {
@@ -25,6 +28,9 @@ const users = {
 };
 
 const Psychoeducation = () => {
+  const [error, setError] = useState<CustomError | null>();
+  const [loading, setLoading] = useState<boolean>(false);
+
   const [initialQuickReplies, setInitialQuickReplies] =
     useState<QuickReplies>();
   const [state, dispatch] = useReducer(reducer, {
@@ -35,9 +41,11 @@ const Psychoeducation = () => {
 
   useEffect(() => {
     const initMessages = async () => {
+      setLoading(true);
       const res = await getMessageWithOptions(null);
-      setInitialQuickReplies(res.quickReplies);
-      sendMessages([res]);
+      setInitialQuickReplies(res.message.quickReplies);
+      sendMessages([res.message]);
+      setLoading(false);
     };
     initMessages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -47,20 +55,24 @@ const Psychoeducation = () => {
 
   const getMessageWithOptions = async (
     messageId: number | null,
-  ): Promise<IMessage> => {
+  ): Promise<{message: IMessage; error: CustomError | null}> => {
     const res = await getWithOptionsByMessage(messageId);
-    if (!res.data) {
+    setError(res.error);
+    if (res.error || !res.data) {
       return {
-        _id: generateId(),
-        text: 'Oturum sonlandırıldı.',
-        user: users.system,
-        system: true,
-      } as IMessage;
+        message: {
+          _id: generateId(),
+          text: 'Oturum sonlandırıldı.',
+          user: users.system,
+          system: true,
+        } as IMessage,
+        error: res.error,
+      };
     }
 
-    const {id, content, options} = res.data;
+    const {content, options} = res.data;
     const messageToSend = {
-      _id: id,
+      _id: generateId(),
       text: content,
       user: users.system,
     } as IMessage;
@@ -75,7 +87,7 @@ const Psychoeducation = () => {
         })),
       } as QuickReplies;
     }
-    return messageToSend;
+    return {message: messageToSend, error: null};
   };
 
   const sendMessages = (messageToSend: IMessage[]) => {
@@ -95,18 +107,19 @@ const Psychoeducation = () => {
   const onQuickReply = async (replies: Reply[]) => {
     const selectedReply = replies[0];
     const patientMessage = {
-      _id: selectedReply.value,
+      _id: generateId(),
       text: selectedReply.title,
       user: users.patient,
     } as IMessage;
     sendMessages([patientMessage]);
     dispatch({type: ActionKind.SET_IS_TYPING, payload: true});
     const message = await getMessageWithOptions(Number(selectedReply.value));
-    const messagesToAppend = [message, patientMessage];
+    const messagesToAppend = [message.message, patientMessage];
     if (
-      !message.quickReplies ||
-      !message.quickReplies.values ||
-      message.quickReplies.values.length < 1
+      message.error == null &&
+      (!message.message.quickReplies ||
+        !message.message.quickReplies.values ||
+        message.message.quickReplies.values.length < 1)
     ) {
       const resetMessage = {
         _id: generateId(),
@@ -121,23 +134,27 @@ const Psychoeducation = () => {
   };
 
   return (
-    <View style={styles.content}>
-      <GiftedChat
-        messages={state.messages}
-        user={users.patient}
-        scrollToBottom={true}
-        scrollToBottomComponent={GoToBottomIcon}
-        onQuickReply={onQuickReply}
-        keyboardShouldPersistTaps="never"
-        isTyping={state.isTyping}
-        infiniteScroll
-        renderInputToolbar={() => null}
-        minComposerHeight={0}
-        maxComposerHeight={0}
-        minInputToolbarHeight={0}
-        renderAvatarOnTop={true}
-      />
-    </View>
+    <>
+      <View style={styles.content}>
+        <GiftedChat
+          messages={state.messages}
+          user={users.patient}
+          scrollToBottom={true}
+          scrollToBottomComponent={GoToBottomIcon}
+          onQuickReply={onQuickReply}
+          keyboardShouldPersistTaps="never"
+          isTyping={state.isTyping}
+          infiniteScroll
+          renderInputToolbar={() => null}
+          minComposerHeight={0}
+          maxComposerHeight={0}
+          minInputToolbarHeight={0}
+          renderAvatarOnTop={true}
+        />
+      </View>
+      {loading && <Loading loading={loading} />}
+      {error && <SugradoErrorSnackbar error={error} />}
+    </>
   );
 };
 
