@@ -36,6 +36,7 @@ type AuthContextType = {
   ) => Promise<CustomError | null>;
   setPatientConsentStatus: () => Promise<void>;
   logout: () => Promise<CustomError | null>;
+  isCheckProgress: boolean;
 };
 
 export const AuthContext = createContext({} as AuthContextType);
@@ -50,9 +51,11 @@ export const AuthProvider = ({
   onCheckCompleted,
 }: AuthProviderProps) => {
   const [userInfo, setUserInfo] = useState<LoggedUserType | null>(null);
+  const [isCheckProgress, setIsCheckProgress] = useState<boolean>(false);
 
   useEffect(() => {
     const checkLoggedStatus = async (): Promise<void> => {
+      setIsCheckProgress(true);
       let userToSet: LoggedUserType | null;
       const loggedStatus = await checkIsLoggedIn();
       if (loggedStatus === null) {
@@ -65,6 +68,7 @@ export const AuthProvider = ({
         } as UserWithTokensDto);
       }
       setUserInfo(userToSet);
+      setIsCheckProgress(false);
       onCheckCompleted();
     };
     checkLoggedStatus();
@@ -169,6 +173,7 @@ export const AuthProvider = ({
           patientRelativeLogin,
           logout,
           setPatientConsentStatus,
+          isCheckProgress,
         } as AuthContextType
       }>
       {children}

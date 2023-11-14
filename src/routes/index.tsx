@@ -8,9 +8,14 @@ import {LoggedPatientDto, LoggedUserType, UserRoles} from '../dtos/auth.dto';
 import * as PatientTabNav from './patient/TabNavigator';
 import * as DoctorTabNav from './doctor/TabNavigator';
 import * as PatientRelativeTabNav from './patient-relative/TabNavigator';
+import Loading from '../components/layout/Loading';
 
 export default function Navigation() {
-  const {userInfo} = useAuth();
+  const {userInfo, isCheckProgress} = useAuth();
+
+  if (isCheckProgress) {
+    return <Loading loading={isCheckProgress} />;
+  }
 
   return (
     <NavigationContainer>
