@@ -1,27 +1,24 @@
 import React, {useState} from 'react';
 import {View, StyleSheet, Keyboard} from 'react-native';
 import {Button, TextInput, Text, HelperText} from 'react-native-paper';
-import {COLORS} from '../../../constants';
-import Loading from '../../../components/layout/Loading';
-import TopBigIconLayout from '../../../components/layout/TopBigIconLayout';
+import {COLORS} from '../constants';
+import Loading from '../components/layout/Loading';
+import TopBigIconLayout from '../components/layout/TopBigIconLayout';
 
 const ForgotPassword = () => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [usernameOrEmail, setUsernameOrEmail] = useState<string | undefined>(
-    undefined,
-  );
+  const [email, setEmail] = useState<string | undefined>(undefined);
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [snackbarText, setSnackbarText] = useState('');
 
-  const hasUsernameErrors = () =>
-    usernameOrEmail !== undefined && usernameOrEmail.length < 3;
+  const hasUsernameErrors = () => email !== undefined && email.length < 3;
 
   const handleSendPasswordResetEmail = () => {
     if (hasUsernameErrors()) {
       return;
     }
-    if (!usernameOrEmail) {
-      showSnackBar('Lütfen kullanıcı adı veya e-posta bilginizi doğru girin.');
+    if (!email) {
+      showSnackBar('Lütfen e-posta bilginizi doğru girin.');
       return;
     }
     setLoading(true);
@@ -55,9 +52,9 @@ const ForgotPassword = () => {
         </Text>
         <View>
           <TextInput
-            label="Kullanıcı adı veya e-posta"
-            value={usernameOrEmail}
-            onChangeText={input => setUsernameOrEmail(input)}
+            label="E-posta adresinizi girin..."
+            value={email}
+            onChangeText={input => setEmail(input)}
             theme={{
               colors: {primary: COLORS.PRIMARY_THEME},
               dark: false,
@@ -65,7 +62,7 @@ const ForgotPassword = () => {
             style={styles.input}
           />
           <HelperText padding="none" type="error" visible={hasUsernameErrors()}>
-            Kullanıcı adı geçersiz!
+            E-posta adresi geçersiz!
           </HelperText>
         </View>
         <Button

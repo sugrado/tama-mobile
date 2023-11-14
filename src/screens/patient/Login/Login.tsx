@@ -79,7 +79,7 @@ function Login({navigation}: any) {
         <View style={styles.forgot_password}>
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate(PAGE_NAMES.PATIENT.AUTH.FORGOT_PASSWORD);
+              navigation.navigate(PAGE_NAMES.PORTALS.FORGOT_PASSWORD);
             }}>
             <Text style={styles.forgot_password_text}>Şifremi Unuttum</Text>
           </TouchableOpacity>

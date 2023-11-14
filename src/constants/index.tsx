@@ -6,12 +6,14 @@ export const PAGE_NAMES = {
     PATIENT: 'patient',
     DOCTOR: 'doctor',
     PATIENT_RELATIVE: 'patientRelative',
+    FORGOT_PASSWORD: 'forgotPassword',
   },
   DOCTOR: {
     AUTH: {
       LOGIN: 'doctorLogin',
     },
     HOME: 'home',
+    PROFILE: 'profile',
   },
   PATIENT_RELATIVE: {
     HOME: 'home',
@@ -22,7 +24,6 @@ export const PAGE_NAMES = {
   PATIENT: {
     AUTH: {
       LOGIN: 'patientLogin',
-      FORGOT_PASSWORD: 'patientForgotPassword',
     },
     HOME: {
       HOME_STACK: 'homeStack',

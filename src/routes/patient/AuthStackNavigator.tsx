@@ -1,7 +1,6 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {PAGE_NAMES} from '../../constants';
-import ForgotPassword from '../../screens/patient/Login/ForgotPassword';
 import Login from '../../screens/patient/Login/Login';
 
 const AuthStack = createStackNavigator();
@@ -23,10 +22,6 @@ const AuthStackNavigator = () => (
       },
     }}>
     <AuthStack.Screen name={PAGE_NAMES.PATIENT.AUTH.LOGIN} component={Login} />
-    <AuthStack.Screen
-      name={PAGE_NAMES.PATIENT.AUTH.FORGOT_PASSWORD}
-      component={ForgotPassword}
-    />
   </AuthStack.Navigator>
 );
 

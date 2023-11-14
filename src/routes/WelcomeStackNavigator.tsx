@@ -5,6 +5,7 @@ import WelcomeScreen from '../screens/WelcomeScreen';
 import * as PatientRelativeAuthStack from './patient-relative/AuthStackNavigator';
 import * as PatientAuthStack from './patient/AuthStackNavigator';
 import * as DoctorAuthStack from './doctor/AuthStackNavigator';
+import ForgotPassword from '../screens/ForgotPassword';
 
 const WelcomeStack = createStackNavigator();
 
@@ -13,7 +14,7 @@ const WelcomeStackNavigator = () => {
     <WelcomeStack.Navigator
       initialRouteName={PAGE_NAMES.PORTALS.WELCOME}
       screenOptions={{
-        headerShown: false,
+        headerShown: true,
         headerTransparent: true,
         headerTitle: '',
         headerTintColor: '#fff',
@@ -28,6 +29,10 @@ const WelcomeStackNavigator = () => {
       <WelcomeStack.Screen
         name={PAGE_NAMES.PORTALS.WELCOME}
         component={WelcomeScreen}
+      />
+      <WelcomeStack.Screen
+        name={PAGE_NAMES.PORTALS.FORGOT_PASSWORD}
+        component={ForgotPassword}
       />
       <WelcomeStack.Screen
         name={PAGE_NAMES.PORTALS.PATIENT}
