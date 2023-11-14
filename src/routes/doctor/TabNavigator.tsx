@@ -3,6 +3,7 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {COLORS, PAGE_NAMES} from '../../constants';
 import Home from '../../screens/doctor/Home/Home';
+import Profile from '../../screens/doctor/Profile/Profile';
 
 const Tab = createBottomTabNavigator();
 
@@ -39,6 +40,11 @@ export default function TabNavigator() {
         component={Home}
         options={{title: 'Ana Sayfa', tabBarLabel: 'Ana Sayfa'}}
       />
+      <Tab.Screen
+        name={PAGE_NAMES.DOCTOR.PROFILE}
+        component={Profile}
+        options={{title: 'Profil', tabBarLabel: 'Profil'}}
+      />
     </Tab.Navigator>
   );
 }
@@ -47,6 +53,8 @@ const getIconNameByPage = (name: string, focused: boolean) => {
   switch (name) {
     case PAGE_NAMES.DOCTOR.HOME:
       return focused ? 'home' : 'home-outline';
+    case PAGE_NAMES.DOCTOR.PROFILE:
+      return focused ? 'person' : 'person-outline';
     default:
       throw new Error('Invalid page name');
   }
