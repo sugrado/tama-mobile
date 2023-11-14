@@ -1,6 +1,7 @@
 import React, {useEffect, useReducer, useState} from 'react';
-import {StyleSheet, View} from 'react-native';
+import {Image, StyleSheet, View} from 'react-native';
 import {
+  Bubble,
   GiftedChat,
   IMessage,
   QuickReplies,
@@ -13,6 +14,9 @@ import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {CustomError} from '../../../utils/customErrors';
 import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
 import Loading from '../../../components/layout/Loading';
+import {COLORS, DIMENSIONS} from '../../../constants';
+import * as Q from 'react-native-gifted-chat/lib/QuickReplies';
+import {Text} from 'react-native-paper';
 
 const users = {
   patient: {
@@ -23,7 +27,7 @@ const users = {
     _id: 2,
     name: 'TAMA',
     avatar:
-      'https://gorkemarik.com/wp-content/uploads/2023/07/cropped-unnamed-1-192x192.jpg',
+      'https://raw.githubusercontent.com/sugrado/tama-mobile/9986719257f335cbe1de1f51c0e03c6722581af0/src/assets/logo-color.png',
   } as User,
 };
 
@@ -135,6 +139,15 @@ const Psychoeducation = () => {
 
   return (
     <>
+      <View style={styles.header}>
+        <Image
+          source={require('../../../assets/icon_transparent.png')}
+          style={styles.header_logo}
+        />
+        <Text variant="titleMedium" style={styles.header_text}>
+          TAMA - Psikoeğitim
+        </Text>
+      </View>
       <View style={styles.content}>
         <GiftedChat
           messages={state.messages}
@@ -150,6 +163,24 @@ const Psychoeducation = () => {
           maxComposerHeight={0}
           minInputToolbarHeight={0}
           renderAvatarOnTop={true}
+          renderQuickReplies={props => (
+            <Q.QuickReplies {...props} color={COLORS.BUTTON_COLOR} />
+          )}
+          renderBubble={props => {
+            return (
+              <Bubble
+                {...props}
+                textStyle={{
+                  right: styles.bubble_right_text,
+                  left: styles.bubble_left_text,
+                }}
+                wrapperStyle={{
+                  left: styles.bubble_left_wrapper,
+                  right: styles.bubble_right_wrapper,
+                }}
+              />
+            );
+          }}
         />
       </View>
       {loading && <Loading loading={loading} />}
@@ -164,6 +195,32 @@ const GoToBottomIcon = () => (
 
 const styles = StyleSheet.create({
   content: {flex: 1, backgroundColor: '#fff'},
+  header: {
+    height: (DIMENSIONS.AVAILABLE_HEIGHT * 9) / 100,
+    alignItems: 'center',
+    backgroundColor: COLORS.THEME_COLOR,
+    flexDirection: 'row',
+  },
+  header_text: {
+    color: COLORS.TEXT,
+  },
+  header_logo: {
+    resizeMode: 'contain',
+    height: '60%',
+    width: 80,
+  },
+  bubble_right_text: {
+    color: COLORS.TEXT,
+  },
+  bubble_left_text: {
+    color: 'black',
+  },
+  bubble_left_wrapper: {
+    backgroundColor: COLORS.THEME_TRANSPARENT_COLOR,
+  },
+  bubble_right_wrapper: {
+    backgroundColor: COLORS.BUTTON_COLOR,
+  },
 });
 
 export default Psychoeducation;
