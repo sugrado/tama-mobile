@@ -9,7 +9,7 @@ export const PatientListElement = ({item, onPress}: any) => {
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.list_item_container}
-        onPress={onPress}
+        onPress={() => onPress(item)}
         activeOpacity={0.5}>
         <View style={styles.column_item}>
           <MaterialCommunityIcons

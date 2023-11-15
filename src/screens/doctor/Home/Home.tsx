@@ -1,15 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  FlatList,
-  Alert,
-} from 'react-native';
+import {StyleSheet, View, TouchableOpacity, FlatList} from 'react-native';
 import SugradoBarcodeScanner from '../../../components/core/SugradoBarcodeScanner';
 import {Text} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {COLORS} from '../../../constants';
+import {COLORS, PAGE_NAMES} from '../../../constants';
 import {PatientListElement} from './PatientListElement';
 
 import {
@@ -31,13 +25,21 @@ const Home = ({navigation}: any) => {
 
   const onBack = () => {
     setScanner(undefined);
-    setTabBarVisible(true);
   };
 
   const onScanned = (code: string) => {
     onBack();
-    // TODO: Fetch patient data from server using code
-    Alert.alert(code);
+    navigateToPatientSearch(code);
+  };
+
+  const handleClickListElement = (item: any) => {
+    navigateToPatientSearch(item.id);
+  };
+
+  const navigateToPatientSearch = (code: string) => {
+    navigation.navigate(PAGE_NAMES.DOCTOR.HOME.SEARCH_PATIENT, {
+      code,
+    });
   };
 
   const handleScanQRCode = async () => {
@@ -45,20 +47,10 @@ const Home = ({navigation}: any) => {
     if (!permissionGranted) {
       showPermissionRequiredAlert();
     } else {
-      setTabBarVisible(false);
       setScanner(
         <SugradoBarcodeScanner onBack={onBack} onScanned={onScanned} />,
       );
     }
-  };
-
-  const setTabBarVisible = (visible: boolean) => {
-    navigation.setOptions({
-      tabBarStyle: {
-        height: visible ? 60 : 0,
-        display: visible ? 'flex' : 'none',
-      },
-    });
   };
 
   return (
@@ -95,7 +87,10 @@ const Home = ({navigation}: any) => {
             data={lastPatients}
             keyExtractor={item => item.id.toString()}
             renderItem={({item}) => (
-              <PatientListElement item={item} onPress={() => {}} />
+              <PatientListElement
+                item={item}
+                onPress={handleClickListElement}
+              />
             )}
           />
         </>
@@ -150,19 +145,24 @@ const styles = StyleSheet.create({
 });
 
 const dummyData = [
-  {id: 1, name: 'Ali Veli', createdAt: '12.12.2020 12:12:12'},
-  {id: 2, name: 'Ayşe Fatma', createdAt: '12.12.2020 12:12:12'},
-  {id: 3, name: 'Mehmet Ali', createdAt: '12.12.2020 12:12:12'},
-  {id: 4, name: 'Ahmet Mehmet', createdAt: '12.12.2020 12:12:12'},
-  {id: 5, name: 'Veli Ayşe', createdAt: '12.12.2020 12:12:12'},
-  {id: 6, name: 'Ali Veli', createdAt: '12.12.2020 12:12:12'},
-  {id: 7, name: 'Ayşe Fatma', createdAt: '12.12.2020 12:12:12'},
-  {id: 8, name: 'Mehmet Ali', createdAt: '12.12.2020 12:12:12'},
-  {id: 9, name: 'Ahmet Mehmet', createdAt: '12.12.2020 12:12:12'},
-  {id: 10, name: 'Veli Ayşe', createdAt: '12.12.2020 12:12:12'},
-  {id: 11, name: 'Ali Veli', createdAt: '12.12.2020 12:12:12'},
-  {id: 12, name: 'Ayşe Fatma', createdAt: '12.12.2020 12:12:12'},
-  {id: 13, name: 'Mehmet Ali', createdAt: '12.12.2020 12:12:12'},
-  {id: 14, name: 'Ahmet Mehmet', createdAt: '12.12.2020 12:12:12'},
-  {id: 15, name: 'Veli Ayşeadas', createdAt: '12.12.2020 12:12:12'},
+  {
+    id: 1,
+    name: 'Görkem Rıdvan ARIK',
+    createdAt: '12.12.2020 12:12',
+    qrCodeId: '00000000-0000-0000-0000-000000000000',
+  },
+  {id: 2, name: 'Ayşe Fatma', createdAt: '12.12.2020 12:12'},
+  {
+    id: 3,
+    name: 'Mehmet Ali',
+    createdAt: '12.12.2020 12:12',
+  },
+  {
+    id: 4,
+    name: 'Ahmet Mehmet',
+    createdAt: '12.12.2020 12:12',
+  },
+  {id: 5, name: 'Veli Ayşe', createdAt: '12.12.2020 12:12'},
+  {id: 6, name: 'Ali Veli', createdAt: '12.12.2020 12:12'},
+  {id: 7, name: 'Ayşe Fatma', createdAt: '12.12.2020 12:12'},
 ];

@@ -2,15 +2,15 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {COLORS, PAGE_NAMES} from '../../constants';
-import Home from '../../screens/doctor/Home/Home';
 import Profile from '../../screens/doctor/Profile/Profile';
+import HomeStackNavigator from './HomeStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigator() {
   return (
     <Tab.Navigator
-      initialRouteName={PAGE_NAMES.DOCTOR.HOME}
+      initialRouteName={PAGE_NAMES.DOCTOR.HOME.HOME_STACK}
       screenOptions={({route}) => ({
         tabBarHideOnKeyboard: true,
         unmountOnBlur: true,
@@ -36,8 +36,8 @@ export default function TabNavigator() {
         },
       })}>
       <Tab.Screen
-        name={PAGE_NAMES.DOCTOR.HOME}
-        component={Home}
+        name={PAGE_NAMES.DOCTOR.HOME.HOME_STACK}
+        component={HomeStackNavigator}
         options={{title: 'Ana Sayfa', tabBarLabel: 'Ana Sayfa'}}
       />
       <Tab.Screen
@@ -51,7 +51,7 @@ export default function TabNavigator() {
 
 const getIconNameByPage = (name: string, focused: boolean) => {
   switch (name) {
-    case PAGE_NAMES.DOCTOR.HOME:
+    case PAGE_NAMES.DOCTOR.HOME.HOME_STACK:
       return focused ? 'home' : 'home-outline';
     case PAGE_NAMES.DOCTOR.PROFILE:
       return focused ? 'person' : 'person-outline';
