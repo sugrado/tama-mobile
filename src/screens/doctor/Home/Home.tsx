@@ -10,13 +10,31 @@ import {
   checkCameraPermission,
   showPermissionRequiredAlert,
 } from '../../../utils/permission';
+import {getMyLastPatientSearchTransactions} from '../../../api/patientSearchTransactions/patientSearchTransaction';
+import {ApiDataResponse} from '../../../dto/api';
+import {LastTransactionDto} from '../../../api/patientSearchTransactions/dto/get-my-last-transactions-response.dto';
+import {CustomError} from '../../../utils/customErrors';
+import Loading from '../../../components/layout/Loading';
+import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
 
 const Home = ({navigation}: any) => {
   const [scanner, setScanner] = useState<JSX.Element>();
-  const [lastPatients, setLastPatients] = useState<any[]>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [lastPatients, setLastPatients] = useState<
+    LastTransactionDto[] | null
+  >();
+  const [error, setError] = useState<CustomError | null>(null);
 
   useEffect(() => {
-    setLastPatients(dummyData);
+    const getLastTransactions = async () => {
+      setLoading(true);
+      const response: ApiDataResponse<LastTransactionDto[]> =
+        await getMyLastPatientSearchTransactions();
+      setError(response.error);
+      setLastPatients(response.data);
+      setLoading(false);
+    };
+    getLastTransactions();
   }, []);
 
   if (scanner) {
@@ -32,8 +50,8 @@ const Home = ({navigation}: any) => {
     navigateToPatientSearch(code);
   };
 
-  const handleClickListElement = (item: any) => {
-    navigateToPatientSearch(item.id);
+  const handleClickListElement = (item: LastTransactionDto) => {
+    navigateToPatientSearch(item.patientQRCodeId);
   };
 
   const navigateToPatientSearch = (code: string) => {
@@ -54,48 +72,58 @@ const Home = ({navigation}: any) => {
   };
 
   return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        style={styles.box}
-        activeOpacity={0.5}
-        onPress={handleScanQRCode}>
-        <View style={styles.left_content}>
-          <Text variant="headlineSmall" style={styles.title}>
-            QR Kod Tara
-          </Text>
-          <Text variant="bodyMedium" style={styles.description}>
-            Hasta bilgilerini görüntülemek için QR kodunu okutun.
-          </Text>
-        </View>
-        <View style={styles.right_content}>
-          <MaterialCommunityIcons name="qrcode-scan" size={80} color="white" />
-        </View>
-      </TouchableOpacity>
-      {lastPatients && lastPatients.length > 0 && (
-        <>
-          <View style={styles.last_patients_title_container}>
-            <MaterialCommunityIcons
-              name="history"
-              size={24}
-              color={COLORS.BUTTON_COLOR}
-            />
-            <Text variant="titleMedium" style={styles.last_patients_title}>
-              Son sorgulananlar
+    <>
+      {loading && <Loading loading={loading} />}
+      <View style={styles.container}>
+        <TouchableOpacity
+          style={styles.box}
+          activeOpacity={0.5}
+          onPress={handleScanQRCode}>
+          <View style={styles.left_content}>
+            <Text variant="headlineSmall" style={styles.title}>
+              QR Kod Tara
+            </Text>
+            <Text variant="bodyMedium" style={styles.description}>
+              Hasta bilgilerini görüntülemek için QR kodunu okutun.
             </Text>
           </View>
-          <FlatList
-            data={lastPatients}
-            keyExtractor={item => item.id.toString()}
-            renderItem={({item}) => (
-              <PatientListElement
-                item={item}
-                onPress={handleClickListElement}
+          <View style={styles.right_content}>
+            <MaterialCommunityIcons
+              name="qrcode-scan"
+              size={80}
+              color="white"
+            />
+          </View>
+        </TouchableOpacity>
+        {lastPatients && lastPatients.length > 0 && (
+          <>
+            <View style={styles.last_patients_title_container}>
+              <MaterialCommunityIcons
+                name="history"
+                size={24}
+                color={COLORS.BUTTON_COLOR}
               />
-            )}
-          />
-        </>
-      )}
-    </View>
+              <Text variant="titleMedium" style={styles.last_patients_title}>
+                Son sorgulananlar
+              </Text>
+            </View>
+            <FlatList
+              data={lastPatients}
+              keyExtractor={(item, index) =>
+                item.patientQRCodeId + index.toString()
+              }
+              renderItem={({item}) => (
+                <PatientListElement
+                  item={item}
+                  onPress={handleClickListElement}
+                />
+              )}
+            />
+          </>
+        )}
+      </View>
+      {error && <SugradoErrorSnackbar error={error} />}
+    </>
   );
 };
 
@@ -143,26 +171,3 @@ const styles = StyleSheet.create({
     marginStart: 10,
   },
 });
-
-const dummyData = [
-  {
-    id: 1,
-    name: 'Görkem Rıdvan ARIK',
-    createdAt: '12.12.2020 12:12',
-    qrCodeId: '00000000-0000-0000-0000-000000000000',
-  },
-  {id: 2, name: 'Ayşe Fatma', createdAt: '12.12.2020 12:12'},
-  {
-    id: 3,
-    name: 'Mehmet Ali',
-    createdAt: '12.12.2020 12:12',
-  },
-  {
-    id: 4,
-    name: 'Ahmet Mehmet',
-    createdAt: '12.12.2020 12:12',
-  },
-  {id: 5, name: 'Veli Ayşe', createdAt: '12.12.2020 12:12'},
-  {id: 6, name: 'Ali Veli', createdAt: '12.12.2020 12:12'},
-  {id: 7, name: 'Ayşe Fatma', createdAt: '12.12.2020 12:12'},
-];

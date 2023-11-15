@@ -3,8 +3,18 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import React from 'react';
 import {COLORS} from '../../../constants';
 import {Divider, Text} from 'react-native-paper';
+import {LastTransactionDto} from '../../../api/patientSearchTransactions/dto/get-my-last-transactions-response.dto';
+import {formatDate} from '../../../utils/dateFormatExtension';
 
-export const PatientListElement = ({item, onPress}: any) => {
+type PatientListElementProps = {
+  item: LastTransactionDto;
+  onPress: (item: LastTransactionDto) => void;
+};
+
+export const PatientListElement = ({
+  item,
+  onPress,
+}: PatientListElementProps) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -18,7 +28,7 @@ export const PatientListElement = ({item, onPress}: any) => {
             color={COLORS.BUTTON_COLOR}
           />
           <Text variant="bodyMedium" style={styles.list_item_text}>
-            {item.name}
+            {item.patientFullName}
           </Text>
         </View>
         <View style={styles.column_item}>
@@ -28,7 +38,7 @@ export const PatientListElement = ({item, onPress}: any) => {
             color={COLORS.BUTTON_COLOR}
           />
           <Text variant="bodyMedium" style={styles.date_text}>
-            {item.createdAt}
+            {formatDate(item.createdAt)}
           </Text>
         </View>
       </TouchableOpacity>
