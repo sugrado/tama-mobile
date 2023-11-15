@@ -3,10 +3,10 @@ import {
   LoginDto,
   PreparedTokensDto,
   UserRoles,
-} from '../dtos/auth.dto';
-import axiosInstance from '../contexts/AxiosInterceptor';
-import {ApiDataResponse, ApiErrorResponse} from '../dtos/api';
-import {CustomError} from '../utils/customErrors';
+} from './dtos/auth.dto';
+import axiosInstance from '../../contexts/AxiosInterceptor';
+import {ApiDataResponse, ApiErrorResponse} from '../../dto/api';
+import {CustomError} from '../../utils/customErrors';
 
 export const login = async (
   credential: string,

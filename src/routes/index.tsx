@@ -4,7 +4,11 @@ import {useAuth} from '../contexts/AuthContext';
 import {StatusBar} from 'react-native';
 import {COLORS} from '../constants';
 import WelcomeStackNavigator from './WelcomeStackNavigator';
-import {LoggedPatientDto, LoggedUserType, UserRoles} from '../dtos/auth.dto';
+import {
+  LoggedPatientDto,
+  LoggedUserType,
+  UserRoles,
+} from '../api/auths/dtos/auth.dto';
 import * as PatientTabNav from './patient/TabNavigator';
 import * as DoctorTabNav from './doctor/TabNavigator';
 import * as PatientRelativeTabNav from './patient-relative/TabNavigator';

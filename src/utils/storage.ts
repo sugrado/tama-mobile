@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {LoggedUserType, TokenDto} from '../dtos/auth.dto';
+import {LoggedUserType, TokenDto} from '../api/auths/dtos/auth.dto';
 import {STORAGE_KEYS} from '../constants';
 
 export const saveAuthDataToStorage = async (

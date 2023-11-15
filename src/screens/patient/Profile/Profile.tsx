@@ -10,7 +10,7 @@ import SugradoDialog from '../../../components/core/SugradoDialog';
 import TopSmallIconLayout from '../../../components/layout/TopSmallIconLayout';
 import SugradoFormField from '../../../components/core/SugradoFormField';
 import {useForm} from 'react-hook-form';
-import {profile} from '../../../api/patient';
+import {profile} from '../../../api/patients/patient';
 import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
 import {CustomError} from '../../../utils/customErrors';
 

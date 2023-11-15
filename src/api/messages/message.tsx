@@ -1,7 +1,7 @@
-import axiosInstance from '../contexts/AxiosInterceptor';
-import {ApiDataResponse} from '../dtos/api';
-import {GetWithOptionsByMessageResponse} from '../dtos/get-with-options-by-message.dto';
-import {CustomError} from '../utils/customErrors';
+import axiosInstance from '../../contexts/AxiosInterceptor';
+import {ApiDataResponse} from '../../dto/api';
+import {GetWithOptionsByMessageResponse} from './dtos/get-with-options-by-message.dto';
+import {CustomError} from '../../utils/customErrors';
 
 export const getWithOptionsByMessage = async (
   messageId: number | null = null,

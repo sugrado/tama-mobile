@@ -3,7 +3,10 @@ import {COLORS} from '../../../../constants';
 import DailyQuestionCard from './DailyQuestionCard';
 import AnswerModal from './AnswerModal';
 import Loading from '../../../../components/layout/Loading';
-import {OptionDto, QuestionDto} from '../../../../dtos/question.dto';
+import {
+  OptionDto,
+  QuestionDto,
+} from '../../../../api/patients/dtos/question.dto';
 
 const DailyQuestions = () => {
   const [questions, setQuestions] = useState<any[]>([]);

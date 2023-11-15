@@ -6,7 +6,7 @@ import SugradoSelectBox, {
   SelectBoxData,
 } from '../../../../components/core/SugradoSelectBox';
 import Loading from '../../../../components/layout/Loading';
-import {QuestionDto} from '../../../../dtos/question.dto';
+import {QuestionDto} from '../../../../api/patients/dtos/question.dto';
 import {questions_dummydata} from './DailyQuestions';
 
 type AnswerModalProps = {

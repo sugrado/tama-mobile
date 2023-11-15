@@ -1,7 +1,7 @@
-import {GetProfileFromAuthResponse} from '../dtos/doctor-profle-response.dto';
-import axiosInstance from '../contexts/AxiosInterceptor';
-import {ApiDataResponse} from '../dtos/api';
-import {CustomError} from '../utils/customErrors';
+import {GetProfileFromAuthResponse} from './dtos/doctor-profle-response.dto';
+import axiosInstance from '../../contexts/AxiosInterceptor';
+import {ApiDataResponse} from '../../dto/api';
+import {CustomError} from '../../utils/customErrors';
 
 export const profile = async (): Promise<
   ApiDataResponse<GetProfileFromAuthResponse>

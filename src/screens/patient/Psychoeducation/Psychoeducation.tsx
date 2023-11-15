@@ -8,7 +8,7 @@ import {
   Reply,
   User,
 } from 'react-native-gifted-chat';
-import {getWithOptionsByMessage} from '../../../api/message';
+import {getWithOptionsByMessage} from '../../../api/messages/message';
 import {ActionKind, reducer} from './reducer';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import {CustomError} from '../../../utils/customErrors';

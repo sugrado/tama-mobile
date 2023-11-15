@@ -7,15 +7,15 @@ import {
   LoggedDoctorDto,
   LoggedPatientRelativeDto,
   UserWithTokensDto,
-} from '../dtos/auth.dto';
+} from '../api/auths/dtos/auth.dto';
 import {
   removeAuthDataFromStorage,
   removeUserInfoFromStorage,
   saveAuthDataToStorage,
   setUserInfoToStorage,
 } from '../utils/storage';
-import {login, revokeToken} from '../api/auth';
-import {acceptConsent} from '../api/patient';
+import {login, revokeToken} from '../api/auths/auth';
+import {acceptConsent} from '../api/patients/patient';
 import {
   checkIsLoggedIn,
   refreshTokensIfExpired,

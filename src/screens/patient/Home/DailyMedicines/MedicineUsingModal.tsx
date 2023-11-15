@@ -3,7 +3,10 @@ import {Divider, IconButton, Text} from 'react-native-paper';
 import {FlatList, StyleSheet, View} from 'react-native';
 import SugradoModal from '../../../../components/core/SugradoModal';
 import Loading from '../../../../components/layout/Loading';
-import {DailyMedicineDto, TimeDto} from '../../../../dtos/dailyMedicine.dto';
+import {
+  DailyMedicineDto,
+  TimeDto,
+} from '../../../../api/patients/dtos/dailyMedicine.dto';
 import {COLORS} from '../../../../constants';
 
 type MedicineUsingModalProps = {

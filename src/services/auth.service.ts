@@ -1,9 +1,9 @@
-import {refreshTokens} from '../api/auth';
+import {refreshTokens} from '../api/auths/auth';
 import {
   LoggedUserType,
   PreparedTokensDto,
   UserWithTokensDto,
-} from '../dtos/auth.dto';
+} from '../api/auths/dtos/auth.dto';
 import {
   getAccessTokenFromStorage,
   getRefreshTokenFromStorage,

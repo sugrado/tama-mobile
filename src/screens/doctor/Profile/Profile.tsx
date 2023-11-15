@@ -12,7 +12,7 @@ import SugradoFormField from '../../../components/core/SugradoFormField';
 import {useForm} from 'react-hook-form';
 import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
 import {CustomError} from '../../../utils/customErrors';
-import {profile} from '../../../api/doctor';
+import {profile} from '../../../api/doctors/doctor';
 
 export default function Profile() {
   const {logout} = useAuth();

@@ -2,7 +2,10 @@ import React, {useEffect, useState} from 'react';
 import {COLORS} from '../../../../constants';
 import DailyMedicineCard from './DailyMedicineCard';
 import Loading from '../../../../components/layout/Loading';
-import {DailyMedicineDto, TimeDto} from '../../../../dtos/dailyMedicine.dto';
+import {
+  DailyMedicineDto,
+  TimeDto,
+} from '../../../../api/patients/dtos/dailyMedicine.dto';
 import MedicineUsingModal from './MedicineUsingModal';
 
 const DailyMedicines = () => {
