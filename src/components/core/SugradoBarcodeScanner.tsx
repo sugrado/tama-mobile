@@ -1,13 +1,15 @@
 import React, {useRef} from 'react';
 import {
   StyleSheet,
-  Text,
   View,
   TouchableOpacity,
   SafeAreaView,
   StatusBar,
 } from 'react-native';
 import {Camera, CameraApi, CameraType} from 'react-native-camera-kit';
+import {COLORS} from '../../constants';
+import {Text} from 'react-native-paper';
+
 type SugradoBarcodeScannerProps = {
   onBack: () => void;
   onScanned: (barcode: string) => void;
@@ -41,11 +43,11 @@ const SugradoBarcodeScanner = ({
       </View>
 
       <SafeAreaView style={styles.bottomButtons}>
-        <View style={styles.backBtnContainer}>
-          <TouchableOpacity onPress={onBack}>
-            <Text style={styles.textStyle}>Back</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity onPress={onBack} style={styles.backBtnContainer}>
+          <Text variant="titleLarge" style={styles.textStyle}>
+            Vazgeç
+          </Text>
+        </TouchableOpacity>
       </SafeAreaView>
     </View>
   );
@@ -58,26 +60,22 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: 'black',
   },
-
   cameraContainer: {
     justifyContent: 'center',
     flex: 1,
   },
   cameraPreview: {
-    aspectRatio: 3 / 4,
     width: '100%',
+    height: '100%',
   },
   bottomButtons: {
-    margin: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
+    backgroundColor: COLORS.THEME_COLOR,
   },
   backBtnContainer: {
-    alignItems: 'flex-start',
+    alignItems: 'center',
+    padding: 20,
   },
   textStyle: {
-    padding: 10,
-    color: 'white',
-    fontSize: 20,
+    color: COLORS.TEXT,
   },
 });
