@@ -12,8 +12,8 @@ function Login({navigation}: any) {
   const {doctorLogin} = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<CustomError | null>(null);
-  const [email, setEmail] = useState<string | undefined>(undefined);
-  const [password, setPassword] = useState<string | undefined>(undefined);
+  const [email, setEmail] = useState<string | undefined>('admin@admin.com');
+  const [password, setPassword] = useState<string | undefined>('Passw0rd');
   const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   const hasEmailErrors = () =>
