@@ -12,8 +12,12 @@ export const PAGE_NAMES = {
     AUTH: {
       LOGIN: 'doctorLogin',
     },
-    HOME: 'home',
-    PROFILE: 'profile',
+    HOME: {
+      HOME_STACK: 'doctorHomeStack',
+      HOME: 'doctorHome',
+      SEARCH_PATIENT: 'searchPatient',
+    },
+    PROFILE: 'doctorProfile',
   },
   PATIENT_RELATIVE: {
     HOME: 'home',
@@ -26,8 +30,8 @@ export const PAGE_NAMES = {
       LOGIN: 'patientLogin',
     },
     HOME: {
-      HOME_STACK: 'homeStack',
-      HOME: 'home',
+      HOME_STACK: 'patientHomeStack',
+      HOME: 'patientHome',
       DAILY_QUESTIONS: 'dailyQuestions',
       DAILY_MEDICINES: 'dailyMedicines',
     },
@@ -41,7 +45,7 @@ export const PAGE_NAMES = {
       NEW_APPOINTMENT: 'newAppointment',
       PAST_APPOINTMENTS: 'pastAppointments',
     },
-    PROFILE: 'profile',
+    PROFILE: 'patientProfile',
     PSYCHOEDUCATION: 'psychoeducation',
   },
 };

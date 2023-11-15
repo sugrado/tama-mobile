@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
+import {Image, StyleSheet, TouchableOpacity} from 'react-native';
 import {useAuth} from '../../../contexts/AuthContext';
 import {COLORS, FORM_ERROR_MESSAGES, REGEXES} from '../../../constants';
 import SugradoTextInput from '../../../components/core/SugradoTextInput';
@@ -10,9 +10,12 @@ import SugradoDialog from '../../../components/core/SugradoDialog';
 import TopSmallIconLayout from '../../../components/layout/TopSmallIconLayout';
 import SugradoFormField from '../../../components/core/SugradoFormField';
 import {useForm} from 'react-hook-form';
-import {profile} from '../../../api/patients/patient';
+import {profile, getQRCode} from '../../../api/patients/patient';
 import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
 import {CustomError} from '../../../utils/customErrors';
+import SugradoModal from '../../../components/core/SugradoModal';
+import {Text} from 'react-native-paper';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 export default function Profile() {
   const {logout} = useAuth();
@@ -20,6 +23,8 @@ export default function Profile() {
     useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<CustomError | null>(null);
+  const [qrCode, setQrCode] = useState<string>();
+  const [qrModalVisible, setQrModalVisible] = useState<boolean>(false);
   const {
     control,
     handleSubmit,
@@ -147,11 +152,66 @@ export default function Profile() {
     setLoading(false);
   };
 
+  const handleShowQRCode = async () => {
+    if (qrCode) {
+      setQrModalVisible(true);
+      return;
+    }
+    setLoading(true);
+    const myQR = await getQRCode();
+    if (myQR.error) {
+      setLoading(false);
+      setError(myQR.error);
+      return;
+    }
+    const base64Image = 'data:image/png;base64,' + myQR.data!.qrCode;
+    setQrCode(base64Image);
+    setLoading(false);
+    setQrModalVisible(true);
+  };
+
+  const closeQRModal = () => {
+    setQrModalVisible(false);
+  };
+
   return (
     <>
       {loading && <Loading loading={loading} />}
+      <SugradoModal
+        visible={qrModalVisible}
+        onDismiss={closeQRModal}
+        dismissable={true}>
+        {qrCode && (
+          <Image
+            source={{uri: qrCode}}
+            style={styles.qr_code}
+            height={300}
+            width={300}
+          />
+        )}
+        <SugradoButton
+          onPress={closeQRModal}
+          title="Kapat"
+          buttonColor="gray"
+          style={styles.modal_footer_button}
+        />
+      </SugradoModal>
       {error == null ? (
         <TopSmallIconLayout pageName="Profil Bilgileri">
+          <TouchableOpacity
+            onPress={handleShowQRCode}
+            activeOpacity={0.7}
+            style={styles.qr_code_container}>
+            <MaterialIcons
+              style={styles.qr_icon}
+              name="qr-code"
+              size={70}
+              color={COLORS.BUTTON_COLOR}
+            />
+            <Text variant="bodyMedium" style={styles.show_qr_code_text}>
+              QR Kodunu Gör
+            </Text>
+          </TouchableOpacity>
           <SugradoFormField
             control={control}
             rules={rules.firstName}
@@ -288,6 +348,31 @@ const styles = StyleSheet.create({
   save_button: {
     marginTop: 20,
     width: '75%',
+    alignSelf: 'center',
+  },
+  modal_footer_button: {
+    marginTop: 20,
+    width: '40%',
+    alignSelf: 'center',
+  },
+  qr_code: {
+    alignSelf: 'center',
+    marginVertical: 20,
+  },
+  qr_code_container: {
+    alignSelf: 'center',
+    borderWidth: 2,
+    borderRadius: 10,
+    padding: 10,
+    borderColor: COLORS.BUTTON_COLOR,
+    marginTop: 20,
+  },
+  show_qr_code_text: {
+    textAlign: 'center',
+    color: COLORS.BUTTON_COLOR,
+    fontWeight: 'bold',
+  },
+  qr_icon: {
     alignSelf: 'center',
   },
 });

@@ -3,6 +3,7 @@ import axiosInstance from '../../contexts/AxiosInterceptor';
 import {ApiDataResponse, ApiErrorResponse} from '../../dto/api';
 import {CustomError} from '../../utils/customErrors';
 import {GetSummaryResponse} from './dtos/get-summary-response';
+import {GetMyQRCodeResponse} from './dtos/get-my-qr-code-response.dto';
 
 export const acceptConsent = async (): Promise<ApiErrorResponse> => {
   try {
@@ -26,12 +27,25 @@ export const profile = async (): Promise<
   }
 };
 
-export const summary = async (
-  username: string,
+export const qrSummary = async (
+  qrCodeId: string,
 ): Promise<ApiDataResponse<GetSummaryResponse>> => {
   try {
     const res = await axiosInstance.get<GetSummaryResponse>(
-      `patients/${username}/summary`,
+      `patients/${qrCodeId}/qr-summary`,
+    );
+    return {data: res.data, error: null};
+  } catch (error) {
+    return {data: null, error: error as CustomError};
+  }
+};
+
+export const getQRCode = async (): Promise<
+  ApiDataResponse<GetMyQRCodeResponse>
+> => {
+  try {
+    const res = await axiosInstance.get<GetMyQRCodeResponse>(
+      'patients/qr-code',
     );
     return {data: res.data, error: null};
   } catch (error) {

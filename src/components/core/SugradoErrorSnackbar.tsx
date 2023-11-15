@@ -50,7 +50,7 @@ const SugradoErrorSnackbar = ({
           <Entypo name="tools" size={80} color={COLORS.THEME_COLOR} />
           <Text variant="bodyMedium" style={styles.retry_text}>
             Lütfen internet bağlantınızı kontrol ettikten sonra tekrar deneyin.
-            Sorun devam ederse bize bildirin.
+            Sorun devam ederse sistem yöneticisi ile iletişime geçin.
           </Text>
           <Button
             mode="outlined"
