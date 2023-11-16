@@ -5,7 +5,7 @@ import Loading from '../../../../components/layout/Loading';
 import {
   DailyMedicineDto,
   TimeDto,
-} from '../../../../api/patients/dtos/dailyMedicine.dto';
+} from '../../../../api/patients/dtos/daily-medicine.dto';
 import MedicineUsingModal from './MedicineUsingModal';
 
 const DailyMedicines = () => {

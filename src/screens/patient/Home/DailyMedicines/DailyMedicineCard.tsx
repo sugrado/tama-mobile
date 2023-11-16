@@ -2,7 +2,7 @@ import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import {Card, IconButton, Text} from 'react-native-paper';
 import {COLORS} from '../../../../constants';
-import {DailyMedicineDto} from '../../../../api/patients/dtos/dailyMedicine.dto';
+import {DailyMedicineDto} from '../../../../api/patients/dtos/daily-medicine.dto';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 type DailyMedicineCardProps = {

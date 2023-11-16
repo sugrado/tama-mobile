@@ -2,21 +2,22 @@ import React, {useState} from 'react';
 import {Text} from 'react-native-paper';
 import {StyleSheet} from 'react-native';
 import SugradoModal from '../../../../components/core/SugradoModal';
-import SugradoSelectBox, {
-  SelectBoxData,
-} from '../../../../components/core/SugradoSelectBox';
+import SugradoSelectBox from '../../../../components/core/SugradoSelectBox';
 import Loading from '../../../../components/layout/Loading';
-import {QuestionDto} from '../../../../api/patients/dtos/question.dto';
-import {questions_dummydata} from './DailyQuestions';
+import {PatientHomeDailyQuestionOption} from '../../../../api/dailyQuestions/dto/patient-home-daily-question.dto';
+import {answerDailyQuestion} from '../../../../api/dailyQuestions/dailyQuestions';
+import {AnswerDailyQuestionDto} from '../../../../api/dailyQuestions/dto/answer-daily-question.dto';
+import {CustomError} from '../../../../utils/customErrors';
+import SugradoErrorSnackbar from '../../../../components/core/SugradoErrorSnackbar';
 
 type AnswerModalProps = {
   visible: boolean;
   onDismiss: () => void;
-  onCompleted: (questions: QuestionDto[]) => void;
+  onCompleted: () => void;
   title: string;
   label: string;
-  data: SelectBoxData[];
-  questionId: string;
+  data: PatientHomeDailyQuestionOption[];
+  questionId: number;
 };
 
 const AnswerModal = ({
@@ -29,32 +30,19 @@ const AnswerModal = ({
   questionId,
 }: AnswerModalProps) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const handleCompleted = async (selectedItem: any, _: number) => {
-    // TODO: go to api and save data
-    // axiosInstance
-    //   .post(`daily-questions`, {
-    //     answer: selectedItem.id,
-    //     questionId: questionId,
-    //   })
-    //   .then(function (response) {
-    //     console.log(response.data);
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
+  const [error, setError] = useState<CustomError | null>();
 
+  const handleCompleted = async (selectedItem: any, _: number) => {
     setLoading(true);
-    await wait(2000);
-    onCompleted(questions_dummydata as QuestionDto[]); // TODO: post servisinden geriye güncellenmiş sorular dönecek.
+    const res = await answerDailyQuestion({
+      dailyQuestionId: questionId,
+      answer: String(selectedItem.id),
+    } as AnswerDailyQuestionDto);
+    setError(res.error);
     setLoading(false);
+    onCompleted();
   };
-  function wait(ms: any) {
-    return new Promise((resolve, _) => {
-      setTimeout(() => {
-        resolve(ms);
-      }, ms);
-    });
-  }
+
   return (
     <>
       {loading && <Loading loading={loading} />}
@@ -69,6 +57,7 @@ const AnswerModal = ({
           onSelected={handleCompleted}
         />
       </SugradoModal>
+      {error && <SugradoErrorSnackbar error={error} />}
     </>
   );
 };

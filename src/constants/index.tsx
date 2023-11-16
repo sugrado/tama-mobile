@@ -34,6 +34,7 @@ export const PAGE_NAMES = {
       HOME: 'patientHome',
       DAILY_QUESTIONS: 'dailyQuestions',
       DAILY_MEDICINES: 'dailyMedicines',
+      SCALES: 'scales',
     },
     MY_MEDICINES: {
       MY_MEDICINES_TOP_TAB: 'myMedicinesTopTab',

@@ -10,8 +10,7 @@ type DailyQuestionCardProps = {
   onPress: () => void;
   bodyText: string;
   backgroundColor: string;
-  answer: string;
-  answered: boolean;
+  answer: string | undefined;
 };
 
 const DailyQuestionCard = ({
@@ -20,7 +19,6 @@ const DailyQuestionCard = ({
   onPress,
   bodyText,
   backgroundColor,
-  answered,
   answer,
 }: DailyQuestionCardProps) => {
   return (
@@ -29,7 +27,7 @@ const DailyQuestionCard = ({
         backgroundColor: backgroundColor,
         ...styles.card,
       }}
-      onPress={answered ? () => {} : onPress}>
+      onPress={answer ? () => {} : onPress}>
       <Card.Content>
         <View style={styles.cardHeader}>
           <View style={styles.cardHeaderElement}>
@@ -44,13 +42,13 @@ const DailyQuestionCard = ({
         <View style={styles.cardBody}>
           <View style={styles.text_column}>
             <Text variant="bodyLarge">{bodyText}</Text>
-            {answered && (
+            {!!answer && (
               <Text variant="bodyMedium" style={styles.answer_text}>
                 Verilen Cevap: {answer}
               </Text>
             )}
           </View>
-          {!answered && (
+          {!answer && (
             <IconButton
               style={styles.button_column}
               icon="file-document-edit-outline"
