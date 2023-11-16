@@ -1,69 +1,228 @@
 import {View, ScrollView, StyleSheet} from 'react-native';
-import React from 'react';
+import React, {useCallback, useState} from 'react';
 import HomeCard from './HomeCard';
 import {COLORS, DIMENSIONS, PAGE_NAMES} from '../../../constants';
 import {Image} from 'react-native';
 import {Text} from 'react-native-paper';
 import {useAuth} from '../../../contexts/AuthContext';
+import {getHomeScreenData} from '../../../api/patients/patient';
+import {CustomError} from '../../../utils/customErrors';
+import {GetHomeScreenDataResponse} from '../../../api/patients/dtos/get-home-screen-data-response.dto';
+import Loading from '../../../components/layout/Loading';
+import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
+import {useFocusEffect} from '@react-navigation/native';
+import {generateId, getEndOfTheDayCountdown} from '../../../utils/helpers';
 
 const Home = ({navigation}: any) => {
   const {userInfo} = useAuth();
+  const [error, setError] = useState<CustomError | null>();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [completedCardList, setCompletedCardList] = useState<JSX.Element[]>([]);
+  const [unCompletedCardList, setUnCompletedCardList] = useState<JSX.Element[]>(
+    [],
+  );
+  const [comingActivitiesList, setComingActivitiesList] = useState<
+    JSX.Element[]
+  >([]);
+
+  useFocusEffect(
+    useCallback(() => {
+      resetLists();
+      loadScreen();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []),
+  );
+
+  const resetLists = () => {
+    setCompletedCardList([]);
+    setUnCompletedCardList([]);
+    setComingActivitiesList([]);
+  };
+
+  const loadScreen = async () => {
+    setLoading(true);
+    const res = await getHomeScreenData();
+    if (res?.error) {
+      setError(res.error);
+      setLoading(false);
+      return;
+    }
+    setLists(res.data!);
+    setError(null);
+    setLoading(false);
+  };
+
+  const setLists = (dataResponse: GetHomeScreenDataResponse) => {
+    const dailyQuestionCard = (
+      <HomeCard
+        key={generateId()}
+        icon="notebook-check-outline"
+        headerText="Günlük Halet-i Ruhiye"
+        backgroundColor={
+          dataResponse.countOfDailyQuestionForAnswer > 0
+            ? COLORS.CARD_UNSUCCESS_BACKGROUND
+            : COLORS.CARD_SUCCESS_BACKGROUND
+        }
+        statusColor={
+          dataResponse.countOfDailyQuestionForAnswer > 0
+            ? COLORS.DARK_RED
+            : COLORS.THEME_COLOR
+        }
+        statusText={
+          dataResponse.countOfDailyQuestionForAnswer > 0
+            ? 'Bekliyor'
+            : 'Tamamlandı'
+        }
+        bodyText={
+          dataResponse.countOfDailyQuestionForAnswer > 0
+            ? `Cevaplaman gereken ${dataResponse.countOfDailyQuestionForAnswer} adet soru seni bekliyor!`
+            : 'Bugün cevaplaman gereken bütün soruları cevapladın. Tebrikler!'
+        }
+        footerText={
+          dataResponse.countOfDailyQuestionForAnswer > 0
+            ? `Kalan Süre: ${getEndOfTheDayCountdown()}`
+            : ''
+        }
+        onPress={() => {
+          navigation.navigate(PAGE_NAMES.PATIENT.HOME.DAILY_QUESTIONS);
+        }}
+      />
+    );
+    const medicinesText = '';
+    dataResponse.dailyMedicinesToUse.forEach(medicine => {
+      medicinesText.concat(medicine.name + ': ' + medicine.usageTimes + '\n');
+    });
+    const dailyMedicineCard = (
+      <HomeCard
+        key={generateId()}
+        icon="medical-bag"
+        headerText="Günlük İlaç Takibi"
+        statusColor={
+          dataResponse.dailyMedicinesToUse.length > 0
+            ? COLORS.DARK_RED
+            : COLORS.THEME_COLOR
+        }
+        statusText={
+          dataResponse.dailyMedicinesToUse.length > 0
+            ? 'Bekliyor'
+            : 'Tamamlandı'
+        }
+        bodyText={
+          dataResponse.dailyMedicinesToUse.length > 0
+            ? 'Bugün kullanman gereken ilaçları takip etmeyi unutma!'
+            : 'Bugün kullanman gereken bütün ilaçları kullandın. Tebrikler!'
+        }
+        footerText={medicinesText}
+        onPress={() => {
+          navigation.navigate(PAGE_NAMES.PATIENT.HOME.DAILY_MEDICINES);
+        }}
+      />
+    );
+    const scalesCard = (
+      <HomeCard
+        key={generateId()}
+        icon="format-list-checks"
+        headerText="Ölçeklendirme Soruları"
+        statusColor={COLORS.DARK_RED}
+        statusText={'Bekliyor'}
+        bodyText={`Doktorunun doldurmanı istediği ${dataResponse.countOfScaleToComplete} adet ölçek formu seni bekliyor!`}
+        onPress={() => {
+          navigation.navigate(PAGE_NAMES.PATIENT.HOME.SCALES);
+        }}
+        backgroundColor={COLORS.CARD_UNSUCCESS_BACKGROUND}
+      />
+    );
+    const appointmentCard = (
+      <HomeCard
+        key={generateId()}
+        icon="calendar-month-outline"
+        headerText="Randevu Hatırlatıcısı"
+        bodyText="Yaklaşan randevunu unutma!"
+        footerText={'30 Ağustos 2023 14:30 - Dr. Anıl İBİŞ'}
+        onPress={() => {
+          navigation.navigate(
+            PAGE_NAMES.PATIENT.APPOINTMENTS.APPOINTMENT_TOP_TAB,
+          );
+        }}
+      />
+    );
+
+    let comingActivities: JSX.Element[] = [];
+    let completed: JSX.Element[] = [];
+    let uncompleted: JSX.Element[] = [];
+
+    if (dataResponse.countOfDailyQuestionForAnswer > 0) {
+      uncompleted.push(dailyQuestionCard);
+    } else {
+      completed.push(dailyQuestionCard);
+    }
+
+    if (dataResponse.dailyMedicinesToUse.length > 0) {
+      uncompleted.push(dailyMedicineCard);
+    } else {
+      completed.push(dailyMedicineCard);
+    }
+
+    if (dataResponse.countOfScaleToComplete > 0) {
+      uncompleted.push(scalesCard);
+    }
+
+    // TODO: Buna da kural eklenecek
+    comingActivities.push(appointmentCard);
+
+    setCompletedCardList(prev => {
+      return [...prev, ...completed];
+    });
+    setUnCompletedCardList(prev => {
+      return [...prev, ...uncompleted];
+    });
+    setComingActivitiesList(prev => {
+      return [...prev, ...comingActivities];
+    });
+  };
+
   return (
-    <ScrollView
-      style={styles.scroll_container}
-      showsVerticalScrollIndicator={false}>
-      <View style={styles.header}>
-        <Text variant="headlineSmall" style={styles.header_text}>
-          TAMA'ya Hoşgeldin!{'\n'}
-          {userInfo!.firstName}
-        </Text>
-        <Image
-          source={require('../../../assets/icon_transparent.png')}
-          style={styles.header_logo}
-        />
-      </View>
-      <View style={styles.content}>
-        <Text style={styles.card_title}>Bildirimlerin</Text>
-        <HomeCard
-          icon="notebook-check-outline"
-          headerText="Günlük Halet-i Ruhiye"
-          statusColor={COLORS.DARK_RED}
-          statusText="Bekliyor"
-          bodyText="Cevaplaman gereken 3 adet soru seni bekliyor!"
-          footerText="Kalan Süre: 2 saat"
-          onPress={() => {
-            navigation.navigate(PAGE_NAMES.PATIENT.HOME.DAILY_QUESTIONS);
-          }}
-          backgroundColor={COLORS.CARD_UNSUCCESS_BACKGROUND}
-        />
-        <Text style={styles.card_title}>Tamamlananlar</Text>
-        <HomeCard
-          icon="medical-bag"
-          headerText="Günlük İlaç Takibi"
-          statusColor={COLORS.THEME_COLOR}
-          statusText="Tamamlandı"
-          bodyText="Bugün kullanman gereken ilaçları takip etmeyi unutma!"
-          footerText={
-            'A İlacı: 13:30, 19:30' + '\n' + 'B İlacı: 12:00, 18:00, 00:00'
-          }
-          onPress={() => {
-            navigation.navigate(PAGE_NAMES.PATIENT.HOME.DAILY_MEDICINES);
-          }}
-        />
-        <Text style={styles.card_title}>Yaklaşan Aktiviteler</Text>
-        <HomeCard
-          icon="calendar-month-outline"
-          headerText="Randevu Hatırlatıcısı"
-          bodyText="Yaklaşan randevunu unutma!"
-          footerText={'30 Ağustos 2023 14:30 - Dr. Anıl İBİŞ'}
-          onPress={() => {
-            navigation.navigate(
-              PAGE_NAMES.PATIENT.APPOINTMENTS.APPOINTMENT_TOP_TAB,
-            );
-          }}
-        />
-      </View>
-    </ScrollView>
+    <>
+      {loading && <Loading loading={loading} />}
+      {error ? (
+        <SugradoErrorSnackbar error={error} retry={() => loadScreen()} />
+      ) : (
+        <ScrollView
+          style={styles.scroll_container}
+          showsVerticalScrollIndicator={false}>
+          <View style={styles.header}>
+            <Text variant="headlineSmall" style={styles.header_text}>
+              TAMA'ya Hoşgeldin!{'\n'}
+              {userInfo!.firstName}
+            </Text>
+            <Image
+              source={require('../../../assets/icon_transparent.png')}
+              style={styles.header_logo}
+            />
+          </View>
+          <View style={styles.content}>
+            {unCompletedCardList.length > 0 && (
+              <Text style={styles.card_title}>Bildirimlerin</Text>
+            )}
+            {unCompletedCardList.map(card => {
+              return card;
+            })}
+            {completedCardList.length > 0 && (
+              <Text style={styles.card_title}>Tamamlananlar</Text>
+            )}
+            {completedCardList.map(card => {
+              return card;
+            })}
+            {comingActivitiesList.length > 0 && (
+              <Text style={styles.card_title}>Yaklaşan Aktiviteler</Text>
+            )}
+            {comingActivitiesList.map(card => {
+              return card;
+            })}
+          </View>
+        </ScrollView>
+      )}
+    </>
   );
 };
 

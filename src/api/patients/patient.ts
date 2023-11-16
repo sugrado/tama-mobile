@@ -4,6 +4,7 @@ import {ApiDataResponse, ApiErrorResponse} from '../../dto/api';
 import {CustomError} from '../../utils/customErrors';
 import {GetSummaryResponse} from './dtos/get-summary-response';
 import {GetMyQRCodeResponse} from './dtos/get-my-qr-code-response.dto';
+import {GetHomeScreenDataResponse} from './dtos/get-home-screen-data-response.dto';
 
 export const acceptConsent = async (): Promise<ApiErrorResponse> => {
   try {
@@ -46,6 +47,19 @@ export const getQRCode = async (): Promise<
   try {
     const res = await axiosInstance.get<GetMyQRCodeResponse>(
       'patients/qr-code',
+    );
+    return {data: res.data, error: null};
+  } catch (error) {
+    return {data: null, error: error as CustomError};
+  }
+};
+
+export const getHomeScreenData = async (): Promise<
+  ApiDataResponse<GetHomeScreenDataResponse>
+> => {
+  try {
+    const res = await axiosInstance.get<GetHomeScreenDataResponse>(
+      'patients/home',
     );
     return {data: res.data, error: null};
   } catch (error) {
