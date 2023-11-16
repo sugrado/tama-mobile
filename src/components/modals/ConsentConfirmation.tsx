@@ -12,18 +12,9 @@ const ConsentConfirmation = () => {
 
   const handleAccept = async () => {
     setLoading(true);
-    await wait(2000);
     await setPatientConsentStatus();
     setLoading(false);
   };
-
-  function wait(ms: any) {
-    return new Promise((resolve, _) => {
-      setTimeout(() => {
-        resolve(ms);
-      }, ms);
-    });
-  }
 
   return (
     <>

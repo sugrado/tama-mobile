@@ -11,3 +11,23 @@ export const formatDate = (date: string | Date): string => {
   const dateString = `${day}.${month}.${year} ${hours}:${minutes}`;
   return dateString;
 };
+
+export const generateId = (): number => Math.round(Math.random() * 1000000);
+
+export const getEndOfTheDayCountdown = (): string => {
+  const now = new Date();
+  const endOfTheDay = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    23,
+    59,
+    59,
+  );
+  const diff = endOfTheDay.getTime() - now.getTime();
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  if (hours < 1) {
+    return '1 saatten az';
+  }
+  return `${hours} saat`;
+};

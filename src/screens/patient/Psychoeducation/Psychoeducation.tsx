@@ -17,6 +17,7 @@ import Loading from '../../../components/layout/Loading';
 import {COLORS, DIMENSIONS} from '../../../constants';
 import * as Q from 'react-native-gifted-chat/lib/QuickReplies';
 import {Text} from 'react-native-paper';
+import {generateId} from '../../../utils/helpers';
 
 const users = {
   patient: {
@@ -54,8 +55,6 @@ const Psychoeducation = () => {
     initMessages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const generateId = () => Math.round(Math.random() * 1000000);
 
   const getMessageWithOptions = async (
     messageId: number | null,

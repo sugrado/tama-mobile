@@ -4,7 +4,7 @@ import React from 'react';
 import {COLORS} from '../../../constants';
 import {Divider, Text} from 'react-native-paper';
 import {LastTransactionDto} from '../../../api/patientSearchTransactions/dto/get-my-last-transactions-response.dto';
-import {formatDate} from '../../../utils/dateFormatExtension';
+import {formatDate} from '../../../utils/helpers';
 
 type PatientListElementProps = {
   item: LastTransactionDto;
