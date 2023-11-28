@@ -22,7 +22,7 @@ import {
 } from '../services/auth.service';
 import {CustomError} from '../utils/customErrors';
 
-type AuthContextType = {
+export type AuthContextType = {
   userInfo: LoggedUserType | null;
   setUserInfo: React.Dispatch<React.SetStateAction<LoggedUserType | null>>;
   doctorLogin: (email: string, password: string) => Promise<CustomError | null>;
@@ -49,7 +49,7 @@ type AuthProviderProps = {
 export const AuthProvider = ({
   children,
   onCheckCompleted,
-}: AuthProviderProps) => {
+}: AuthProviderProps): JSX.Element => {
   const [userInfo, setUserInfo] = useState<LoggedUserType | null>(null);
   const [isCheckProgress, setIsCheckProgress] = useState<boolean>(false);
 
@@ -181,4 +181,4 @@ export const AuthProvider = ({
   );
 };
 
-export const useAuth = () => React.useContext(AuthContext);
+export const useAuth = (): AuthContextType => React.useContext(AuthContext);

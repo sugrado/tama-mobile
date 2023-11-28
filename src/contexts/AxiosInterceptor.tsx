@@ -4,8 +4,8 @@ import axios, {
   HttpStatusCode,
   InternalAxiosRequestConfig,
 } from 'axios';
-import {useEffect} from 'react';
-import {useAuth} from './AuthContext';
+import {ReactNode, useEffect} from 'react';
+import {AuthContextType, useAuth} from './AuthContext';
 import {API_URL} from '../config';
 import {getAccessTokenFromStorage} from '../utils/storage';
 import {
@@ -41,8 +41,8 @@ type AxiosInterceptorProps = {
   children: React.ReactNode;
 };
 
-const AxiosInterceptor = ({children}: AxiosInterceptorProps) => {
-  const {setUserInfo} = useAuth();
+const AxiosInterceptor = ({children}: AxiosInterceptorProps): ReactNode => {
+  const {setUserInfo}: AuthContextType = useAuth();
 
   useEffect(() => {
     const requestConfigInterceptor = async (
@@ -111,7 +111,7 @@ const AxiosInterceptor = ({children}: AxiosInterceptorProps) => {
       responseErrInterceptor,
     );
 
-    return () => {
+    return (): void => {
       axiosInstance.interceptors.request.eject(requestInterceptor);
       axiosInstance.interceptors.response.eject(responseInterceptor);
     };
