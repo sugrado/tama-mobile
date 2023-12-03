@@ -1,6 +1,5 @@
 export class GetHomeScreenDataResponse {
   countOfDailyQuestionForAnswer: number;
-  countOfScaleToComplete: number;
   dailyMedicinesToUse: PatientHomeDailyMedicine[];
 }
 
