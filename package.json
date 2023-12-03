@@ -31,8 +31,7 @@
     "react-native-select-dropdown": "^3.4.0",
     "react-native-splash-screen": "^3.3.0",
     "react-native-tab-view": "^3.5.2",
-    "react-native-vector-icons": "^10.0.0",
-    "swr": "^2.2.4"
+    "react-native-vector-icons": "^10.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

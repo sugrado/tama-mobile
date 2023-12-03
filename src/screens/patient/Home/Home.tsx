@@ -118,20 +118,6 @@ const Home = ({navigation}: any) => {
         }}
       />
     );
-    const scalesCard = (
-      <HomeCard
-        key={generateId()}
-        icon="format-list-checks"
-        headerText="Ölçeklendirme Soruları"
-        statusColor={COLORS.DARK_RED}
-        statusText={'Bekliyor'}
-        bodyText={`Doktorunun doldurmanı istediği ${dataResponse.countOfScaleToComplete} adet ölçek formu seni bekliyor!`}
-        onPress={() => {
-          navigation.navigate(PAGE_NAMES.PATIENT.HOME.SCALES);
-        }}
-        backgroundColor={COLORS.CARD_UNSUCCESS_BACKGROUND}
-      />
-    );
     const appointmentCard = (
       <HomeCard
         key={generateId()}
@@ -161,10 +147,6 @@ const Home = ({navigation}: any) => {
       uncompleted.push(dailyMedicineCard);
     } else {
       completed.push(dailyMedicineCard);
-    }
-
-    if (dataResponse.countOfScaleToComplete > 0) {
-      uncompleted.push(scalesCard);
     }
 
     // TODO: Buna da kural eklenecek
