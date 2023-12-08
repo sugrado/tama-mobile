@@ -32,14 +32,14 @@ const SugradoDialog = ({
         </Dialog.Content>
         <Dialog.Actions>
           <SugradoButton
-            title={cancelText}
-            buttonColor={COLORS.DARK_RED}
-            onPress={cancelAction}
-          />
-          <SugradoButton
             title={actionText}
             buttonColor={COLORS.BUTTON_COLOR}
             onPress={action}
+          />
+          <SugradoButton
+            title={cancelText}
+            buttonColor={COLORS.DARK_RED}
+            onPress={cancelAction}
           />
         </Dialog.Actions>
       </Dialog>
