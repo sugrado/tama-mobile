@@ -182,12 +182,17 @@ export default function Profile() {
         onDismiss={closeQRModal}
         dismissable={true}>
         {qrCode && (
-          <Image
-            source={{uri: qrCode}}
-            style={styles.qr_code}
-            height={300}
-            width={300}
-          />
+          <>
+            <Text variant="bodyMedium" style={styles.show_qr_code_text}>
+              QR Kodunuz
+            </Text>
+            <Image
+              source={{uri: qrCode}}
+              style={styles.qr_code}
+              height={300}
+              width={300}
+            />
+          </>
         )}
         <SugradoButton
           onPress={closeQRModal}
@@ -205,12 +210,9 @@ export default function Profile() {
             <MaterialIcons
               style={styles.qr_icon}
               name="qr-code"
-              size={70}
+              size={40}
               color={COLORS.BUTTON_COLOR}
             />
-            <Text variant="bodyMedium" style={styles.show_qr_code_text}>
-              QR Kodunu Gör
-            </Text>
           </TouchableOpacity>
           <SugradoFormField
             control={control}
@@ -363,7 +365,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderWidth: 2,
     borderRadius: 10,
-    padding: 10,
+    padding: 5,
     borderColor: COLORS.BUTTON_COLOR,
     marginTop: 20,
   },
