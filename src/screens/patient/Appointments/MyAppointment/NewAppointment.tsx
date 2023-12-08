@@ -13,8 +13,9 @@ import SugradoFormField from '../../../../components/core/SugradoFormField';
 
 class CreatedAppointmentDto {
   doctorFullName: string;
-  date: string;
-  time: string;
+  takenDate: string;
+  probableStartTime: string;
+  probableEndTime: string;
 }
 
 type NewAppointmentProps = {
@@ -86,8 +87,9 @@ const NewAppointment = ({onAppointmentCreated}: NewAppointmentProps) => {
     console.log(data);
     onAppointmentCreated({
       doctorFullName: 'Eduardo Wayon',
-      date: '2023-10-5',
-      time: '10:00',
+      takenDate: '2024-01-10',
+      probableStartTime: '10:00',
+      probableEndTime: '10:15',
     } as CreatedAppointmentDto);
     hideModal();
     setLoading(false);

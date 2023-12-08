@@ -1,72 +1,96 @@
 import React, {useEffect, useState} from 'react';
-import {View} from 'react-native';
 import {Card, Text} from 'react-native-paper';
 import {COLORS} from '../../../../constants';
 import SugradoButton from '../../../../components/core/SugradoButton';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import SugradoDialog from '../../../../components/core/SugradoDialog';
 import NewAppointment from './NewAppointment';
 import Loading from '../../../../components/layout/Loading';
+import {
+  cancelAppointment,
+  getMyAppointment,
+} from '../../../../api/appointments/appointment';
+import SugradoErrorSnackbar from '../../../../components/core/SugradoErrorSnackbar';
+import {CustomError} from '../../../../utils/customErrors';
+import {GetMyAppointmentResponse} from '../../../../api/appointments/dtos/get-my-appointment-response';
+import {FormatType, formatDate} from '../../../../utils/helpers';
 
-export class MyAppointmentDto {
-  hospital: string;
-  department: string;
-  date: string;
-  time: string;
-  doctor: string;
-}
-
-export default function MyAppointment(/*{navigation}: any*/) {
+export default function MyAppointment() {
   const [loading, setLoading] = useState<boolean>(false);
-  const [appointment, setAppointment] = useState<MyAppointmentDto | null>(null);
+  const [appointment, setAppointment] =
+    useState<GetMyAppointmentResponse | null>(null);
+  const [error, setError] = useState<CustomError | null>(null);
   const [cancelDialogVisible, setCancelDialogVisible] =
     useState<boolean>(false);
 
   useEffect(() => {
-    //TODO: Get appointment from backend
-    setLoading(true);
-    setAppointment({
-      date: '30 Ağustos 2023',
-      time: '14:30',
-      doctor: 'Dr. Anıl İBİŞ',
-    } as MyAppointmentDto);
-    // setAppointment(null);
-    setLoading(false);
+    getAppointment();
   }, []);
 
-  // TODO: will be used for refreshing the page when tab is pressed
-  // useEffect(() => {
-  //   const unsubscribe = navigation.addListener('focus', (e: any) => {
-  //     console.log('e', e);
-  //   });
+  const getAppointment = async () => {
+    setLoading(true);
+    const response = await getMyAppointment();
+    if (response?.error) {
+      setError(response.error);
+      setLoading(false);
+      return;
+    }
+    setAppointment(response!.data);
+    setError(null);
+    setLoading(false);
+  };
 
-  //   return unsubscribe;
-  // }, [navigation]);
-
-  const handleCancel = () => {
-    // TODO: backend call for cancel appointment
+  const handleCancel = async () => {
+    setLoading(true);
+    const res = await cancelAppointment();
+    if (res?.error) {
+      setError(res.error);
+      setCancelDialogVisible(false);
+      setLoading(false);
+      return;
+    }
     setAppointment(null);
+    setError(null);
+    setLoading(false);
     setCancelDialogVisible(false);
   };
 
   const showDialog = () => setCancelDialogVisible(true);
 
   return (
-    <View>
-      {loading && <Loading loading={loading} fillBackground={true} />}
+    <>
+      {loading && <Loading loading={loading} />}
       {appointment ? (
         <Card style={styles.card_green}>
           <Card.Content style={styles.card_content}>
             <Text variant="titleLarge" style={styles.card_title_text}>
               Randevu Bilgileriniz
             </Text>
-            <Text variant="bodyMedium" style={styles.card_body_success_text}>
-              Doktor: {appointment.doctor}
-              {'\n'}
-              Tarih: {appointment.date}
-              {'\n'}
-              Saat: {appointment.time}
-            </Text>
+            <View style={styles.partOfAppointment}>
+              <Text variant="bodyMedium" style={styles.card_body_success_text}>
+                Doktor:
+              </Text>
+              <Text variant="bodyMedium" style={styles.card_body_success_text}>
+                {appointment.doctorFullName}
+              </Text>
+            </View>
+            <View style={styles.partOfAppointment}>
+              <Text variant="bodyMedium" style={styles.card_body_success_text}>
+                Tarih:
+              </Text>
+              <Text variant="bodyMedium" style={styles.card_body_success_text}>
+                {formatDate(appointment.takenDate, FormatType.DATE)}
+              </Text>
+            </View>
+            <View style={styles.partOfAppointment}>
+              <Text variant="bodyMedium" style={styles.card_body_success_text}>
+                Saat:
+              </Text>
+              <Text variant="bodyMedium" style={styles.card_body_success_text}>
+                {formatDate(appointment.probableStartTime, FormatType.TIME)} -{' '}
+                {formatDate(appointment.probableEndTime, FormatType.TIME)}
+              </Text>
+            </View>
           </Card.Content>
           <Card.Actions>
             <SugradoButton
@@ -90,7 +114,7 @@ export default function MyAppointment(/*{navigation}: any*/) {
         <Card style={styles.card_red}>
           <Card.Content style={styles.card_content}>
             <Text variant="titleLarge" style={styles.card_title_text}>
-              Randevu Bilgileriniz
+              Randevu Bulunamadı
             </Text>
             <Text variant="bodyMedium" style={styles.card_body_fail_text}>
               Mevcut randevunuz bulunmamaktadır. Lütfen aşağıdaki butonu
@@ -99,20 +123,27 @@ export default function MyAppointment(/*{navigation}: any*/) {
             <NewAppointment
               onAppointmentCreated={a =>
                 setAppointment({
-                  date: a.date,
-                  doctor: a.doctorFullName,
-                  time: a.time,
-                } as MyAppointmentDto)
+                  takenDate: a.takenDate,
+                  doctorFullName: a.doctorFullName,
+                  probableStartTime: a.probableStartTime,
+                  probableEndTime: a.probableEndTime,
+                } as GetMyAppointmentResponse)
               }
             />
           </Card.Content>
         </Card>
       )}
-    </View>
+      {error && <SugradoErrorSnackbar error={error} />}
+    </>
   );
 }
 
 const styles = StyleSheet.create({
+  partOfAppointment: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+  },
   form_field: {
     marginBottom: 10,
   },
@@ -126,10 +157,13 @@ const styles = StyleSheet.create({
   },
   card_content: {
     alignItems: 'center',
+    flexDirection: 'column',
+    marginBottom: 20,
   },
   card_body_success_text: {
-    marginVertical: 15,
+    margin: 5,
     textAlign: 'center',
+    fontWeight: 'bold',
   },
   card_body_fail_text: {
     textAlign: 'center',
@@ -137,6 +171,6 @@ const styles = StyleSheet.create({
   },
   card_title_text: {
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 20,
   },
 });
