@@ -123,8 +123,16 @@ const Home = ({navigation}: any) => {
         key={generateId()}
         icon="calendar-month-outline"
         headerText="Randevu Hatırlatıcısı"
-        bodyText="Yaklaşan randevunu unutma!"
-        footerText={'30 Ağustos 2023 14:30 - Dr. Anıl İBİŞ'}
+        bodyText={
+          dataResponse.appointmentReminder
+            ? 'Yaklaşan randevunu unutma!'
+            : 'Randevu almak için tıkla!'
+        }
+        footerText={
+          dataResponse.appointmentReminder
+            ? `${dataResponse.appointmentReminder.date} - ${dataResponse.appointmentReminder.doctorFullName}`
+            : 'Henüz randevu almadın. Almak için buraya tıklayabilirsin!'
+        }
         onPress={() => {
           navigation.navigate(
             PAGE_NAMES.PATIENT.APPOINTMENTS.APPOINTMENT_TOP_TAB,
