@@ -12,10 +12,11 @@ import SugradoFormField from '../../../components/core/SugradoFormField';
 import {useForm} from 'react-hook-form';
 import {profile, getQRCode} from '../../../api/patients/patient';
 import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
-import {CustomError} from '../../../utils/customErrors';
+import {CustomError, isCritical} from '../../../utils/customErrors';
 import SugradoModal from '../../../components/core/SugradoModal';
 import {Text} from 'react-native-paper';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import SugradoErrorPage from '../../../components/core/SugradoErrorPage';
 
 export default function Profile() {
   const {logout} = useAuth();
@@ -139,16 +140,16 @@ export default function Profile() {
 
   const showLogoutDialog = () => setLogoutDialogVisible(true);
   const onSubmit = async (data: any) => {
-    console.log(data);
+    console.log(data); // TODO: çalışmıyor
   };
 
   const handleLogout = async (): Promise<void> => {
     setLoading(true);
     const err = await logout();
-    console.log(err);
     if (err) {
       setError(err);
     }
+    setLogoutDialogVisible(false);
     setLoading(false);
   };
 
@@ -201,7 +202,9 @@ export default function Profile() {
           style={styles.modal_footer_button}
         />
       </SugradoModal>
-      {error == null ? (
+      {error && isCritical(error) ? (
+        <SugradoErrorPage retry={getMyInfo} />
+      ) : (
         <TopSmallIconLayout pageName="Profil Bilgileri">
           <TouchableOpacity
             onPress={handleShowQRCode}
@@ -334,9 +337,8 @@ export default function Profile() {
             cancelText="Hayır"
           />
         </TopSmallIconLayout>
-      ) : (
-        <SugradoErrorSnackbar error={error} retry={() => getMyInfo()} />
       )}
+      {error && <SugradoErrorSnackbar error={error} />}
     </>
   );
 }

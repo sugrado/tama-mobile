@@ -13,9 +13,10 @@ import {
 import {getMyLastPatientSearchTransactions} from '../../../api/patientSearchTransactions/patientSearchTransaction';
 import {ApiDataResponse} from '../../../dto/api';
 import {LastTransactionDto} from '../../../api/patientSearchTransactions/dto/get-my-last-transactions-response.dto';
-import {CustomError} from '../../../utils/customErrors';
+import {CustomError, isCritical} from '../../../utils/customErrors';
 import Loading from '../../../components/layout/Loading';
 import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
+import SugradoErrorPage from '../../../components/core/SugradoErrorPage';
 
 const Home = ({navigation}: any) => {
   const [scanner, setScanner] = useState<JSX.Element>();
@@ -26,16 +27,17 @@ const Home = ({navigation}: any) => {
   const [error, setError] = useState<CustomError | null>(null);
 
   useEffect(() => {
-    const getLastTransactions = async () => {
-      setLoading(true);
-      const response: ApiDataResponse<LastTransactionDto[]> =
-        await getMyLastPatientSearchTransactions();
-      setError(response.error);
-      setLastPatients(response.data);
-      setLoading(false);
-    };
     getLastTransactions();
   }, []);
+
+  const getLastTransactions = async () => {
+    setLoading(true);
+    const response: ApiDataResponse<LastTransactionDto[]> =
+      await getMyLastPatientSearchTransactions();
+    setError(response.error);
+    setLastPatients(response.data);
+    setLoading(false);
+  };
 
   if (scanner) {
     return scanner;
@@ -74,54 +76,58 @@ const Home = ({navigation}: any) => {
   return (
     <>
       {loading && <Loading loading={loading} />}
-      <View style={styles.container}>
-        <TouchableOpacity
-          style={styles.box}
-          activeOpacity={0.5}
-          onPress={handleScanQRCode}>
-          <View style={styles.left_content}>
-            <Text variant="headlineSmall" style={styles.title}>
-              QR Kod Tara
-            </Text>
-            <Text variant="bodyMedium" style={styles.description}>
-              Hasta bilgilerini görüntülemek için QR kodunu okutun.
-            </Text>
-          </View>
-          <View style={styles.right_content}>
-            <MaterialCommunityIcons
-              name="qrcode-scan"
-              size={80}
-              color="white"
-            />
-          </View>
-        </TouchableOpacity>
-        {lastPatients && lastPatients.length > 0 && (
-          <>
-            <View style={styles.last_patients_title_container}>
-              <MaterialCommunityIcons
-                name="history"
-                size={24}
-                color={COLORS.BUTTON_COLOR}
-              />
-              <Text variant="titleMedium" style={styles.last_patients_title}>
-                Son sorgulananlar
+      {error && isCritical(error) ? (
+        <SugradoErrorPage retry={getLastTransactions} />
+      ) : (
+        <View style={styles.container}>
+          <TouchableOpacity
+            style={styles.box}
+            activeOpacity={0.5}
+            onPress={handleScanQRCode}>
+            <View style={styles.left_content}>
+              <Text variant="headlineSmall" style={styles.title}>
+                QR Kod Tara
+              </Text>
+              <Text variant="bodyMedium" style={styles.description}>
+                Hasta bilgilerini görüntülemek için QR kodunu okutun.
               </Text>
             </View>
-            <FlatList
-              data={lastPatients}
-              keyExtractor={(item, index) =>
-                item.patientQRCodeId + index.toString()
-              }
-              renderItem={({item}) => (
-                <PatientListElement
-                  item={item}
-                  onPress={handleClickListElement}
+            <View style={styles.right_content}>
+              <MaterialCommunityIcons
+                name="qrcode-scan"
+                size={80}
+                color="white"
+              />
+            </View>
+          </TouchableOpacity>
+          {lastPatients && lastPatients.length > 0 && (
+            <>
+              <View style={styles.last_patients_title_container}>
+                <MaterialCommunityIcons
+                  name="history"
+                  size={24}
+                  color={COLORS.BUTTON_COLOR}
                 />
-              )}
-            />
-          </>
-        )}
-      </View>
+                <Text variant="titleMedium" style={styles.last_patients_title}>
+                  Son sorgulananlar
+                </Text>
+              </View>
+              <FlatList
+                data={lastPatients}
+                keyExtractor={(item, index) =>
+                  item.patientQRCodeId + index.toString()
+                }
+                renderItem={({item}) => (
+                  <PatientListElement
+                    item={item}
+                    onPress={handleClickListElement}
+                  />
+                )}
+              />
+            </>
+          )}
+        </View>
+      )}
       {error && <SugradoErrorSnackbar error={error} />}
     </>
   );

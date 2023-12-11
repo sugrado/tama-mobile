@@ -8,7 +8,6 @@ import {PatientHomeDailyQuestionOption} from '../../../../api/dailyQuestions/dto
 import {answerDailyQuestion} from '../../../../api/dailyQuestions/dailyQuestions';
 import {AnswerDailyQuestionDto} from '../../../../api/dailyQuestions/dto/answer-daily-question.dto';
 import {CustomError} from '../../../../utils/customErrors';
-import SugradoErrorSnackbar from '../../../../components/core/SugradoErrorSnackbar';
 
 type AnswerModalProps = {
   visible: boolean;
@@ -18,6 +17,7 @@ type AnswerModalProps = {
   label: string;
   data: PatientHomeDailyQuestionOption[];
   questionId: number;
+  setError: React.Dispatch<React.SetStateAction<CustomError | null>>;
 };
 
 const AnswerModal = ({
@@ -28,9 +28,9 @@ const AnswerModal = ({
   label,
   data,
   questionId,
+  setError,
 }: AnswerModalProps) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<CustomError | null>();
 
   const handleCompleted = async (selectedItem: any, _: number) => {
     setLoading(true);
@@ -38,7 +38,12 @@ const AnswerModal = ({
       dailyQuestionId: questionId,
       answer: String(selectedItem.id),
     } as AnswerDailyQuestionDto);
-    setError(res.error);
+    if (res.error) {
+      setError(res.error);
+      setLoading(false);
+      return;
+    }
+    setError(null);
     setLoading(false);
     onCompleted();
   };
@@ -57,7 +62,6 @@ const AnswerModal = ({
           onSelected={handleCompleted}
         />
       </SugradoModal>
-      {error && <SugradoErrorSnackbar error={error} />}
     </>
   );
 };

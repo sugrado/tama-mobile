@@ -6,12 +6,18 @@ import {Image} from 'react-native';
 import {Text} from 'react-native-paper';
 import {useAuth} from '../../../contexts/AuthContext';
 import {getHomeScreenData} from '../../../api/patients/patient';
-import {CustomError} from '../../../utils/customErrors';
+import {CustomError, isCritical} from '../../../utils/customErrors';
 import {GetHomeScreenDataResponse} from '../../../api/patients/dtos/get-home-screen-data-response.dto';
 import Loading from '../../../components/layout/Loading';
 import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
 import {useFocusEffect} from '@react-navigation/native';
-import {generateId, getEndOfTheDayCountdown} from '../../../utils/helpers';
+import {
+  FormatType,
+  formatDate,
+  generateId,
+  getEndOfTheDayCountdown,
+} from '../../../utils/helpers';
+import SugradoErrorPage from '../../../components/core/SugradoErrorPage';
 
 const Home = ({navigation}: any) => {
   const {userInfo} = useAuth();
@@ -130,7 +136,16 @@ const Home = ({navigation}: any) => {
         }
         footerText={
           dataResponse.appointmentReminder
-            ? `${dataResponse.appointmentReminder.date} - ${dataResponse.appointmentReminder.doctorFullName}`
+            ? `Tarih: ${formatDate(
+                dataResponse.appointmentReminder.takenDate,
+                FormatType.DATE,
+              )}\nSaat: ${formatDate(
+                dataResponse.appointmentReminder.probableStartTime,
+                FormatType.TIME,
+              )} - ${formatDate(
+                dataResponse.appointmentReminder.probableEndTime,
+                FormatType.TIME,
+              )}\nDoktor: ${dataResponse.appointmentReminder.doctorFullName}`
             : 'Henüz randevu almadın. Almak için buraya tıklayabilirsin!'
         }
         onPress={() => {
@@ -157,7 +172,6 @@ const Home = ({navigation}: any) => {
       completed.push(dailyMedicineCard);
     }
 
-    // TODO: Buna da kural eklenecek
     comingActivities.push(appointmentCard);
 
     setCompletedCardList(prev => {
@@ -174,8 +188,8 @@ const Home = ({navigation}: any) => {
   return (
     <>
       {loading && <Loading loading={loading} />}
-      {error ? (
-        <SugradoErrorSnackbar error={error} retry={() => loadScreen()} />
+      {error && isCritical(error) ? (
+        <SugradoErrorPage retry={loadScreen} />
       ) : (
         <ScrollView
           style={styles.scroll_container}
@@ -212,6 +226,7 @@ const Home = ({navigation}: any) => {
           </View>
         </ScrollView>
       )}
+      {error && <SugradoErrorSnackbar error={error} />}
     </>
   );
 };

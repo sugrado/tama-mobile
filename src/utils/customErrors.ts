@@ -53,3 +53,8 @@ export type CustomError =
   | NotFoundError
   | ValidationError
   | RequestError;
+
+export const isCritical = (error: CustomError) =>
+  error instanceof InternalServerError ||
+  error instanceof AuthorizationError ||
+  error instanceof RequestError;
