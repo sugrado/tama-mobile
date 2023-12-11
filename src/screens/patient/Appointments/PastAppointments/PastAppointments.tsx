@@ -1,101 +1,101 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {FlatList, View, StyleSheet} from 'react-native';
-import {Searchbar, Text} from 'react-native-paper';
+import {Text} from 'react-native-paper';
 import {COLORS} from '../../../../constants';
 import Loading from '../../../../components/layout/Loading';
-import SugradoButton from '../../../../components/core/SugradoButton';
+import {RefreshControl} from 'react-native';
+import {getMyPast} from '../../../../api/appointments/appointment';
+import {
+  AppointmentStatus,
+  AppointmentStatusDataSource,
+  MyPastListItemDto,
+} from '../../../../api/appointments/dtos/my-past-list-item.dto';
+import {CustomError, isCritical} from '../../../../utils/customErrors';
+import SugradoErrorSnackbar from '../../../../components/core/SugradoErrorSnackbar';
+import SugradoErrorPage from '../../../../components/core/SugradoErrorPage';
+import {FormatType, formatDate} from '../../../../utils/helpers';
+import {useFocusEffect} from '@react-navigation/native';
 
-type ItemProps = {item: any};
+type ItemProps = {item: MyPastListItemDto};
 
-const Item = ({item}: ItemProps) => (
-  <View
-    style={{
-      ...styles.item_container,
-      backgroundColor: item.went
-        ? COLORS.CARD_SUCCESS_BACKGROUND
-        : COLORS.CARD_UNSUCCESS_BACKGROUND,
-      borderColor: item.went ? COLORS.THEME_COLOR : COLORS.DARK_RED,
-    }}>
-    <Text style={styles.selector_column}>#{item.id}</Text>
-    <View style={styles.info_column}>
-      <Text>Doktor: {item.doctorName}</Text>
-      <Text>Tarih: {item.date}</Text>
-      <Text>Saat: {item.time}</Text>
-      <Text>Durum: {item.went ? 'Gidildi' : 'Gidilmedi'}</Text>
+const Item = ({item}: ItemProps) => {
+  const unsuccess: boolean =
+    item.statusId === AppointmentStatus[AppointmentStatus.Cancelled];
+  return (
+    <View
+      style={{
+        ...styles.item_container,
+        backgroundColor: unsuccess
+          ? COLORS.CARD_UNSUCCESS_BACKGROUND
+          : COLORS.CARD_SUCCESS_BACKGROUND,
+        borderColor: unsuccess ? COLORS.DARK_RED : COLORS.THEME_COLOR,
+      }}>
+      <Text style={styles.selector_column}>#{item.id}</Text>
+      <View style={styles.info_column}>
+        <Text>Doktor: {item.doctorFullName}</Text>
+        <Text>Tarih: {formatDate(item.takenDate, FormatType.DATE)}</Text>
+        <Text>
+          Saat: {formatDate(item.probableStartTime, FormatType.TIME)} -{' '}
+          {formatDate(item.probableEndTime, FormatType.TIME)}
+        </Text>
+        <Text>
+          Durum:{' '}
+          {AppointmentStatusDataSource.find(s => s.id === item.statusId)?.name}
+        </Text>
+      </View>
     </View>
-  </View>
-);
+  );
+};
 
 export default function PastAppointments() {
-  const [appointments, setAppointments] = useState<any[]>();
-  const [searchText, setSearchText] = useState<string>('');
+  const [appointments, setAppointments] = useState<MyPastListItemDto[]>();
   const [loading, setLoading] = useState<boolean>(false);
-  useEffect(() => {
-    setAppointments(dummyData);
-  }, []);
+  const [error, setError] = useState<CustomError | null>(null);
 
-  const handleSearch = async () => {
-    // TODO: go to api and get filtered data
-    if (searchText.length > 0) {
-      setLoading(true);
-      const filteredData = dummyData.filter(item => {
-        return item.id
-          .toString()
-          .toLowerCase()
-          .includes(searchText.toLowerCase());
-      });
-      await wait(2000);
-      setAppointments(filteredData);
+  useFocusEffect(
+    useCallback(() => {
+      getMyPastAppointments();
+    }, []),
+  );
+
+  const getMyPastAppointments = async () => {
+    setLoading(true);
+    const res = await getMyPast(0, 10);
+    if (res.error) {
+      setError(res.error);
       setLoading(false);
-    } else {
-      setLoading(true);
-      setAppointments(dummyData);
-      setLoading(false);
+      return;
     }
+    setError(null);
+    setAppointments(res.data?.items);
+    setLoading(false);
   };
-  function wait(ms: any) {
-    return new Promise((resolve, _) => {
-      setTimeout(() => {
-        resolve(ms);
-      }, ms);
-    });
-  }
+
   return (
     <>
       {loading && <Loading loading={loading} />}
-      <View style={styles.search_container}>
-        <Searchbar
-          style={styles.search_bar}
-          placeholder="Randevu numarası giriniz"
-          onChangeText={e => {
-            setSearchText(e);
-          }}
-          onClearIconPress={() => {
-            setLoading(true);
-            setSearchText('');
-            setAppointments(dummyData);
-            setLoading(false);
-          }}
-          value={searchText}
-          keyboardType="numeric"
-        />
-        <SugradoButton
-          style={styles.filter_button}
-          title="Filtrele"
-          onPress={handleSearch}
-          disabled={!searchText}
-          icon="calendar-search"
-        />
-      </View>
-      {appointments && appointments.length > 0 ? (
-        <FlatList
-          data={appointments}
-          renderItem={({item}) => <Item item={item} />}
-          keyExtractor={(item: any) => item.id}
-        />
+      {error && isCritical(error) ? (
+        <SugradoErrorPage retry={getMyPastAppointments} />
       ) : (
-        <Text style={styles.no_data_text}>Geçmiş randevu bulunamadı.</Text>
+        <>
+          {appointments && appointments.length > 0 ? (
+            <FlatList
+              data={appointments}
+              renderItem={({item}) => <Item item={item} />}
+              keyExtractor={(item: MyPastListItemDto) => String(item.id)}
+              refreshControl={
+                <RefreshControl
+                  refreshing={loading}
+                  onRefresh={getMyPastAppointments}
+                />
+              }
+            />
+          ) : (
+            <Text style={styles.no_data_text}>Geçmiş randevu bulunamadı.</Text>
+          )}
+        </>
       )}
+      {error && <SugradoErrorSnackbar error={error} />}
     </>
   );
 }
@@ -127,94 +127,8 @@ const styles = StyleSheet.create({
     flexBasis: '90%',
     flex: 1,
   },
-  search_container: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    margin: 10,
-  },
-  search_bar: {
-    width: '67%',
-    backgroundColor: COLORS.MODAL_BACKGROUND_COLOR,
-  },
-  filter_button: {
-    width: '30%',
-  },
   no_data_text: {
     textAlign: 'center',
     marginTop: 20,
   },
 });
-
-const dummyData = [
-  {
-    id: 1,
-    doctorName: 'Robinia Bretton',
-    date: '23.07.2023',
-    time: '12:49',
-    went: true,
-  },
-  {
-    id: 2,
-    doctorName: 'Olive Palfreeman',
-    date: '02.07.2023',
-    time: '23:56',
-    went: false,
-  },
-  {
-    id: 3,
-    doctorName: 'Etty Chetwind',
-    date: '07.03.2023',
-    time: '2:35',
-    went: true,
-  },
-  {
-    id: 4,
-    doctorName: 'Cyndia Davidwitz',
-    date: '03.11.2022',
-    time: '7:36',
-    went: false,
-  },
-  {
-    id: 5,
-    doctorName: 'Michele Safhill',
-    date: '25.10.2022',
-    time: '11:28',
-    went: true,
-  },
-  {
-    id: 6,
-    doctorName: 'Aleece Macauley',
-    date: '06.06.2023',
-    time: '13:28',
-    went: true,
-  },
-  {
-    id: 7,
-    doctorName: 'Colly Fisbburne',
-    date: '24.02.2023',
-    time: '14:04',
-    went: true,
-  },
-  {
-    id: 8,
-    doctorName: 'Audry Drejer',
-    date: '23.03.2023',
-    time: '23:27',
-    went: false,
-  },
-  {
-    id: 9,
-    doctorName: 'Wynn Nardrup',
-    date: '12.05.2023',
-    time: '3:10',
-    went: false,
-  },
-  {
-    id: 9999,
-    doctorName: 'Jacenta Barritt',
-    date: '22.03.2023',
-    time: '3:35',
-    went: false,
-  },
-];

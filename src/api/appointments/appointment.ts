@@ -1,5 +1,6 @@
 import axiosInstance from '../../contexts/AxiosInterceptor';
 import {ApiDataResponse, ApiErrorResponse} from '../../dto/api';
+import {GetListResponse} from '../../dto/paginate';
 import {CustomError} from '../../utils/customErrors';
 import {
   CreateAppointmentCommand,
@@ -8,6 +9,7 @@ import {
 import {GetAvailableTimesFromDoctorAndDateResponse} from './dtos/get-available-times-from-doctor-and-date-response';
 import {GetDoctorAvailableDatesResponse} from './dtos/get-doctor-available-dates-response';
 import {GetMyAppointmentResponse} from './dtos/get-my-appointment-response';
+import {MyPastListItemDto} from './dtos/my-past-list-item.dto';
 
 export const getMyAppointment = async (): Promise<
   ApiDataResponse<GetMyAppointmentResponse>
@@ -15,6 +17,20 @@ export const getMyAppointment = async (): Promise<
   try {
     const res = await axiosInstance.get<GetMyAppointmentResponse>(
       'appointments/my-appointment',
+    );
+    return {data: res.data, error: null};
+  } catch (error) {
+    return {data: null, error: error as CustomError};
+  }
+};
+
+export const getMyPast = async (
+  pageIndex: number,
+  pageSize: number,
+): Promise<ApiDataResponse<GetListResponse<MyPastListItemDto>>> => {
+  try {
+    const res = await axiosInstance.get<GetListResponse<MyPastListItemDto>>(
+      `appointments/my-past?pageIndex=${pageIndex}&pageSize=${pageSize}`,
     );
     return {data: res.data, error: null};
   } catch (error) {
