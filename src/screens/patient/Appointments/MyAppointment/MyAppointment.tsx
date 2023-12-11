@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {Card, Text} from 'react-native-paper';
 import {COLORS} from '../../../../constants';
 import SugradoButton from '../../../../components/core/SugradoButton';
@@ -10,10 +10,12 @@ import {
   cancelAppointment,
   getMyAppointment,
 } from '../../../../api/appointments/appointment';
-import SugradoErrorSnackbar from '../../../../components/core/SugradoErrorSnackbar';
-import {CustomError} from '../../../../utils/customErrors';
+import {CustomError, isCritical} from '../../../../utils/customErrors';
 import {GetMyAppointmentResponse} from '../../../../api/appointments/dtos/get-my-appointment-response';
 import {FormatType, formatDate} from '../../../../utils/helpers';
+import {useFocusEffect} from '@react-navigation/native';
+import SugradoErrorPage from '../../../../components/core/SugradoErrorPage';
+import SugradoErrorSnackbar from '../../../../components/core/SugradoErrorSnackbar';
 
 export default function MyAppointment() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -23,9 +25,11 @@ export default function MyAppointment() {
   const [cancelDialogVisible, setCancelDialogVisible] =
     useState<boolean>(false);
 
-  useEffect(() => {
-    getAppointment();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      getAppointment();
+    }, []),
+  );
 
   const getAppointment = async () => {
     setLoading(true);
@@ -60,80 +64,99 @@ export default function MyAppointment() {
   return (
     <>
       {loading && <Loading loading={loading} />}
-      {appointment ? (
-        <Card style={styles.card_green}>
-          <Card.Content style={styles.card_content}>
-            <Text variant="titleLarge" style={styles.card_title_text}>
-              Randevu Bilgileriniz
-            </Text>
-            <View style={styles.partOfAppointment}>
-              <Text variant="bodyMedium" style={styles.card_body_success_text}>
-                Doktor:
-              </Text>
-              <Text variant="bodyMedium" style={styles.card_body_success_text}>
-                {appointment.doctorFullName}
-              </Text>
-            </View>
-            <View style={styles.partOfAppointment}>
-              <Text variant="bodyMedium" style={styles.card_body_success_text}>
-                Tarih:
-              </Text>
-              <Text variant="bodyMedium" style={styles.card_body_success_text}>
-                {formatDate(appointment.takenDate, FormatType.DATE)}
-              </Text>
-            </View>
-            <View style={styles.partOfAppointment}>
-              <Text variant="bodyMedium" style={styles.card_body_success_text}>
-                Saat:
-              </Text>
-              <Text variant="bodyMedium" style={styles.card_body_success_text}>
-                {formatDate(appointment.probableStartTime, FormatType.TIME)} -{' '}
-                {formatDate(appointment.probableEndTime, FormatType.TIME)}
-              </Text>
-            </View>
-          </Card.Content>
-          <Card.Actions>
-            <SugradoButton
-              title="İptal Et"
-              icon="trash-can-outline"
-              onPress={showDialog}
-              buttonColor={COLORS.DARK_RED}
-            />
-            <SugradoDialog
-              title="Randevu İptali"
-              body="Randevunuzu iptal etmek istediğinizden emin misiniz?"
-              visible={cancelDialogVisible}
-              action={handleCancel}
-              actionText="Evet"
-              cancelAction={() => setCancelDialogVisible(false)}
-              cancelText="Hayır"
-            />
-          </Card.Actions>
-        </Card>
+      {error && isCritical(error) ? (
+        <SugradoErrorPage retry={getAppointment} />
       ) : (
-        <Card style={styles.card_red}>
-          <Card.Content style={styles.card_content}>
-            <Text variant="titleLarge" style={styles.card_title_text}>
-              Randevu Bulunamadı
-            </Text>
-            <Text variant="bodyMedium" style={styles.card_body_fail_text}>
-              Mevcut randevunuz bulunmamaktadır. Lütfen aşağıdaki butonu
-              kullanarak yeni randevu alınız.
-            </Text>
-            <NewAppointment
-              onAppointmentCreated={a =>
-                setAppointment({
-                  takenDate: a.takenDate,
-                  doctorFullName: a.doctorFullName,
-                  probableStartTime: a.probableStartTime,
-                  probableEndTime: a.probableEndTime,
-                } as GetMyAppointmentResponse)
-              }
-            />
-          </Card.Content>
-        </Card>
+        <>
+          {appointment ? (
+            <Card style={styles.card_green}>
+              <Card.Content style={styles.card_content}>
+                <Text variant="titleLarge" style={styles.card_title_text}>
+                  Randevu Bilgileriniz
+                </Text>
+                <View style={styles.partOfAppointment}>
+                  <Text
+                    variant="bodyMedium"
+                    style={styles.card_body_success_text}>
+                    Doktor:
+                  </Text>
+                  <Text
+                    variant="bodyMedium"
+                    style={styles.card_body_success_text}>
+                    {appointment.doctorFullName}
+                  </Text>
+                </View>
+                <View style={styles.partOfAppointment}>
+                  <Text
+                    variant="bodyMedium"
+                    style={styles.card_body_success_text}>
+                    Tarih:
+                  </Text>
+                  <Text
+                    variant="bodyMedium"
+                    style={styles.card_body_success_text}>
+                    {formatDate(appointment.takenDate, FormatType.DATE)}
+                  </Text>
+                </View>
+                <View style={styles.partOfAppointment}>
+                  <Text
+                    variant="bodyMedium"
+                    style={styles.card_body_success_text}>
+                    Saat:
+                  </Text>
+                  <Text
+                    variant="bodyMedium"
+                    style={styles.card_body_success_text}>
+                    {formatDate(appointment.probableStartTime, FormatType.TIME)}{' '}
+                    - {formatDate(appointment.probableEndTime, FormatType.TIME)}
+                  </Text>
+                </View>
+              </Card.Content>
+              <Card.Actions>
+                <SugradoButton
+                  title="İptal Et"
+                  icon="trash-can-outline"
+                  onPress={showDialog}
+                  buttonColor={COLORS.DARK_RED}
+                />
+                <SugradoDialog
+                  title="Randevu İptali"
+                  body="Randevunuzu iptal etmek istediğinizden emin misiniz?"
+                  visible={cancelDialogVisible}
+                  action={handleCancel}
+                  actionText="Evet"
+                  cancelAction={() => setCancelDialogVisible(false)}
+                  cancelText="Hayır"
+                />
+              </Card.Actions>
+            </Card>
+          ) : (
+            <Card style={styles.card_red}>
+              <Card.Content style={styles.card_content}>
+                <Text variant="titleLarge" style={styles.card_title_text}>
+                  Randevu Bulunamadı
+                </Text>
+                <Text variant="bodyMedium" style={styles.card_body_fail_text}>
+                  Mevcut randevunuz bulunmamaktadır. Lütfen aşağıdaki butonu
+                  kullanarak yeni randevu alınız.
+                </Text>
+                <NewAppointment
+                  setError={setError}
+                  onAppointmentCreated={a =>
+                    setAppointment({
+                      takenDate: a.takenDate,
+                      doctorFullName: a.doctorFullName,
+                      probableStartTime: a.probableStartTime,
+                      probableEndTime: a.probableEndTime,
+                    } as GetMyAppointmentResponse)
+                  }
+                />
+              </Card.Content>
+            </Card>
+          )}
+        </>
       )}
-      {error && <SugradoErrorSnackbar error={error} />}
+      {error && <SugradoErrorSnackbar error={error} duration={3000} />}
     </>
   );
 }

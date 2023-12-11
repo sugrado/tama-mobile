@@ -10,6 +10,8 @@ export class PatientHomeDailyMedicine {
 }
 
 export class PatientHomeAppointment {
-  date: string;
+  takenDate: string;
+  probableStartTime: string;
+  probableEndTime: string;
   doctorFullName: string;
 }
