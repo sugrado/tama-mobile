@@ -75,41 +75,47 @@ export default function MyAppointment() {
                   Randevu Bilgileriniz
                 </Text>
                 <View style={styles.partOfAppointment}>
+                  <View style={styles.gap} />
                   <Text
                     variant="bodyMedium"
-                    style={styles.card_body_success_text}>
+                    style={styles.card_body_title_element}>
                     Doktor:
                   </Text>
                   <Text
                     variant="bodyMedium"
-                    style={styles.card_body_success_text}>
+                    style={styles.card_body_value_element}>
                     {appointment.doctorFullName}
                   </Text>
+                  <View style={styles.gap} />
                 </View>
                 <View style={styles.partOfAppointment}>
+                  <View style={styles.gap} />
                   <Text
                     variant="bodyMedium"
-                    style={styles.card_body_success_text}>
+                    style={styles.card_body_title_element}>
                     Tarih:
                   </Text>
                   <Text
                     variant="bodyMedium"
-                    style={styles.card_body_success_text}>
+                    style={styles.card_body_value_element}>
                     {formatDate(appointment.takenDate, FormatType.DATE)}
                   </Text>
+                  <View style={styles.gap} />
                 </View>
                 <View style={styles.partOfAppointment}>
+                  <View style={styles.gap} />
                   <Text
                     variant="bodyMedium"
-                    style={styles.card_body_success_text}>
+                    style={styles.card_body_title_element}>
                     Saat:
                   </Text>
                   <Text
                     variant="bodyMedium"
-                    style={styles.card_body_success_text}>
+                    style={styles.card_body_value_element}>
                     {formatDate(appointment.probableStartTime, FormatType.TIME)}{' '}
                     - {formatDate(appointment.probableEndTime, FormatType.TIME)}
                   </Text>
+                  <View style={styles.gap} />
                 </View>
               </Card.Content>
               <Card.Actions>
@@ -162,18 +168,6 @@ export default function MyAppointment() {
 }
 
 const styles = StyleSheet.create({
-  partOfAppointment: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '80%',
-  },
-  form_field: {
-    marginBottom: 10,
-  },
-  card_red: {
-    margin: 10,
-    backgroundColor: COLORS.CARD_UNSUCCESS_BACKGROUND,
-  },
   card_green: {
     margin: 10,
     backgroundColor: COLORS.CARD_SUCCESS_BACKGROUND,
@@ -183,10 +177,33 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     marginBottom: 20,
   },
-  card_body_success_text: {
-    margin: 5,
-    textAlign: 'center',
+  partOfAppointment: {
+    flexDirection: 'row',
+    marginVertical: 10,
+  },
+  card_body_title_element: {
+    display: 'flex',
+    flexBasis: '25%',
+    flex: 1,
     fontWeight: 'bold',
+    alignSelf: 'center',
+  },
+  card_body_value_element: {
+    display: 'flex',
+    flexBasis: '55%',
+    flex: 1,
+  },
+  gap: {
+    display: 'flex',
+    flexBasis: '10%',
+    flex: 1,
+  },
+  form_field: {
+    marginBottom: 10,
+  },
+  card_red: {
+    margin: 10,
+    backgroundColor: COLORS.CARD_UNSUCCESS_BACKGROUND,
   },
   card_body_fail_text: {
     textAlign: 'center',
