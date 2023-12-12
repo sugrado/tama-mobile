@@ -1,4 +1,4 @@
-import React, {useCallback, useState} from 'react';
+import React, {memo, useCallback, useState} from 'react';
 import {FlatList, View, StyleSheet} from 'react-native';
 import {Text} from 'react-native-paper';
 import {COLORS} from '../../../../constants';
@@ -18,7 +18,7 @@ import {useFocusEffect} from '@react-navigation/native';
 
 type ItemProps = {item: MyPastListItemDto};
 
-const Item = ({item}: ItemProps) => {
+const Item = memo(({item}: ItemProps) => {
   const unsuccess: boolean =
     item.statusId === AppointmentStatus[AppointmentStatus.Cancelled];
   return (
@@ -45,37 +45,56 @@ const Item = ({item}: ItemProps) => {
       </View>
     </View>
   );
-};
+});
 
 export default function PastAppointments() {
-  const [appointments, setAppointments] = useState<MyPastListItemDto[]>();
+  const [appointments, setAppointments] = useState<MyPastListItemDto[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<CustomError | null>(null);
+  const [page, setPage] = useState<number>(0);
+  const [hasNext, setHasNext] = useState<boolean>(false);
 
   useFocusEffect(
     useCallback(() => {
-      getMyPastAppointments();
+      getMyPastAppointments(0);
+      setPage(0);
     }, []),
   );
 
-  const getMyPastAppointments = async () => {
+  const getMyPastAppointments = async (pageNum: number) => {
     setLoading(true);
-    const res = await getMyPast(0, 10);
+    const res = await getMyPast(pageNum, 10);
     if (res.error) {
       setError(res.error);
       setLoading(false);
       return;
     }
     setError(null);
-    setAppointments(res.data?.items);
+    setHasNext(res.data!.hasNext);
+    setAppointments(prev =>
+      pageNum === 0 ? res.data!.items : [...prev, ...res.data!.items],
+    );
     setLoading(false);
+  };
+
+  const getMoreAppointments = async () => {
+    if (!hasNext) {
+      return;
+    }
+    await getMyPastAppointments(page + 1);
+    setPage(page + 1);
   };
 
   return (
     <>
       {loading && <Loading loading={loading} />}
       {error && isCritical(error) ? (
-        <SugradoErrorPage retry={getMyPastAppointments} />
+        <SugradoErrorPage
+          retry={() => {
+            getMyPastAppointments(0);
+            setPage(0);
+          }}
+        />
       ) : (
         <>
           {appointments && appointments.length > 0 ? (
@@ -86,9 +105,13 @@ export default function PastAppointments() {
               refreshControl={
                 <RefreshControl
                   refreshing={loading}
-                  onRefresh={getMyPastAppointments}
+                  onRefresh={() => {
+                    getMyPastAppointments(0);
+                    setPage(0);
+                  }}
                 />
               }
+              onEndReached={getMoreAppointments}
             />
           ) : (
             <Text style={styles.no_data_text}>Geçmiş randevu bulunamadı.</Text>
