@@ -27,6 +27,14 @@ const Settings = ({navigation}: any) => {
     navigation.navigate(PAGE_NAMES.PATIENT.SETTINGS.QR_CODE);
   };
 
+  const handleMyRelativePress = async () => {
+    navigation.navigate(PAGE_NAMES.PATIENT.SETTINGS.MY_RELATIVES);
+  };
+
+  const handleSecurityPress = async () => {
+    navigation.navigate(PAGE_NAMES.PATIENT.SETTINGS.SECURITY);
+  };
+
   const handleLogoutPress = () => {
     setLogoutDialogVisible(true);
   };
@@ -59,7 +67,7 @@ const Settings = ({navigation}: any) => {
           <View style={styles.container}>
             <SettingRow
               icon="account"
-              title="Hesabım"
+              title="Bilgilerim"
               onPress={handleAccountPress}
             />
             <Divider />
@@ -67,6 +75,18 @@ const Settings = ({navigation}: any) => {
               icon="qrcode"
               title="QR Kodum"
               onPress={handleQRCodePress}
+            />
+            <Divider />
+            <SettingRow
+              icon="security"
+              title="Güvenlik"
+              onPress={handleSecurityPress}
+            />
+            <Divider />
+            <SettingRow
+              icon="account-multiple"
+              title="Yakınlarım"
+              onPress={handleMyRelativePress}
             />
             <Divider />
             <SettingRow

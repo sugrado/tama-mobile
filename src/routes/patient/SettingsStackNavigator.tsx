@@ -2,8 +2,10 @@ import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {PAGE_NAMES} from '../../constants';
 import Account from '../../screens/patient/Settings/Account';
-import Settings from '../../screens/patient/Settings/Settings';
+import Settings from '../../screens/patient/Settings';
 import QRCode from '../../screens/patient/Settings/QRCode';
+import MyRelatives from '../../screens/patient/Settings/MyRelatives';
+import Security from '../../screens/patient/Settings/Security';
 
 const SettingsStack = createStackNavigator();
 
@@ -33,6 +35,14 @@ const SettingsStackNavigator = () => (
     <SettingsStack.Screen
       name={PAGE_NAMES.PATIENT.SETTINGS.ACCOUNT}
       component={Account}
+    />
+    <SettingsStack.Screen
+      name={PAGE_NAMES.PATIENT.SETTINGS.MY_RELATIVES}
+      component={MyRelatives}
+    />
+    <SettingsStack.Screen
+      name={PAGE_NAMES.PATIENT.SETTINGS.SECURITY}
+      component={Security}
     />
     <SettingsStack.Screen
       name={PAGE_NAMES.PATIENT.SETTINGS.QR_CODE}

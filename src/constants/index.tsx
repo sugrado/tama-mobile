@@ -54,6 +54,8 @@ export const PAGE_NAMES = {
       SETTINGS: 'patientSettings',
       ACCOUNT: 'patientAccount',
       QR_CODE: 'patientQRCode',
+      SECURITY: 'patientSecurity',
+      MY_RELATIVES: 'patientMyRelatives',
     },
     PSYCHOEDUCATION: 'psychoeducation',
   },
