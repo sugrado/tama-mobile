@@ -4,7 +4,7 @@ import React from 'react';
 import {COLORS} from '../../../constants';
 import {Divider, Text} from 'react-native-paper';
 import {LastTransactionDto} from '../../../api/patientSearchTransactions/dto/get-my-last-transactions-response.dto';
-import {formatDate} from '../../../utils/helpers';
+import {FormatType, formatDate} from '../../../utils/helpers';
 
 type PatientListElementProps = {
   item: LastTransactionDto;
@@ -38,7 +38,7 @@ export const PatientListElement = ({
             color={COLORS.BUTTON_COLOR}
           />
           <Text variant="bodyMedium" style={styles.date_text}>
-            {formatDate(item.createdAt)}
+            {formatDate(item.createdAt, FormatType.DATE_TIME)}
           </Text>
         </View>
       </TouchableOpacity>

@@ -17,7 +17,11 @@ export const PAGE_NAMES = {
       HOME: 'doctorHome',
       SEARCH_PATIENT: 'searchPatient',
     },
-    PROFILE: 'doctorProfile',
+    SETTINGS: {
+      SETTINGS_STACK: 'doctorSettingsStack',
+      SETTINGS: 'doctorSettings',
+      ACCOUNT: 'doctorAccount',
+    },
   },
   PATIENT_RELATIVE: {
     HOME: 'home',
