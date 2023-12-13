@@ -53,9 +53,7 @@ export default function Account() {
       return;
     }
     setError(null);
-    setTimeout(() => {
-      setFormValues(response.data!);
-    }, 50);
+    setFormValues(response.data!);
     setLoading(false);
   };
 
@@ -161,113 +159,117 @@ export default function Account() {
       {error && isCritical(error) ? (
         <SugradoErrorPage retry={getMyInfo} />
       ) : (
-        <TopSmallIconLayout
-          pageName="Ayarlar > Profil Bilgileri"
-          refreshMethod={getMyInfo}>
-          <SugradoFormField
-            control={control}
-            rules={rules.firstName}
-            error={errors.user && errors.user.firstName}
-            name="user.firstName"
-            style={styles.input}
-            render={() => (
-              <SugradoTextInput
-                label="Ad"
-                placeholder="Ad"
-                value={getValues('user.firstName')}
-                disabled={true}
+        <>
+          {!loading && (
+            <TopSmallIconLayout
+              pageName="Ayarlar | Bilgilerim"
+              refreshMethod={getMyInfo}>
+              <SugradoFormField
+                control={control}
+                rules={rules.firstName}
+                error={errors.user && errors.user.firstName}
+                name="user.firstName"
+                style={styles.input}
+                render={() => (
+                  <SugradoTextInput
+                    label="Ad"
+                    placeholder="Ad"
+                    value={getValues('user.firstName')}
+                    disabled={true}
+                  />
+                )}
               />
-            )}
-          />
-          <SugradoFormField
-            control={control}
-            rules={rules.lastName}
-            error={errors.user && errors.user.lastName}
-            name="user.lastName"
-            style={styles.input}
-            render={() => (
-              <SugradoTextInput
-                label="Soyad"
-                placeholder="Soyad"
-                value={getValues('user.lastName')}
-                disabled={true}
+              <SugradoFormField
+                control={control}
+                rules={rules.lastName}
+                error={errors.user && errors.user.lastName}
+                name="user.lastName"
+                style={styles.input}
+                render={() => (
+                  <SugradoTextInput
+                    label="Soyad"
+                    placeholder="Soyad"
+                    value={getValues('user.lastName')}
+                    disabled={true}
+                  />
+                )}
               />
-            )}
-          />
-          <SugradoFormField
-            control={control}
-            rules={rules.email}
-            error={errors.user && errors.user.email}
-            name="user.email"
-            style={styles.input}
-            render={({field: {onChange, onBlur, value}}: any) => (
-              <SugradoTextInput
-                label="Email"
-                placeholder="Örn: ornek@email.com"
-                value={value}
-                valueChange={onChange}
-                onBlur={onBlur}
-                keyboardType="email-address"
+              <SugradoFormField
+                control={control}
+                rules={rules.email}
+                error={errors.user && errors.user.email}
+                name="user.email"
+                style={styles.input}
+                render={({field: {onChange, onBlur, value}}: any) => (
+                  <SugradoTextInput
+                    label="Email"
+                    placeholder="Örn: ornek@email.com"
+                    value={value}
+                    valueChange={onChange}
+                    onBlur={onBlur}
+                    keyboardType="email-address"
+                  />
+                )}
               />
-            )}
-          />
-          <SugradoFormField
-            control={control}
-            rules={rules.address}
-            error={errors.address}
-            name="address"
-            style={styles.input}
-            render={({field: {onChange, onBlur, value}}: any) => (
-              <SugradoTextArea
-                label="Adres"
-                placeholder="Örn: Örnek Mah. Örnek Sok. Örnek Apt. No: 1 D: 1 Keçiören/Ankara"
-                value={value}
-                valueChange={onChange}
-                onBlur={onBlur}
+              <SugradoFormField
+                control={control}
+                rules={rules.address}
+                error={errors.address}
+                name="address"
+                style={styles.input}
+                render={({field: {onChange, onBlur, value}}: any) => (
+                  <SugradoTextArea
+                    label="Adres"
+                    placeholder="Örn: Örnek Mah. Örnek Sok. Örnek Apt. No: 1 D: 1 Keçiören/Ankara"
+                    value={value}
+                    valueChange={onChange}
+                    onBlur={onBlur}
+                  />
+                )}
               />
-            )}
-          />
-          <SugradoFormField
-            control={control}
-            rules={rules.dailyTeaConsumption}
-            error={errors.dailyTeaConsumption}
-            name="dailyTeaConsumption"
-            style={styles.input}
-            render={({field: {onChange, onBlur, value}}: any) => (
-              <SugradoTextInput
-                label="Günlük Çay Tüketimi (ml)"
-                placeholder="Örn: 200"
-                value={value}
-                valueChange={onChange}
-                onBlur={onBlur}
-                keyboardType="numeric"
+              <SugradoFormField
+                control={control}
+                rules={rules.dailyTeaConsumption}
+                error={errors.dailyTeaConsumption}
+                name="dailyTeaConsumption"
+                style={styles.input}
+                render={({field: {onChange, onBlur, value}}: any) => (
+                  <SugradoTextInput
+                    label="Günlük Çay Tüketimi (ml)"
+                    placeholder="Örn: 200"
+                    value={value}
+                    valueChange={onChange}
+                    onBlur={onBlur}
+                    keyboardType="numeric"
+                  />
+                )}
               />
-            )}
-          />
-          <SugradoFormField
-            control={control}
-            rules={rules.dailyCoffeeConsumption}
-            error={errors.dailyCoffeeConsumption}
-            name="dailyCoffeeConsumption"
-            style={styles.input}
-            render={({field: {onChange, onBlur, value}}: any) => (
-              <SugradoTextInput
-                label="Günlük Kahve Tüketimi (ml)"
-                placeholder="Örn: 400"
-                value={value}
-                valueChange={onChange}
-                onBlur={onBlur}
-                keyboardType="numeric"
+              <SugradoFormField
+                control={control}
+                rules={rules.dailyCoffeeConsumption}
+                error={errors.dailyCoffeeConsumption}
+                name="dailyCoffeeConsumption"
+                style={styles.input}
+                render={({field: {onChange, onBlur, value}}: any) => (
+                  <SugradoTextInput
+                    label="Günlük Kahve Tüketimi (ml)"
+                    placeholder="Örn: 400"
+                    value={value}
+                    valueChange={onChange}
+                    onBlur={onBlur}
+                    keyboardType="numeric"
+                  />
+                )}
               />
-            )}
-          />
-          <SugradoButton
-            title="Değişiklikleri Kaydet"
-            onPress={handleSubmit(onSubmit)}
-            style={styles.save_button}
-            icon="content-save"
-          />
-        </TopSmallIconLayout>
+              <SugradoButton
+                title="Değişiklikleri Kaydet"
+                onPress={handleSubmit(onSubmit)}
+                style={styles.save_button}
+                icon="content-save"
+              />
+            </TopSmallIconLayout>
+          )}
+        </>
       )}
       {error && <SugradoErrorSnackbar error={error} />}
       <SugradoSuccessSnackbar setVisible={setSuccess} visible={success} />

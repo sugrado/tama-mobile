@@ -11,8 +11,9 @@ import TopSmallIconLayout from '../../../components/layout/TopSmallIconLayout';
 import SugradoFormField from '../../../components/core/SugradoFormField';
 import {useForm} from 'react-hook-form';
 import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
-import {CustomError} from '../../../utils/customErrors';
+import {CustomError, isCritical} from '../../../utils/customErrors';
 import {profile} from '../../../api/doctors/doctor';
+import SugradoErrorPage from '../../../components/core/SugradoErrorPage';
 
 export default function Profile() {
   const {logout} = useAuth();
@@ -135,7 +136,9 @@ export default function Profile() {
   return (
     <>
       {loading && <Loading loading={loading} />}
-      {error == null ? (
+      {error && isCritical(error) ? (
+        <SugradoErrorPage retry={getMyInfo} />
+      ) : (
         <TopSmallIconLayout pageName="Profil Bilgileri">
           <SugradoFormField
             control={control}
@@ -240,9 +243,8 @@ export default function Profile() {
             cancelText="Hayır"
           />
         </TopSmallIconLayout>
-      ) : (
-        <SugradoErrorSnackbar error={error} retry={() => getMyInfo()} />
       )}
+      {error && <SugradoErrorSnackbar error={error} />}
     </>
   );
 }
