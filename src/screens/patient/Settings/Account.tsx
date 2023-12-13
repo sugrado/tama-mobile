@@ -14,10 +14,12 @@ import {CustomError, isCritical} from '../../../utils/customErrors';
 import SugradoErrorPage from '../../../components/core/SugradoErrorPage';
 import {UpdateFromAuthCommand} from '../../../api/patients/dtos/update-from-auth.dto';
 import {GetProfileFromAuthResponse} from '../../../api/patients/dtos/patient-profle-response.dto';
+import SugradoSuccessSnackbar from '../../../components/core/SugradoSuccessSnackbar';
 
 export default function Account() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<CustomError | null>(null);
+  const [success, setSuccess] = useState<boolean>(false);
   const {
     control,
     handleSubmit,
@@ -147,6 +149,8 @@ export default function Account() {
       setLoading(false);
       return;
     }
+    setSuccess(!success);
+
     setError(null);
     setLoading(false);
   };
@@ -266,6 +270,7 @@ export default function Account() {
         </TopSmallIconLayout>
       )}
       {error && <SugradoErrorSnackbar error={error} />}
+      <SugradoSuccessSnackbar setVisible={setSuccess} visible={success} />
     </>
   );
 }

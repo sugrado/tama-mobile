@@ -6,7 +6,6 @@ import {COLORS} from '../../constants';
 type SugradoErrorSnackbarProps = {
   error: CustomError;
   duration?: number;
-  retry?: () => void;
 };
 
 const SugradoErrorSnackbar = ({

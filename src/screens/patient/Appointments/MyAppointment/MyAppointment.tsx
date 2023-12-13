@@ -16,6 +16,7 @@ import {FormatType, formatDate} from '../../../../utils/helpers';
 import {useFocusEffect} from '@react-navigation/native';
 import SugradoErrorPage from '../../../../components/core/SugradoErrorPage';
 import SugradoErrorSnackbar from '../../../../components/core/SugradoErrorSnackbar';
+import SugradoSuccessSnackbar from '../../../../components/core/SugradoSuccessSnackbar';
 
 export default function MyAppointment() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -24,6 +25,7 @@ export default function MyAppointment() {
   const [error, setError] = useState<CustomError | null>(null);
   const [cancelDialogVisible, setCancelDialogVisible] =
     useState<boolean>(false);
+  const [success, setSuccess] = useState<boolean>(false);
 
   useFocusEffect(
     useCallback(() => {
@@ -56,6 +58,7 @@ export default function MyAppointment() {
     setAppointment(null);
     setError(null);
     setLoading(false);
+    setSuccess(true);
     setCancelDialogVisible(false);
   };
 
@@ -148,6 +151,7 @@ export default function MyAppointment() {
                 </Text>
                 <NewAppointment
                   setError={setError}
+                  setSuccess={setSuccess}
                   onAppointmentCreated={a =>
                     setAppointment({
                       takenDate: a.takenDate,
@@ -163,6 +167,7 @@ export default function MyAppointment() {
         </>
       )}
       {error && <SugradoErrorSnackbar error={error} duration={3000} />}
+      <SugradoSuccessSnackbar setVisible={setSuccess} visible={success} />
     </>
   );
 }

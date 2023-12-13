@@ -8,12 +8,14 @@ import {getMyDailyQuestions} from '../../../../api/dailyQuestions/dailyQuestions
 import {PatientHomeDailyQuestion} from '../../../../api/dailyQuestions/dto/patient-home-daily-question.dto';
 import SugradoErrorSnackbar from '../../../../components/core/SugradoErrorSnackbar';
 import SugradoErrorPage from '../../../../components/core/SugradoErrorPage';
+import SugradoSuccessSnackbar from '../../../../components/core/SugradoSuccessSnackbar';
 
 const DailyQuestions = () => {
   const [questions, setQuestions] = useState<PatientHomeDailyQuestion[] | null>(
     null,
   );
   const [error, setError] = useState<CustomError | null>(null);
+  const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [openModals, setOpenModals] = useState<Record<number, boolean>>({});
 
@@ -80,6 +82,7 @@ const DailyQuestions = () => {
                     onCompleted={async () => {
                       toggleModal(question.questionId);
                       await getQuestions();
+                      setSuccess(true);
                     }}
                     onDismiss={() => {
                       toggleModal(question.questionId);
@@ -91,6 +94,7 @@ const DailyQuestions = () => {
         </>
       )}
       {error && <SugradoErrorSnackbar error={error} />}
+      <SugradoSuccessSnackbar setVisible={setSuccess} visible={success} />
     </>
   );
 };

@@ -26,11 +26,13 @@ import {
 type NewAppointmentProps = {
   onAppointmentCreated: (appointment: CreatedAppointmentResponse) => void;
   setError: Dispatch<React.SetStateAction<CustomError | null>>;
+  setSuccess: Dispatch<React.SetStateAction<boolean>>;
 };
 
 const NewAppointment = ({
   onAppointmentCreated,
   setError,
+  setSuccess,
 }: NewAppointmentProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [doctors, setDoctors] = useState<SelectBoxData[] | null>(null);
@@ -105,6 +107,7 @@ const NewAppointment = ({
     setError(null);
     onAppointmentCreated(createdResponse.data!);
     hideModal();
+    setSuccess(true);
     setLoading(false);
   };
 
