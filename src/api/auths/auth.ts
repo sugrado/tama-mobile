@@ -7,6 +7,7 @@ import {
 import axiosInstance from '../../contexts/AxiosInterceptor';
 import {ApiDataResponse, ApiErrorResponse} from '../../dto/api';
 import {CustomError} from '../../utils/customErrors';
+import {ChangePassword} from './dtos/change-password.dto';
 
 export const login = async (
   credential: string,
@@ -22,6 +23,17 @@ export const login = async (
     return {data: res.data, error: null};
   } catch (error) {
     return {data: null, error: error as CustomError};
+  }
+};
+
+export const changePassword = async (
+  body: ChangePassword,
+): Promise<ApiErrorResponse> => {
+  try {
+    await axiosInstance.put('auth/change-password', body);
+    return {error: null};
+  } catch (error) {
+    return {error: error as CustomError};
   }
 };
 
