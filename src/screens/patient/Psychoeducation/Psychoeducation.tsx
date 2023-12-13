@@ -144,7 +144,7 @@ const Psychoeducation = () => {
           style={styles.header_logo}
         />
         <Text variant="titleMedium" style={styles.header_text}>
-          TAMA - Psikoeğitim
+          TAMA {'>'} Psikoeğitim
         </Text>
       </View>
       <View style={styles.content}>

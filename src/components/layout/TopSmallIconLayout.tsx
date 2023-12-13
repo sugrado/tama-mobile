@@ -19,7 +19,7 @@ const TopSmallIconLayout = ({pageName, children}: TopSmallIconLayoutProps) => {
           style={styles.header_logo}
         />
         <Text variant="titleMedium" style={styles.header_text}>
-          TAMA - {pageName}
+          TAMA {'>'} {pageName}
         </Text>
       </View>
       <View style={styles.content}>{children}</View>
