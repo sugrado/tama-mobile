@@ -5,6 +5,7 @@ import {CustomError} from '../../utils/customErrors';
 import {GetSummaryResponse} from './dtos/get-summary-response';
 import {GetMyQRCodeResponse} from './dtos/get-my-qr-code-response.dto';
 import {GetHomeScreenDataResponse} from './dtos/get-home-screen-data-response.dto';
+import {UpdateFromAuthCommand} from './dtos/update-from-auth.dto';
 
 export const acceptConsent = async (): Promise<ApiErrorResponse> => {
   try {
@@ -25,6 +26,17 @@ export const profile = async (): Promise<
     return {data: res.data, error: null};
   } catch (error) {
     return {data: null, error: error as CustomError};
+  }
+};
+
+export const update = async (
+  body: UpdateFromAuthCommand,
+): Promise<ApiErrorResponse> => {
+  try {
+    await axiosInstance.put('patients/from-auth', body);
+    return {error: null};
+  } catch (error) {
+    return {error: error as CustomError};
   }
 };
 

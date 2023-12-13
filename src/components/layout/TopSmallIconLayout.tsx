@@ -1,4 +1,10 @@
-import {View, ScrollView, Image, StyleSheet} from 'react-native';
+import {
+  View,
+  ScrollView,
+  Image,
+  StyleSheet,
+  RefreshControl,
+} from 'react-native';
 import React, {ReactNode} from 'react';
 import {Text} from 'react-native-paper';
 import {COLORS, DIMENSIONS} from '../../constants';
@@ -6,13 +12,23 @@ import {COLORS, DIMENSIONS} from '../../constants';
 type TopSmallIconLayoutProps = {
   pageName: string;
   children: ReactNode;
+  refreshMethod?: () => void;
 };
 
-const TopSmallIconLayout = ({pageName, children}: TopSmallIconLayoutProps) => {
+const TopSmallIconLayout = ({
+  pageName,
+  children,
+  refreshMethod,
+}: TopSmallIconLayoutProps) => {
   return (
     <ScrollView
       style={styles.scroll_container}
-      showsVerticalScrollIndicator={false}>
+      showsVerticalScrollIndicator={false}
+      refreshControl={
+        refreshMethod ? (
+          <RefreshControl onRefresh={refreshMethod} refreshing={false} />
+        ) : undefined
+      }>
       <View style={styles.header}>
         <Image
           source={require('../../assets/icon_transparent.png')}

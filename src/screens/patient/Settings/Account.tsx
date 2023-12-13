@@ -8,10 +8,12 @@ import SugradoButton from '../../../components/core/SugradoButton';
 import TopSmallIconLayout from '../../../components/layout/TopSmallIconLayout';
 import SugradoFormField from '../../../components/core/SugradoFormField';
 import {useForm} from 'react-hook-form';
-import {profile} from '../../../api/patients/patient';
+import {profile, update} from '../../../api/patients/patient';
 import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
 import {CustomError, isCritical} from '../../../utils/customErrors';
 import SugradoErrorPage from '../../../components/core/SugradoErrorPage';
+import {UpdateFromAuthCommand} from '../../../api/patients/dtos/update-from-auth.dto';
+import {GetProfileFromAuthResponse} from '../../../api/patients/dtos/patient-profle-response.dto';
 
 export default function Account() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -49,16 +51,19 @@ export default function Account() {
       return;
     }
     setError(null);
-    setValue('user.firstName', response.data!.user.firstName);
-    setValue('user.lastName', response.data!.user.lastName);
-    setValue('user.email', response.data!.user.email);
-    setValue('address', response.data!.address);
-    setValue('dailyTeaConsumption', String(response.data!.dailyTeaConsumption));
-    setValue(
-      'dailyCoffeeConsumption',
-      String(response.data!.dailyCoffeeConsumption),
-    );
+    setTimeout(() => {
+      setFormValues(response.data!);
+    }, 50);
     setLoading(false);
+  };
+
+  const setFormValues = (data: GetProfileFromAuthResponse): void => {
+    setValue('user.firstName', data.user.firstName);
+    setValue('user.lastName', data.user.lastName);
+    setValue('user.email', data.user.email);
+    setValue('address', data.address);
+    setValue('dailyTeaConsumption', data.dailyTeaConsumption.toString());
+    setValue('dailyCoffeeConsumption', data.dailyCoffeeConsumption.toString());
   };
 
   const rules = {
@@ -129,7 +134,21 @@ export default function Account() {
   };
 
   const onSubmit = async (data: any) => {
-    console.log(data); // TODO: çalışmıyor
+    setLoading(true);
+    const body = {
+      email: data.user.email,
+      address: data.address,
+      dailyTeaConsumption: Number(data.dailyTeaConsumption),
+      dailyCoffeeConsumption: Number(data.dailyCoffeeConsumption),
+    } as UpdateFromAuthCommand;
+    const response = await update(body);
+    if (response?.error) {
+      setError(response.error);
+      setLoading(false);
+      return;
+    }
+    setError(null);
+    setLoading(false);
   };
 
   return (
@@ -138,7 +157,9 @@ export default function Account() {
       {error && isCritical(error) ? (
         <SugradoErrorPage retry={getMyInfo} />
       ) : (
-        <TopSmallIconLayout pageName="Profil Bilgileri">
+        <TopSmallIconLayout
+          pageName="Ayarlar > Profil Bilgileri"
+          refreshMethod={getMyInfo}>
           <SugradoFormField
             control={control}
             rules={rules.firstName}
@@ -251,7 +272,7 @@ export default function Account() {
 
 const styles = StyleSheet.create({
   input: {
-    marginTop: 10,
+    marginVertical: 10,
     width: '75%',
     alignSelf: 'center',
   },

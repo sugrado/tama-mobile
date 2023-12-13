@@ -16,13 +16,9 @@ const QRCode = () => {
 
   useEffect(() => {
     loadQRCode();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadQRCode = async () => {
-    if (qrCode) {
-      return;
-    }
     setLoading(true);
     const myQR = await getQRCode();
     if (myQR.error) {
@@ -44,7 +40,9 @@ const QRCode = () => {
       ) : (
         <>
           {qrCode && (
-            <TopSmallIconLayout pageName="Ayarlar > QR Kodum">
+            <TopSmallIconLayout
+              pageName="Ayarlar > QR Kodum"
+              refreshMethod={loadQRCode}>
               <View style={styles.container}>
                 <Image
                   source={{uri: qrCode}}
