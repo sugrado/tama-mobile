@@ -26,7 +26,7 @@ const TopBigIconLayout = ({
           source={require('../../assets/icon_transparent.png')}
         />
         <Text style={styles.login_header_text}>
-          <Text style={styles.login_header_text_bold}>{'TAMA > '}</Text>
+          <Text style={styles.login_header_text_bold}>{'TAMA | '}</Text>
           {pageName}
         </Text>
       </View>

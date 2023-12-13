@@ -20,6 +20,9 @@ type SugradoTextProps = {
   placeholder: string;
   onBlur?: () => void;
   label?: string;
+  autoCapitalize?: 'none' | 'sentences' | 'words' | 'characters' | undefined;
+  autoComplete?: 'off' | 'username' | 'password' | 'email' | undefined;
+  autoCorrect?: boolean;
 };
 
 export default function SugradoTextInput({
@@ -33,6 +36,9 @@ export default function SugradoTextInput({
   right,
   placeholder,
   onBlur,
+  autoCapitalize = undefined,
+  autoComplete = undefined,
+  autoCorrect = true,
 }: SugradoTextProps) {
   return (
     <View style={style}>
@@ -44,6 +50,9 @@ export default function SugradoTextInput({
         placeholder={placeholder}
         onChangeText={valueChange}
         keyboardType={keyboardType}
+        autoCapitalize={autoCapitalize}
+        autoComplete={autoComplete}
+        autoCorrect={autoCorrect}
         secureTextEntry={secureTextEntry}
         onBlur={onBlur}
         theme={{

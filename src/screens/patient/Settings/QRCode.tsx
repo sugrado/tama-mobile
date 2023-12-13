@@ -41,7 +41,7 @@ const QRCode = () => {
         <>
           {qrCode && (
             <TopSmallIconLayout
-              pageName="Ayarlar > QR Kodum"
+              pageName="Ayarlar | QR Kodum"
               refreshMethod={loadQRCode}>
               <View style={styles.container}>
                 <Image

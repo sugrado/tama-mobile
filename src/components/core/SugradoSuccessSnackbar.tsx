@@ -31,7 +31,7 @@ const SugradoSuccessSnackbar = ({
 
 const styles = StyleSheet.create({
   snackbar: {
-    backgroundColor: COLORS.THEME_COLOR,
+    backgroundColor: COLORS.SNACKBAR_SUCCESS,
   },
 });
 

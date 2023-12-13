@@ -95,6 +95,7 @@ export const COLORS = {
   TEXT: 'white',
   PRIMARY_THEME: 'purple',
   WARNING: '#ffdb4d',
+  SNACKBAR_SUCCESS: '#8B3C7F',
 };
 
 export const REGEXES = {
