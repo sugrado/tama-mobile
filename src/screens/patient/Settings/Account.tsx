@@ -1,31 +1,21 @@
 import React, {useState, useEffect} from 'react';
-import {Image, StyleSheet, TouchableOpacity} from 'react-native';
-import {useAuth} from '../../../contexts/AuthContext';
+import {StyleSheet} from 'react-native';
 import {COLORS, FORM_ERROR_MESSAGES, REGEXES} from '../../../constants';
 import SugradoTextInput from '../../../components/core/SugradoTextInput';
 import Loading from '../../../components/layout/Loading';
 import SugradoTextArea from '../../../components/core/SugradoTextArea';
 import SugradoButton from '../../../components/core/SugradoButton';
-import SugradoDialog from '../../../components/core/SugradoDialog';
 import TopSmallIconLayout from '../../../components/layout/TopSmallIconLayout';
 import SugradoFormField from '../../../components/core/SugradoFormField';
 import {useForm} from 'react-hook-form';
-import {profile, getQRCode} from '../../../api/patients/patient';
+import {profile} from '../../../api/patients/patient';
 import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
 import {CustomError, isCritical} from '../../../utils/customErrors';
-import SugradoModal from '../../../components/core/SugradoModal';
-import {Text} from 'react-native-paper';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import SugradoErrorPage from '../../../components/core/SugradoErrorPage';
 
-export default function Profile() {
-  const {logout} = useAuth();
-  const [logoutDialogVisible, setLogoutDialogVisible] =
-    useState<boolean>(false);
+export default function Account() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<CustomError | null>(null);
-  const [qrCode, setQrCode] = useState<string>();
-  const [qrModalVisible, setQrModalVisible] = useState<boolean>(false);
   const {
     control,
     handleSubmit,
@@ -138,85 +128,17 @@ export default function Profile() {
     },
   };
 
-  const showLogoutDialog = () => setLogoutDialogVisible(true);
   const onSubmit = async (data: any) => {
     console.log(data); // TODO: çalışmıyor
-  };
-
-  const handleLogout = async (): Promise<void> => {
-    setLoading(true);
-    const err = await logout();
-    if (err) {
-      setError(err);
-    }
-    setLogoutDialogVisible(false);
-    setLoading(false);
-  };
-
-  const handleShowQRCode = async () => {
-    if (qrCode) {
-      setQrModalVisible(true);
-      return;
-    }
-    setLoading(true);
-    const myQR = await getQRCode();
-    if (myQR.error) {
-      setLoading(false);
-      setError(myQR.error);
-      return;
-    }
-    const base64Image = 'data:image/png;base64,' + myQR.data!.qrCode;
-    setQrCode(base64Image);
-    setLoading(false);
-    setQrModalVisible(true);
-  };
-
-  const closeQRModal = () => {
-    setQrModalVisible(false);
   };
 
   return (
     <>
       {loading && <Loading loading={loading} />}
-      <SugradoModal
-        visible={qrModalVisible}
-        onDismiss={closeQRModal}
-        dismissable={true}>
-        {qrCode && (
-          <>
-            <Text variant="bodyMedium" style={styles.show_qr_code_text}>
-              QR Kodunuz
-            </Text>
-            <Image
-              source={{uri: qrCode}}
-              style={styles.qr_code}
-              height={300}
-              width={300}
-            />
-          </>
-        )}
-        <SugradoButton
-          onPress={closeQRModal}
-          title="Kapat"
-          buttonColor="gray"
-          style={styles.modal_footer_button}
-        />
-      </SugradoModal>
       {error && isCritical(error) ? (
         <SugradoErrorPage retry={getMyInfo} />
       ) : (
         <TopSmallIconLayout pageName="Profil Bilgileri">
-          <TouchableOpacity
-            onPress={handleShowQRCode}
-            activeOpacity={0.7}
-            style={styles.qr_code_container}>
-            <MaterialIcons
-              style={styles.qr_icon}
-              name="qr-code"
-              size={40}
-              color={COLORS.BUTTON_COLOR}
-            />
-          </TouchableOpacity>
           <SugradoFormField
             control={control}
             rules={rules.firstName}
@@ -319,22 +241,6 @@ export default function Profile() {
             onPress={handleSubmit(onSubmit)}
             style={styles.save_button}
             icon="content-save"
-          />
-          <SugradoButton
-            title="Çıkış Yap"
-            onPress={showLogoutDialog}
-            style={styles.save_button}
-            icon="logout"
-            buttonColor={COLORS.DARK_RED}
-          />
-          <SugradoDialog
-            title="Çıkış Yap"
-            body="Hesabınızdan çıkış yapmak istediğinizden emin misiniz?"
-            visible={logoutDialogVisible}
-            action={handleLogout}
-            actionText="Evet"
-            cancelAction={() => setLogoutDialogVisible(false)}
-            cancelText="Hayır"
           />
         </TopSmallIconLayout>
       )}

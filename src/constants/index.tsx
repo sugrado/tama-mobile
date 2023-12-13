@@ -45,7 +45,12 @@ export const PAGE_NAMES = {
       NEW_APPOINTMENT: 'newAppointment',
       PAST_APPOINTMENTS: 'pastAppointments',
     },
-    PROFILE: 'patientProfile',
+    SETTINGS: {
+      SETTINGS_STACK: 'patientSettingsStack',
+      SETTINGS: 'patientSettings',
+      ACCOUNT: 'patientAccount',
+      QR_CODE: 'patientQRCode',
+    },
     PSYCHOEDUCATION: 'psychoeducation',
   },
 };
@@ -83,6 +88,7 @@ export const COLORS = {
   DARK_RED: '#880808',
   TEXT: 'white',
   PRIMARY_THEME: 'purple',
+  WARNING: '#ffdb4d',
 };
 
 export const REGEXES = {

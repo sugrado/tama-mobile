@@ -7,7 +7,7 @@ import AppointmentTopTabNavigator from './AppointmentTopTabNavigator';
 import ConsentConfirmation from '../../components/modals/ConsentConfirmation';
 import MyMedicinesTopTabNavigator from './MyMedicinesTopTabNavigator';
 import Psychoeducation from '../../screens/patient/Psychoeducation/Psychoeducation';
-import Profile from '../../screens/patient/Profile/Profile';
+import SettingsStackNavigator from './SettingsStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -66,9 +66,9 @@ export default function TabNavigator({consentAccepted}: TabNavigatorProps) {
             options={{title: 'Randevu', tabBarLabel: 'Randevu'}}
           />
           <Tab.Screen
-            name={PAGE_NAMES.PATIENT.PROFILE}
-            component={Profile}
-            options={{title: 'Profil', tabBarLabel: 'Profil'}}
+            name={PAGE_NAMES.PATIENT.SETTINGS.SETTINGS_STACK}
+            component={SettingsStackNavigator}
+            options={{title: 'Ayarlar', tabBarLabel: 'Ayarlar'}}
           />
         </Tab.Navigator>
       ) : (
@@ -86,8 +86,8 @@ const getIconNameByPage = (name: string, focused: boolean) => {
       return focused ? 'medical' : 'medical-outline';
     case PAGE_NAMES.PATIENT.APPOINTMENTS.APPOINTMENT_TOP_TAB:
       return focused ? 'calendar' : 'calendar-outline';
-    case PAGE_NAMES.PATIENT.PROFILE:
-      return focused ? 'person' : 'person-outline';
+    case PAGE_NAMES.PATIENT.SETTINGS.SETTINGS_STACK:
+      return focused ? 'settings' : 'settings-outline';
     case PAGE_NAMES.PATIENT.PSYCHOEDUCATION:
       return focused ? 'book' : 'book-outline';
     default:
