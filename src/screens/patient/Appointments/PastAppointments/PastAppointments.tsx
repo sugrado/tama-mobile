@@ -47,6 +47,10 @@ const Item = memo(({item}: ItemProps) => {
   );
 });
 
+const EmptyList = () => (
+  <Text style={styles.no_data_text}>Geçmiş randevunuz bulunmamaktadır.</Text>
+);
+
 export default function PastAppointments() {
   const [appointments, setAppointments] = useState<MyPastListItemDto[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -96,27 +100,22 @@ export default function PastAppointments() {
           }}
         />
       ) : (
-        <>
-          {appointments && appointments.length > 0 ? (
-            <FlatList
-              data={appointments}
-              renderItem={({item}) => <Item item={item} />}
-              keyExtractor={(item: MyPastListItemDto) => String(item.id)}
-              refreshControl={
-                <RefreshControl
-                  refreshing={loading}
-                  onRefresh={() => {
-                    getMyPastAppointments(0);
-                    setPage(0);
-                  }}
-                />
-              }
-              onEndReached={getMoreAppointments}
+        <FlatList
+          data={appointments}
+          renderItem={({item}) => <Item item={item} />}
+          keyExtractor={(item: MyPastListItemDto) => String(item.id)}
+          refreshControl={
+            <RefreshControl
+              refreshing={loading}
+              onRefresh={() => {
+                getMyPastAppointments(0);
+                setPage(0);
+              }}
             />
-          ) : (
-            <Text style={styles.no_data_text}>Geçmiş randevu bulunamadı.</Text>
-          )}
-        </>
+          }
+          onEndReached={getMoreAppointments}
+          ListEmptyComponent={EmptyList}
+        />
       )}
       {error && <SugradoErrorSnackbar error={error} />}
     </>
