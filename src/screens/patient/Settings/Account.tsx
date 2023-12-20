@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet} from 'react-native';
-import {COLORS, FORM_ERROR_MESSAGES, REGEXES} from '../../../constants';
+import {StyleSheet, View} from 'react-native';
+import {COLORS, FORM_ERROR_MESSAGES} from '../../../constants';
 import SugradoTextInput from '../../../components/core/SugradoTextInput';
 import Loading from '../../../components/layout/Loading';
 import SugradoTextArea from '../../../components/core/SugradoTextArea';
@@ -31,7 +31,6 @@ export default function Account() {
       user: {
         firstName: '',
         lastName: '',
-        email: '',
       },
       address: '',
       dailyTeaConsumption: '',
@@ -60,7 +59,6 @@ export default function Account() {
   const setFormValues = (data: GetProfileFromAuthResponse): void => {
     setValue('user.firstName', data.user.firstName);
     setValue('user.lastName', data.user.lastName);
-    setValue('user.email', data.user.email);
     setValue('address', data.address);
     setValue('dailyTeaConsumption', data.dailyTeaConsumption.toString());
     setValue('dailyCoffeeConsumption', data.dailyCoffeeConsumption.toString());
@@ -81,20 +79,6 @@ export default function Account() {
       required: {
         value: true,
         message: FORM_ERROR_MESSAGES.REQUIRED,
-      },
-      maxLength: {
-        value: 60,
-        message: FORM_ERROR_MESSAGES.MAX_LENGTH(60),
-      },
-    },
-    email: {
-      required: {
-        value: true,
-        message: FORM_ERROR_MESSAGES.REQUIRED,
-      },
-      pattern: {
-        value: REGEXES.EMAIL,
-        message: FORM_ERROR_MESSAGES.EMAIL,
       },
       maxLength: {
         value: 60,
@@ -136,7 +120,6 @@ export default function Account() {
   const onSubmit = async (data: any) => {
     setLoading(true);
     const body = {
-      email: data.user.email,
       address: data.address,
       dailyTeaConsumption: Number(data.dailyTeaConsumption),
       dailyCoffeeConsumption: Number(data.dailyCoffeeConsumption),
@@ -164,109 +147,94 @@ export default function Account() {
             <TopSmallIconLayout
               pageName="Ayarlar | Bilgilerim"
               refreshMethod={getMyInfo}>
-              <SugradoFormField
-                control={control}
-                rules={rules.firstName}
-                error={errors.user && errors.user.firstName}
-                name="user.firstName"
-                style={styles.input}
-                render={() => (
-                  <SugradoTextInput
-                    label="Ad"
-                    placeholder="Ad"
-                    value={getValues('user.firstName')}
-                    disabled={true}
-                  />
-                )}
-              />
-              <SugradoFormField
-                control={control}
-                rules={rules.lastName}
-                error={errors.user && errors.user.lastName}
-                name="user.lastName"
-                style={styles.input}
-                render={() => (
-                  <SugradoTextInput
-                    label="Soyad"
-                    placeholder="Soyad"
-                    value={getValues('user.lastName')}
-                    disabled={true}
-                  />
-                )}
-              />
-              <SugradoFormField
-                control={control}
-                rules={rules.email}
-                error={errors.user && errors.user.email}
-                name="user.email"
-                style={styles.input}
-                render={({field: {onChange, onBlur, value}}: any) => (
-                  <SugradoTextInput
-                    label="Email"
-                    placeholder="Örn: ornek@email.com"
-                    value={value}
-                    valueChange={onChange}
-                    onBlur={onBlur}
-                    keyboardType="email-address"
-                  />
-                )}
-              />
-              <SugradoFormField
-                control={control}
-                rules={rules.address}
-                error={errors.address}
-                name="address"
-                style={styles.input}
-                render={({field: {onChange, onBlur, value}}: any) => (
-                  <SugradoTextArea
-                    label="Adres"
-                    placeholder="Örn: Örnek Mah. Örnek Sok. Örnek Apt. No: 1 D: 1 Keçiören/Ankara"
-                    value={value}
-                    valueChange={onChange}
-                    onBlur={onBlur}
-                  />
-                )}
-              />
-              <SugradoFormField
-                control={control}
-                rules={rules.dailyTeaConsumption}
-                error={errors.dailyTeaConsumption}
-                name="dailyTeaConsumption"
-                style={styles.input}
-                render={({field: {onChange, onBlur, value}}: any) => (
-                  <SugradoTextInput
-                    label="Günlük Çay Tüketimi (ml)"
-                    placeholder="Örn: 200"
-                    value={value}
-                    valueChange={onChange}
-                    onBlur={onBlur}
-                    keyboardType="numeric"
-                  />
-                )}
-              />
-              <SugradoFormField
-                control={control}
-                rules={rules.dailyCoffeeConsumption}
-                error={errors.dailyCoffeeConsumption}
-                name="dailyCoffeeConsumption"
-                style={styles.input}
-                render={({field: {onChange, onBlur, value}}: any) => (
-                  <SugradoTextInput
-                    label="Günlük Kahve Tüketimi (ml)"
-                    placeholder="Örn: 400"
-                    value={value}
-                    valueChange={onChange}
-                    onBlur={onBlur}
-                    keyboardType="numeric"
-                  />
-                )}
-              />
-              <SugradoButton
-                title="Değişiklikleri Kaydet"
-                onPress={handleSubmit(onSubmit)}
-                style={styles.save_button}
-                icon="content-save"
-              />
+              <View style={styles.container}>
+                <SugradoFormField
+                  control={control}
+                  rules={rules.firstName}
+                  error={errors.user && errors.user.firstName}
+                  name="user.firstName"
+                  style={styles.input}
+                  render={() => (
+                    <SugradoTextInput
+                      label="Ad"
+                      placeholder="Ad"
+                      value={getValues('user.firstName')}
+                      disabled={true}
+                    />
+                  )}
+                />
+                <SugradoFormField
+                  control={control}
+                  rules={rules.lastName}
+                  error={errors.user && errors.user.lastName}
+                  name="user.lastName"
+                  style={styles.input}
+                  render={() => (
+                    <SugradoTextInput
+                      label="Soyad"
+                      placeholder="Soyad"
+                      value={getValues('user.lastName')}
+                      disabled={true}
+                    />
+                  )}
+                />
+                <SugradoFormField
+                  control={control}
+                  rules={rules.address}
+                  error={errors.address}
+                  name="address"
+                  style={styles.input}
+                  render={({field: {onChange, onBlur, value}}: any) => (
+                    <SugradoTextArea
+                      label="Adres"
+                      placeholder="Örn: Örnek Mah. Örnek Sok. Örnek Apt. No: 1 D: 1 Keçiören/Ankara"
+                      value={value}
+                      valueChange={onChange}
+                      onBlur={onBlur}
+                    />
+                  )}
+                />
+                <SugradoFormField
+                  control={control}
+                  rules={rules.dailyTeaConsumption}
+                  error={errors.dailyTeaConsumption}
+                  name="dailyTeaConsumption"
+                  style={styles.input}
+                  render={({field: {onChange, onBlur, value}}: any) => (
+                    <SugradoTextInput
+                      label="Günlük Çay Tüketimi (ml)"
+                      placeholder="Örn: 200"
+                      value={value}
+                      valueChange={onChange}
+                      onBlur={onBlur}
+                      keyboardType="numeric"
+                    />
+                  )}
+                />
+                <SugradoFormField
+                  control={control}
+                  rules={rules.dailyCoffeeConsumption}
+                  error={errors.dailyCoffeeConsumption}
+                  name="dailyCoffeeConsumption"
+                  style={styles.input}
+                  render={({field: {onChange, onBlur, value}}: any) => (
+                    <SugradoTextInput
+                      label="Günlük Kahve Tüketimi (ml)"
+                      placeholder="Örn: 400"
+                      value={value}
+                      valueChange={onChange}
+                      onBlur={onBlur}
+                      keyboardType="numeric"
+                    />
+                  )}
+                />
+                <SugradoButton
+                  title="Değişiklikleri Kaydet"
+                  onPress={handleSubmit(onSubmit)}
+                  style={styles.save_button}
+                  icon="content-save"
+                />
+              </View>
             </TopSmallIconLayout>
           )}
         </>
@@ -278,6 +246,10 @@ export default function Account() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingVertical: 20,
+  },
   input: {
     marginVertical: 10,
     width: '75%',
