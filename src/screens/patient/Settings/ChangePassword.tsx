@@ -1,6 +1,10 @@
 import {StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
-import {CustomError, isCritical} from '../../../utils/customErrors';
+import {
+  CustomError,
+  InterfaceError,
+  isCritical,
+} from '../../../utils/customErrors';
 import TopSmallIconLayout from '../../../components/layout/TopSmallIconLayout';
 import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
 import SugradoErrorPage from '../../../components/core/SugradoErrorPage';
@@ -12,10 +16,9 @@ import SugradoButton from '../../../components/core/SugradoButton';
 import {changePassword} from '../../../api/auths/auth';
 import {FORM_ERROR_MESSAGES} from '../../../constants';
 import SugradoSuccessSnackbar from '../../../components/core/SugradoSuccessSnackbar';
-import {Text} from 'react-native-paper';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import SugradoInfoCard from '../../../components/core/SugradoInfoCard';
 
-const Security = ({navigation}: any) => {
+const ChangePassword = ({navigation}: any) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<CustomError | null>(null);
@@ -70,6 +73,10 @@ const Security = ({navigation}: any) => {
   };
 
   const onSubmit = async (data: any) => {
+    if (data.newPassword !== data.newPasswordConfirm) {
+      setError({message: 'Yeni şifreler uyuşmuyor'} as InterfaceError);
+      return;
+    }
     setLoading(true);
     const body = {
       currentPassword: data.currentPassword,
@@ -102,16 +109,13 @@ const Security = ({navigation}: any) => {
           }}
         />
       ) : (
-        <TopSmallIconLayout pageName="Ayarlar | Güvenlik">
+        <TopSmallIconLayout pageName="Ayarlar | Parola Değişikliği">
           <View style={styles.container}>
-            <View style={styles.header_container}>
-              <Text variant="titleMedium">Parola Değiştir</Text>
-              <MaterialCommunityIcons
-                name="shield-lock"
-                size={24}
-                color="black"
-              />
-            </View>
+            <SugradoInfoCard
+              text="Parolanızın uzunluğu 8 ile 32 karakter arasında olmalıdır. En az 1 büyük harf, 1 küçük harf ve 1 adet rakam içermelidir."
+              icon="information-circle"
+              style={styles.info_card}
+            />
             <SugradoFormField
               control={control}
               rules={rules.currentPassword}
@@ -218,6 +222,10 @@ const styles = StyleSheet.create({
     width: '75%',
     alignSelf: 'center',
   },
+  info_card: {
+    alignSelf: 'center',
+    marginBottom: 20,
+  },
 });
 
-export default Security;
+export default ChangePassword;

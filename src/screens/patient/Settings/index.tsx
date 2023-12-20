@@ -31,8 +31,12 @@ const Settings = ({navigation}: any) => {
     navigation.navigate(PAGE_NAMES.PATIENT.SETTINGS.MY_RELATIVES);
   };
 
-  const handleSecurityPress = async () => {
-    navigation.navigate(PAGE_NAMES.PATIENT.SETTINGS.SECURITY);
+  const handleChangePasswordPress = async () => {
+    navigation.navigate(PAGE_NAMES.PATIENT.SETTINGS.CHANGE_PASSWORD);
+  };
+
+  const handleChangeEmailPress = async () => {
+    navigation.navigate(PAGE_NAMES.PATIENT.SETTINGS.CHANGE_EMAIL);
   };
 
   const handleLogoutPress = () => {
@@ -78,15 +82,21 @@ const Settings = ({navigation}: any) => {
             />
             <Divider />
             <SettingRow
-              icon="security"
-              title="Güvenlik"
-              onPress={handleSecurityPress}
-            />
-            <Divider />
-            <SettingRow
               icon="account-multiple"
               title="Yakınlarım"
               onPress={handleMyRelativePress}
+            />
+            <Divider />
+            <SettingRow
+              icon="lock"
+              title="Parola Değişikliği"
+              onPress={handleChangePasswordPress}
+            />
+            <Divider />
+            <SettingRow
+              icon="email"
+              title="E-posta Değişikliği"
+              onPress={handleChangeEmailPress}
             />
             <Divider />
             <SettingRow
@@ -172,7 +182,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   setting_row_icon: {
-    marginRight: 5,
+    marginRight: 8,
   },
 });
 

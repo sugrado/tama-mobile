@@ -5,7 +5,8 @@ import Account from '../../screens/patient/Settings/Account';
 import Settings from '../../screens/patient/Settings';
 import QRCode from '../../screens/patient/Settings/QRCode';
 import MyRelatives from '../../screens/patient/Settings/MyRelatives';
-import Security from '../../screens/patient/Settings/Security';
+import ChangePassword from '../../screens/patient/Settings/ChangePassword';
+import ChangeEmail from '../../screens/patient/Settings/ChangeEmail';
 
 const SettingsStack = createStackNavigator();
 
@@ -41,8 +42,12 @@ const SettingsStackNavigator = () => (
       component={MyRelatives}
     />
     <SettingsStack.Screen
-      name={PAGE_NAMES.PATIENT.SETTINGS.SECURITY}
-      component={Security}
+      name={PAGE_NAMES.PATIENT.SETTINGS.CHANGE_PASSWORD}
+      component={ChangePassword}
+    />
+    <SettingsStack.Screen
+      name={PAGE_NAMES.PATIENT.SETTINGS.CHANGE_EMAIL}
+      component={ChangeEmail}
     />
     <SettingsStack.Screen
       name={PAGE_NAMES.PATIENT.SETTINGS.QR_CODE}
