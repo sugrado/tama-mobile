@@ -1,4 +1,4 @@
-import {refreshTokens} from '../api/auths/auth';
+import {refreshTokens, validateSession} from '../api/auths/auth';
 import {
   LoggedUserType,
   PreparedTokensDto,
@@ -27,32 +27,16 @@ export const checkIsLoggedIn = async (): Promise<UserWithTokensDto | null> => {
   return null;
 };
 
-export const refreshTokensIfExpired = async (
+export const validateAuthSession = async (
   userWithTokens: UserWithTokensDto,
 ): Promise<LoggedUserType | null> => {
-  const now = new Date();
-  const accExpr = new Date(userWithTokens.accessToken.expiration);
-  const refExpr = new Date(userWithTokens.refreshToken.expiration);
-
-  if (accExpr > now && refExpr > now) {
-    await saveAuthDataToStorage(
-      userWithTokens.accessToken,
-      userWithTokens.refreshToken,
-      userWithTokens.user,
-    );
+  const validateResult = await validateSession();
+  if (!validateResult.error) {
     return userWithTokens.user;
-  } else if (accExpr < now && refExpr > now) {
-    const refreshResult = await refreshTokensThenResetDeviceData(
-      userWithTokens,
-    );
-    if (refreshResult == null) {
-      return null;
-    }
-    return userWithTokens.user;
-  } else {
-    await removeAuthDataFromStorage();
-    return null;
   }
+
+  await removeAuthDataFromStorage();
+  return null;
 };
 
 export const refreshTokensThenResetDeviceData = async (

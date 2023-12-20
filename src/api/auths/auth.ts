@@ -48,6 +48,15 @@ export const refreshTokens = async (
   }
 };
 
+export const validateSession = async (): Promise<ApiErrorResponse> => {
+  try {
+    await axiosInstance.get('auth/validate-session');
+    return {error: null};
+  } catch (error) {
+    return {error: error as CustomError};
+  }
+};
+
 export const revokeToken = async (
   refreshToken: string,
 ): Promise<ApiErrorResponse> => {

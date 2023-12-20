@@ -16,10 +16,7 @@ import {
 } from '../utils/storage';
 import {login, revokeToken} from '../api/auths/auth';
 import {acceptConsent} from '../api/patients/patient';
-import {
-  checkIsLoggedIn,
-  refreshTokensIfExpired,
-} from '../services/auth.service';
+import {checkIsLoggedIn, validateAuthSession} from '../services/auth.service';
 import {CustomError} from '../utils/customErrors';
 
 export type AuthContextType = {
@@ -61,7 +58,7 @@ export const AuthProvider = ({
       if (loggedStatus === null) {
         userToSet = null;
       } else {
-        userToSet = await refreshTokensIfExpired({
+        userToSet = await validateAuthSession({
           accessToken: loggedStatus.accessToken,
           refreshToken: loggedStatus.refreshToken,
           user: loggedStatus.user,

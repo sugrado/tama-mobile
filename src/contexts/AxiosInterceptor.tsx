@@ -72,7 +72,7 @@ const AxiosInterceptor = ({children}: AxiosInterceptorProps): ReactNode => {
           originalRequest._retry = true;
           const checkedResult = await checkIsLoggedIn();
           if (checkedResult === null) {
-            setUserInfo(null);
+            setUserInfo(null); // otomatik login sayfasına yönlendiriliyor
             return;
           }
 
@@ -84,7 +84,6 @@ const AxiosInterceptor = ({children}: AxiosInterceptorProps): ReactNode => {
             return;
           }
 
-          originalRequest.headers.Authorization = `Bearer ${preparedTokens.accessToken.token}`;
           return await axiosInstance(originalRequest);
         }
         if (error.response.status === HttpStatusCode.Forbidden) {
