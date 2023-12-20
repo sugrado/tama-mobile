@@ -10,21 +10,18 @@ import SugradoTextInput from '../../../components/core/SugradoTextInput';
 import SugradoButton from '../../../components/core/SugradoButton';
 import {changeEmail} from '../../../api/auths/auth';
 import {COLORS, FORM_ERROR_MESSAGES, REGEXES} from '../../../constants';
-import SugradoSuccessSnackbar from '../../../components/core/SugradoSuccessSnackbar';
 import {useAuth} from '../../../contexts/AuthContext';
 import SugradoInfoCard from '../../../components/core/SugradoInfoCard';
 
-const ChangeEmail = ({navigation}: any) => {
-  const {userInfo} = useAuth();
+const ChangeEmail = () => {
+  const {userInfo, logout} = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
-  const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<CustomError | null>(null);
 
   const {
     control,
     handleSubmit,
     formState: {errors},
-    reset,
   } = useForm({
     defaultValues: {
       currentEmail: userInfo!.email,
@@ -90,17 +87,17 @@ const ChangeEmail = ({navigation}: any) => {
       return;
     }
     setLoading(true);
-    const body = {
+    const response = await changeEmail({
       newEmail: data.newEmail,
       newEmailConfirm: data.newEmailConfirm,
-    };
-    const response = await changeEmail(body);
+    });
     if (response?.error) {
       setError(response.error);
       setLoading(false);
       return;
     }
     setError(null);
+    await logout();
     setLoading(false);
   };
 
@@ -110,9 +107,7 @@ const ChangeEmail = ({navigation}: any) => {
       <TopSmallIconLayout pageName="Ayarlar | E-posta Değişikliği">
         <View style={styles.container}>
           <SugradoInfoCard
-            text="E-posta adresinizi değiştirdikten sonra çıkış yapılacaktır.
-                  Yeni e-posta adresiniz ve mevcuttaki şifrenizi kullanarak
-                  tekrar giriş yapabilirsiniz."
+            text="Yeni e-postanıza bir doğrulama bağlantısı gönderilecektir. Değişikliğin gerçekleşmesi için doğrulama bağlantısına tıkladıktan sonra kullanıcı adı ve şifreniz ile tekrar giriş yapabilirsiniz."
             icon="information-circle"
             iconSize={25}
             style={styles.info_card}
@@ -149,7 +144,6 @@ const ChangeEmail = ({navigation}: any) => {
                 valueChange={onChange}
                 onBlur={onBlur}
                 keyboardType="email-address"
-                disabled={success}
               />
             )}
           />
@@ -167,7 +161,6 @@ const ChangeEmail = ({navigation}: any) => {
                 valueChange={onChange}
                 onBlur={onBlur}
                 keyboardType="email-address"
-                disabled={success}
               />
             )}
           />
@@ -176,12 +169,10 @@ const ChangeEmail = ({navigation}: any) => {
             onPress={handleSubmit(onSubmit)}
             style={styles.save_button}
             icon="content-save"
-            disabled={success}
           />
         </View>
       </TopSmallIconLayout>
       {error && <SugradoErrorSnackbar error={error} />}
-      <SugradoSuccessSnackbar setVisible={setSuccess} visible={success} />
     </>
   );
 };
