@@ -11,7 +11,7 @@ import {
 } from '../api/auths/dtos/auth.dto';
 import * as PatientTabNav from './patient/TabNavigator';
 import * as DoctorTabNav from './doctor/TabNavigator';
-import * as PatientRelativeTabNav from './patient-relative/TabNavigator';
+import * as RelativeTabNav from './relative/TabNavigator';
 import Loading from '../components/layout/Loading';
 
 export default function Navigation() {
@@ -39,8 +39,8 @@ const getPortal = (userInfo: LoggedUserType) => {
       );
     case UserRoles.Doctor:
       return <DoctorTabNav.default />;
-    case UserRoles.PatientRelative:
-      return <PatientRelativeTabNav.default />;
+    case UserRoles.Relative:
+      return <RelativeTabNav.default />;
     default:
       return <WelcomeStackNavigator />;
   }

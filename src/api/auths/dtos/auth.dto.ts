@@ -6,16 +6,16 @@ export class LoginDto {
 
 export enum UserRoles {
   Patient = 'Patient',
-  PatientRelative = 'PatientRelative',
+  Relative = 'Relative',
   Doctor = 'Doctor',
 }
 export type LoggedUserType =
   | LoggedPatientDto
-  | LoggedPatientRelativeDto
+  | LoggedRelativeDto
   | LoggedDoctorDto;
 export class LoggedResponse {
   patient: LoggedPatientDto | null;
-  patientRelative: LoggedPatientRelativeDto | null;
+  relative: LoggedRelativeDto | null;
   doctor: LoggedDoctorDto | null;
   tokens: PreparedTokensDto;
 }
@@ -39,7 +39,7 @@ export class LoggedPatientDto extends LoggedUserInfo {
 
 export class LoggedDoctorDto extends LoggedUserInfo {}
 
-export class LoggedPatientRelativeDto extends LoggedUserInfo {}
+export class LoggedRelativeDto extends LoggedUserInfo {}
 
 export class TokenDto {
   token: string;

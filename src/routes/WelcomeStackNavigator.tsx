@@ -2,7 +2,7 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {PAGE_NAMES} from '../constants';
 import WelcomeScreen from '../screens/WelcomeScreen';
-import * as PatientRelativeAuthStack from './patient-relative/AuthStackNavigator';
+import * as RelativeAuthStack from './relative/AuthStackNavigator';
 import * as PatientAuthStack from './patient/AuthStackNavigator';
 import * as DoctorAuthStack from './doctor/AuthStackNavigator';
 import ForgotPassword from '../screens/ForgotPassword';
@@ -43,8 +43,8 @@ const WelcomeStackNavigator = () => {
         component={DoctorAuthStack.default}
       />
       <WelcomeStack.Screen
-        name={PAGE_NAMES.PORTALS.PATIENT_RELATIVE}
-        component={PatientRelativeAuthStack.default}
+        name={PAGE_NAMES.PORTALS.RELATIVE}
+        component={RelativeAuthStack.default}
       />
     </WelcomeStack.Navigator>
   );

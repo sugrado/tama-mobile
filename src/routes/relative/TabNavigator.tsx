@@ -2,14 +2,14 @@ import React from 'react';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {COLORS, PAGE_NAMES} from '../../constants';
-import Home from '../../screens/patient-relative/Home/Home';
+import Home from '../../screens/relative/Home/Home';
 
 const Tab = createBottomTabNavigator();
 
 export default function TabNavigator() {
   return (
     <Tab.Navigator
-      initialRouteName={PAGE_NAMES.PATIENT_RELATIVE.HOME}
+      initialRouteName={PAGE_NAMES.RELATIVE.HOME}
       screenOptions={({route}) => ({
         tabBarHideOnKeyboard: true,
         unmountOnBlur: true,
@@ -35,7 +35,7 @@ export default function TabNavigator() {
         },
       })}>
       <Tab.Screen
-        name={PAGE_NAMES.PATIENT_RELATIVE.HOME}
+        name={PAGE_NAMES.RELATIVE.HOME}
         component={Home}
         options={{title: 'Ana Sayfa', tabBarLabel: 'Ana Sayfa'}}
       />
@@ -45,7 +45,7 @@ export default function TabNavigator() {
 
 const getIconNameByPage = (name: string, focused: boolean) => {
   switch (name) {
-    case PAGE_NAMES.PATIENT_RELATIVE.HOME:
+    case PAGE_NAMES.RELATIVE.HOME:
       return focused ? 'home' : 'home-outline';
     default:
       throw new Error('Invalid page name');

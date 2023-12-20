@@ -5,7 +5,7 @@ export const PAGE_NAMES = {
     WELCOME: 'welcome',
     PATIENT: 'patient',
     DOCTOR: 'doctor',
-    PATIENT_RELATIVE: 'patientRelative',
+    RELATIVE: 'relative',
     FORGOT_PASSWORD: 'forgotPassword',
   },
   DOCTOR: {
@@ -23,10 +23,11 @@ export const PAGE_NAMES = {
       ACCOUNT: 'doctorAccount',
     },
   },
-  PATIENT_RELATIVE: {
+  RELATIVE: {
     HOME: 'home',
     AUTH: {
-      LOGIN: 'patientRelativeLogin',
+      LOGIN: 'relativeLogin',
+      REGISTER: 'relativeRegister',
     },
   },
   PATIENT: {
@@ -102,6 +103,8 @@ export const COLORS = {
 export const REGEXES = {
   DATE: /(0[1-9]|[12][0-9]|3[01])\.(0[1-9]|1[1,2])\.(19|20)\d{2}/,
   EMAIL: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+  TR_PHONE_NUMBER:
+    /^(?:\+90.?5|0090.?5|905|0?5)(?:[0-9][0-9])\s?(?:[0-9]{3})\s?(?:[0-9]{2})\s?(?:[0-9]{2})$/,
 };
 
 export const STORAGE_KEYS = {

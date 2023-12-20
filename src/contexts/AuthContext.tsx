@@ -5,7 +5,7 @@ import {
   LoggedUserType,
   LoggedPatientDto,
   LoggedDoctorDto,
-  LoggedPatientRelativeDto,
+  LoggedRelativeDto,
   UserWithTokensDto,
 } from '../api/auths/dtos/auth.dto';
 import {
@@ -27,7 +27,7 @@ export type AuthContextType = {
     username: string,
     password: string,
   ) => Promise<CustomError | null>;
-  patientRelativeLogin: (
+  relativeLogin: (
     email: string,
     password: string,
   ) => Promise<CustomError | null>;
@@ -103,18 +103,18 @@ export const AuthProvider = ({
     return null;
   };
 
-  const patientRelativeLogin = async (
+  const relativeLogin = async (
     email: string,
     password: string,
   ): Promise<CustomError | null> => {
-    const loginRes = await login(email, password, UserRoles.PatientRelative);
+    const loginRes = await login(email, password, UserRoles.Relative);
     if (loginRes?.error) {
       return loginRes.error;
     }
     await setStatesAndStorageItems(
       loginRes.data!.tokens.accessToken,
       loginRes.data!.tokens.refreshToken,
-      loginRes.data!.patientRelative as LoggedPatientRelativeDto,
+      loginRes.data!.relative as LoggedRelativeDto,
     );
     return null;
   };
@@ -167,7 +167,7 @@ export const AuthProvider = ({
           setUserInfo,
           doctorLogin,
           patientLogin,
-          patientRelativeLogin,
+          relativeLogin,
           logout,
           setPatientConsentStatus,
           isCheckProgress,

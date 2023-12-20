@@ -28,7 +28,7 @@ const WelcomeScreen = ({navigation}: any) => {
         </Button>
         <Button
           onPress={() => {
-            navigation.navigate(PAGE_NAMES.PORTALS.PATIENT_RELATIVE);
+            navigation.navigate(PAGE_NAMES.PORTALS.RELATIVE);
           }}
           style={[styles.body_element, styles.button]}
           buttonColor={COLORS.TEXT}
