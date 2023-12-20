@@ -8,5 +8,4 @@ export class GetProfileFromAuthResponse {
 export class PatientUserProfile {
   firstName: string;
   lastName: string;
-  email: string;
 }

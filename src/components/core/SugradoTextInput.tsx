@@ -68,7 +68,6 @@ export default function SugradoTextInput({
 const styles = StyleSheet.create({
   input: {
     width: '100%',
-    backgroundColor: 'transparent',
   },
   label: {
     marginLeft: 5,

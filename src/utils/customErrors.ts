@@ -46,13 +46,22 @@ export class RequestError extends Error {
   }
 }
 
+export class InterfaceError extends Error {
+  title: string;
+  constructor(message: string) {
+    super(message);
+    this.title = 'Interface error';
+  }
+}
+
 export type CustomError =
   | BusinessError
   | AuthorizationError
   | InternalServerError
   | NotFoundError
   | ValidationError
-  | RequestError;
+  | RequestError
+  | InterfaceError;
 
 export const isCritical = (error: CustomError) =>
   error instanceof InternalServerError ||

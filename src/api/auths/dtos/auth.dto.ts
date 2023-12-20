@@ -43,7 +43,6 @@ export class LoggedPatientRelativeDto extends LoggedUserInfo {}
 
 export class TokenDto {
   token: string;
-  expiration: Date;
 }
 
 export class UserWithTokensDto {
