@@ -38,32 +38,6 @@ export default function Account() {
     },
   });
 
-  useEffect(() => {
-    getMyInfo();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const getMyInfo = async () => {
-    setLoading(true);
-    const response = await profile();
-    if (response?.error) {
-      setError(response.error);
-      setLoading(false);
-      return;
-    }
-    setError(null);
-    setFormValues(response.data!);
-    setLoading(false);
-  };
-
-  const setFormValues = (data: GetProfileFromAuthResponse): void => {
-    setValue('user.firstName', data.user.firstName);
-    setValue('user.lastName', data.user.lastName);
-    setValue('address', data.address);
-    setValue('dailyTeaConsumption', data.dailyTeaConsumption.toString());
-    setValue('dailyCoffeeConsumption', data.dailyCoffeeConsumption.toString());
-  };
-
   const rules = {
     firstName: {
       required: {
@@ -117,6 +91,32 @@ export default function Account() {
     },
   };
 
+  useEffect(() => {
+    getMyInfo();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const getMyInfo = async () => {
+    setLoading(true);
+    const response = await profile();
+    if (response?.error) {
+      setError(response.error);
+      setLoading(false);
+      return;
+    }
+    setError(null);
+    setFormValues(response.data!);
+    setLoading(false);
+  };
+
+  const setFormValues = (data: GetProfileFromAuthResponse): void => {
+    setValue('user.firstName', data.user.firstName);
+    setValue('user.lastName', data.user.lastName);
+    setValue('address', data.address);
+    setValue('dailyTeaConsumption', data.dailyTeaConsumption.toString());
+    setValue('dailyCoffeeConsumption', data.dailyCoffeeConsumption.toString());
+  };
+
   const onSubmit = async (data: any) => {
     setLoading(true);
     const body = {
@@ -131,7 +131,6 @@ export default function Account() {
       return;
     }
     setSuccess(!success);
-
     setError(null);
     setLoading(false);
   };
