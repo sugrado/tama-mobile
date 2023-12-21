@@ -33,7 +33,10 @@ const ChangePassword = ({navigation}: any) => {
   // TODO: uygulama genelinde parola validator yazılacak
   const rules = {
     currentPassword: {
-      required: 'Şifrenizi giriniz',
+      required: {
+        value: true,
+        message: FORM_ERROR_MESSAGES.REQUIRED,
+      },
       minLength: {
         value: 8,
         message: FORM_ERROR_MESSAGES.MIN_LENGTH(8),
@@ -44,7 +47,10 @@ const ChangePassword = ({navigation}: any) => {
       },
     },
     newPassword: {
-      required: 'Yeni şifrenizi giriniz',
+      required: {
+        value: true,
+        message: FORM_ERROR_MESSAGES.REQUIRED,
+      },
       minLength: {
         value: 8,
         message: FORM_ERROR_MESSAGES.MIN_LENGTH(8),
@@ -55,7 +61,10 @@ const ChangePassword = ({navigation}: any) => {
       },
     },
     newPasswordConfirm: {
-      required: 'Yeni şifrenizi tekrar giriniz',
+      required: {
+        value: true,
+        message: FORM_ERROR_MESSAGES.REQUIRED,
+      },
       minLength: {
         value: 8,
         message: FORM_ERROR_MESSAGES.MIN_LENGTH(8),

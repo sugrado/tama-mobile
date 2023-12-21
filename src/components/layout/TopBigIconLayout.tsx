@@ -5,8 +5,8 @@ import {COLORS, DIMENSIONS} from '../../constants';
 
 type TopBigIconLayoutProps = {
   children: any;
-  snackbarVisible: boolean;
-  setSnackbarVisible: () => void;
+  snackbarVisible?: boolean;
+  setSnackbarVisible?: () => void;
   warningText?: string;
   pageName: string;
 };
@@ -41,12 +41,14 @@ const TopBigIconLayout = ({
             Necmettin Erbakan Üniversitesi{'\n'}Tıp Fakültesi Ruh Sağlığı ve
             Hastalıkları{'\n'}Ana Bilim Dalı
           </Text>
-          <Snackbar
-            visible={snackbarVisible}
-            duration={2000}
-            onDismiss={setSnackbarVisible}>
-            {warningText}
-          </Snackbar>
+          {snackbarVisible && setSnackbarVisible && (
+            <Snackbar
+              visible={snackbarVisible}
+              duration={2000}
+              onDismiss={setSnackbarVisible}>
+              {warningText}
+            </Snackbar>
+          )}
         </View>
       </View>
     </SafeAreaView>

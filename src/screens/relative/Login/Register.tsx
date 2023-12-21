@@ -81,7 +81,10 @@ const Register = () => {
       },
     },
     password: {
-      required: 'Şifrenizi giriniz',
+      required: {
+        value: true,
+        message: FORM_ERROR_MESSAGES.REQUIRED,
+      },
       minLength: {
         value: 8,
         message: FORM_ERROR_MESSAGES.MIN_LENGTH(8),
@@ -92,7 +95,10 @@ const Register = () => {
       },
     },
     passwordAgain: {
-      required: 'Şifrenizi tekrar giriniz',
+      required: {
+        value: true,
+        message: FORM_ERROR_MESSAGES.REQUIRED,
+      },
       minLength: {
         value: 8,
         message: FORM_ERROR_MESSAGES.MIN_LENGTH(8),

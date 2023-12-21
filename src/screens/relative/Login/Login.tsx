@@ -20,7 +20,6 @@ function Login({navigation}: any) {
   const {relativeLogin} = useAuth();
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<CustomError | null>(null);
-  const [snackbarVisible, setSnackbarVisible] = useState(false);
 
   const {
     control,
@@ -76,11 +75,7 @@ function Login({navigation}: any) {
       {loading && <Loading loading={loading} />}
       <TopBigIconLayout
         pageName="Hasta Yakını Girişi"
-        snackbarVisible={snackbarVisible}
-        warningText="Lütfen e-posta ve parolanızı eksiksiz doldurun."
-        setSnackbarVisible={() => {
-          setSnackbarVisible(false);
-        }}>
+        warningText="Lütfen e-posta ve parolanızı eksiksiz doldurun.">
         <SugradoFormField
           control={control}
           rules={rules.email}
