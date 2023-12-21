@@ -22,10 +22,7 @@ const AuthStackNavigator = () => (
         };
       },
     }}>
-    <AuthStack.Screen
-      name={PAGE_NAMES.RELATIVE.AUTH.LOGIN}
-      component={Login}
-    />
+    <AuthStack.Screen name={PAGE_NAMES.RELATIVE.AUTH.LOGIN} component={Login} />
     <AuthStack.Screen
       name={PAGE_NAMES.RELATIVE.AUTH.REGISTER}
       component={Register}
