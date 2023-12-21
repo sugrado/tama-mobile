@@ -29,6 +29,13 @@ export const PAGE_NAMES = {
       LOGIN: 'relativeLogin',
       REGISTER: 'relativeRegister',
     },
+    SETTINGS: {
+      SETTINGS_STACK: 'patientSettingsStack',
+      SETTINGS: 'patientSettings',
+      ACCOUNT: 'patientAccount',
+      CHANGE_PASSWORD: 'patientChangePassword',
+      CHANGE_EMAIL: 'patientChangeEmail',
+    },
   },
   PATIENT: {
     AUTH: {

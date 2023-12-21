@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   header_text: {
-    color: 'white',
+    color: COLORS.TEXT,
     textAlign: 'center',
     fontWeight: 'bold',
   },
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   footer_text: {
-    color: 'white',
+    color: COLORS.TEXT,
     textAlign: 'center',
     fontWeight: 'bold',
   },

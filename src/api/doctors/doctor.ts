@@ -1,4 +1,4 @@
-import {GetProfileFromAuthResponse} from './dtos/doctor-profle-response.dto';
+import {GetProfileFromAuthResponse} from './dtos/get-profile-from-auth-response.dto';
 import axiosInstance from '../../contexts/AxiosInterceptor';
 import {ApiDataResponse} from '../../dto/api';
 import {CustomError} from '../../utils/customErrors';

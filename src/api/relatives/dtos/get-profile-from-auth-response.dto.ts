@@ -1,9 +1,8 @@
 export class GetProfileFromAuthResponse {
-  workAddress: string;
-  user: DoctorUserProfile;
+  user: RelativeUserProfile;
 }
 
-export class DoctorUserProfile {
+export class RelativeUserProfile {
   firstName: string;
   lastName: string;
   email: string;

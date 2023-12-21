@@ -3,18 +3,17 @@ import {StyleSheet, View} from 'react-native';
 import {FORM_ERROR_MESSAGES} from '../../../constants';
 import SugradoTextInput from '../../../components/core/SugradoTextInput';
 import Loading from '../../../components/layout/Loading';
-import SugradoTextArea from '../../../components/core/SugradoTextArea';
 import SugradoButton from '../../../components/core/SugradoButton';
 import TopSmallIconLayout from '../../../components/layout/TopSmallIconLayout';
 import SugradoFormField from '../../../components/core/SugradoFormField';
 import {useForm} from 'react-hook-form';
-import {profile, update} from '../../../api/patients/patient';
 import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
 import {CustomError, isCritical} from '../../../utils/customErrors';
 import SugradoErrorPage from '../../../components/core/SugradoErrorPage';
-import {UpdateFromAuthCommand} from '../../../api/patients/dtos/update-from-auth.dto';
-import {GetProfileFromAuthResponse} from '../../../api/patients/dtos/get-profile-from-auth-response.dto';
 import SugradoSuccessSnackbar from '../../../components/core/SugradoSuccessSnackbar';
+import {GetProfileFromAuthResponse} from '../../../api/relatives/dtos/get-profile-from-auth-response.dto';
+import {profile, update} from '../../../api/relatives/relative';
+import {UpdateFromAuthCommand} from '../../../api/relatives/dtos/update-from-auth.dto';
 
 export default function Account() {
   const [loading, setLoading] = useState<boolean>(false);
@@ -31,10 +30,8 @@ export default function Account() {
       user: {
         firstName: '',
         lastName: '',
+        phoneNumber: '',
       },
-      address: '',
-      dailyTeaConsumption: '',
-      dailyCoffeeConsumption: '',
     },
   });
 
@@ -59,7 +56,7 @@ export default function Account() {
         message: FORM_ERROR_MESSAGES.MAX_LENGTH(60),
       },
     },
-    address: {
+    phoneNumber: {
       required: {
         value: true,
         message: FORM_ERROR_MESSAGES.REQUIRED,
@@ -67,26 +64,6 @@ export default function Account() {
       maxLength: {
         value: 250,
         message: FORM_ERROR_MESSAGES.MAX_LENGTH(250),
-      },
-    },
-    dailyTeaConsumption: {
-      required: {
-        value: true,
-        message: FORM_ERROR_MESSAGES.REQUIRED,
-      },
-      min: {
-        value: 0,
-        message: FORM_ERROR_MESSAGES.MIN_VALUE(0),
-      },
-    },
-    dailyCoffeeConsumption: {
-      required: {
-        value: true,
-        message: FORM_ERROR_MESSAGES.REQUIRED,
-      },
-      min: {
-        value: 0,
-        message: FORM_ERROR_MESSAGES.MIN_VALUE(0),
       },
     },
   };
@@ -112,17 +89,13 @@ export default function Account() {
   const setFormValues = (data: GetProfileFromAuthResponse): void => {
     setValue('user.firstName', data.user.firstName);
     setValue('user.lastName', data.user.lastName);
-    setValue('address', data.address);
-    setValue('dailyTeaConsumption', data.dailyTeaConsumption.toString());
-    setValue('dailyCoffeeConsumption', data.dailyCoffeeConsumption.toString());
+    setValue('user.phoneNumber', data.user.phoneNumber);
   };
 
   const onSubmit = async (data: any) => {
     setLoading(true);
     const body = {
-      address: data.address,
-      dailyTeaConsumption: Number(data.dailyTeaConsumption),
-      dailyCoffeeConsumption: Number(data.dailyCoffeeConsumption),
+      phoneNumber: data.user.phoneNumber,
     } as UpdateFromAuthCommand;
     const response = await update(body);
     if (response?.error) {
@@ -179,51 +152,17 @@ export default function Account() {
                 />
                 <SugradoFormField
                   control={control}
-                  rules={rules.address}
-                  error={errors.address}
-                  name="address"
-                  style={styles.input}
-                  render={({field: {onChange, onBlur, value}}: any) => (
-                    <SugradoTextArea
-                      label="Adres"
-                      placeholder="Örn: Örnek Mah. Örnek Sok. Örnek Apt. No: 1 D: 1 Keçiören/Ankara"
-                      value={value}
-                      valueChange={onChange}
-                      onBlur={onBlur}
-                    />
-                  )}
-                />
-                <SugradoFormField
-                  control={control}
-                  rules={rules.dailyTeaConsumption}
-                  error={errors.dailyTeaConsumption}
-                  name="dailyTeaConsumption"
+                  rules={rules.phoneNumber}
+                  error={errors.user && errors.user.phoneNumber}
+                  name="user.phoneNumber"
                   style={styles.input}
                   render={({field: {onChange, onBlur, value}}: any) => (
                     <SugradoTextInput
-                      label="Günlük Çay Tüketimi (ml)"
-                      placeholder="Örn: 200"
+                      label="Telefon Numarası"
+                      placeholder="5__ ___ __ __"
                       value={value}
                       valueChange={onChange}
                       onBlur={onBlur}
-                      keyboardType="numeric"
-                    />
-                  )}
-                />
-                <SugradoFormField
-                  control={control}
-                  rules={rules.dailyCoffeeConsumption}
-                  error={errors.dailyCoffeeConsumption}
-                  name="dailyCoffeeConsumption"
-                  style={styles.input}
-                  render={({field: {onChange, onBlur, value}}: any) => (
-                    <SugradoTextInput
-                      label="Günlük Kahve Tüketimi (ml)"
-                      placeholder="Örn: 400"
-                      value={value}
-                      valueChange={onChange}
-                      onBlur={onBlur}
-                      keyboardType="numeric"
                     />
                   )}
                 />

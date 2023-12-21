@@ -4,7 +4,7 @@ import React from 'react';
 const Home = () => {
   return (
     <View>
-      <Text>Patient Relative Home</Text>
+      <Text>Relative Home</Text>
     </View>
   );
 };
