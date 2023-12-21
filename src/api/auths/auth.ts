@@ -10,6 +10,10 @@ import {CustomError} from '../../utils/customErrors';
 import {ChangePassword} from './dtos/change-password.dto';
 import {ChangeEmail} from './dtos/change-email.dto';
 import {PasswordResetDto} from './dtos/password-reset.dto';
+import {
+  RegisterDoctorRecord,
+  RegisterRelativeRecord,
+} from './dtos/register-doctor-record';
 
 export const login = async (
   credential: string,
@@ -22,6 +26,34 @@ export const login = async (
       password,
       role,
     } as LoginDto);
+    return {data: res.data, error: null};
+  } catch (error) {
+    return {data: null, error: error as CustomError};
+  }
+};
+
+export const registerDoctor = async (
+  body: RegisterDoctorRecord,
+): Promise<ApiDataResponse<LoggedResponse>> => {
+  try {
+    const res = await axiosInstance.post<LoggedResponse>(
+      'auth/register/doctor',
+      body,
+    );
+    return {data: res.data, error: null};
+  } catch (error) {
+    return {data: null, error: error as CustomError};
+  }
+};
+
+export const registerRelative = async (
+  body: RegisterRelativeRecord,
+): Promise<ApiDataResponse<LoggedResponse>> => {
+  try {
+    const res = await axiosInstance.post<LoggedResponse>(
+      'auth/register/relative',
+      body,
+    );
     return {data: res.data, error: null};
   } catch (error) {
     return {data: null, error: error as CustomError};

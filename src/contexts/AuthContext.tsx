@@ -14,10 +14,19 @@ import {
   saveAuthDataToStorage,
   setUserInfoToStorage,
 } from '../utils/storage';
-import {login, revokeToken} from '../api/auths/auth';
+import {
+  login,
+  registerDoctor,
+  registerRelative,
+  revokeToken,
+} from '../api/auths/auth';
 import {acceptConsent} from '../api/patients/patient';
 import {checkIsLoggedIn, validateAuthSession} from '../services/auth.service';
 import {CustomError} from '../utils/customErrors';
+import {
+  RegisterDoctorRecord,
+  RegisterRelativeRecord,
+} from '../api/auths/dtos/register-doctor-record';
 
 export type AuthContextType = {
   userInfo: LoggedUserType | null;
@@ -30,6 +39,10 @@ export type AuthContextType = {
   relativeLogin: (
     email: string,
     password: string,
+  ) => Promise<CustomError | null>;
+  doctorRegister: (body: RegisterDoctorRecord) => Promise<CustomError | null>;
+  relativeRegister: (
+    body: RegisterRelativeRecord,
   ) => Promise<CustomError | null>;
   setPatientConsentStatus: () => Promise<void>;
   logout: () => Promise<CustomError | null>;
@@ -70,6 +83,36 @@ export const AuthProvider = ({
     };
     checkLoggedStatus();
   }, [onCheckCompleted]);
+
+  const doctorRegister = async (
+    body: RegisterDoctorRecord,
+  ): Promise<CustomError | null> => {
+    const registerRes = await registerDoctor(body);
+    if (registerRes?.error) {
+      return registerRes.error;
+    }
+    await setStatesAndStorageItems(
+      registerRes.data!.tokens.accessToken,
+      registerRes.data!.tokens.refreshToken,
+      registerRes.data!.doctor as LoggedDoctorDto,
+    );
+    return null;
+  };
+
+  const relativeRegister = async (
+    body: RegisterRelativeRecord,
+  ): Promise<CustomError | null> => {
+    const registerRes = await registerRelative(body);
+    if (registerRes?.error) {
+      return registerRes.error;
+    }
+    await setStatesAndStorageItems(
+      registerRes.data!.tokens.accessToken,
+      registerRes.data!.tokens.refreshToken,
+      registerRes.data!.relative as LoggedRelativeDto,
+    );
+    return null;
+  };
 
   const doctorLogin = async (
     email: string,
@@ -168,6 +211,8 @@ export const AuthProvider = ({
           doctorLogin,
           patientLogin,
           relativeLogin,
+          doctorRegister,
+          relativeRegister,
           logout,
           setPatientConsentStatus,
           isCheckProgress,
