@@ -5,8 +5,8 @@ import Account from '../../screens/patient/Settings/Account';
 import Settings from '../../screens/patient/Settings';
 import QRCode from '../../screens/patient/Settings/QRCode';
 import MyRelatives from '../../screens/patient/Settings/MyRelatives';
-import ChangePassword from '../../screens/patient/Settings/ChangePassword';
-import ChangeEmail from '../../screens/patient/Settings/ChangeEmail';
+import ChangePassword from '../../screens/common/ChangePassword';
+import ChangeEmail from '../../screens/common/ChangeEmail';
 
 const SettingsStack = createStackNavigator();
 

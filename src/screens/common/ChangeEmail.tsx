@@ -1,17 +1,17 @@
 import {StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
-import {CustomError, InterfaceError} from '../../../utils/customErrors';
-import TopSmallIconLayout from '../../../components/layout/TopSmallIconLayout';
-import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
-import Loading from '../../../components/layout/Loading';
+import {CustomError, InterfaceError} from '../../utils/customErrors';
+import TopSmallIconLayout from '../../components/layout/TopSmallIconLayout';
+import SugradoErrorSnackbar from '../../components/core/SugradoErrorSnackbar';
+import Loading from '../../components/layout/Loading';
 import {useForm} from 'react-hook-form';
-import SugradoFormField from '../../../components/core/SugradoFormField';
-import SugradoTextInput from '../../../components/core/SugradoTextInput';
-import SugradoButton from '../../../components/core/SugradoButton';
-import {changeEmail} from '../../../api/auths/auth';
-import {COLORS, FORM_ERROR_MESSAGES, REGEXES} from '../../../constants';
-import {useAuth} from '../../../contexts/AuthContext';
-import SugradoInfoCard from '../../../components/core/SugradoInfoCard';
+import SugradoFormField from '../../components/core/SugradoFormField';
+import SugradoTextInput from '../../components/core/SugradoTextInput';
+import SugradoButton from '../../components/core/SugradoButton';
+import {changeEmail} from '../../api/auths/auth';
+import {COLORS, FORM_ERROR_MESSAGES, REGEXES} from '../../constants';
+import {useAuth} from '../../contexts/AuthContext';
+import SugradoInfoCard from '../../components/core/SugradoInfoCard';
 
 const ChangeEmail = () => {
   const {userInfo, logout} = useAuth();
@@ -112,64 +112,68 @@ const ChangeEmail = () => {
             iconSize={25}
             style={styles.info_card}
           />
-          <SugradoFormField
-            control={control}
-            rules={rules.currentEmail}
-            error={errors.currentEmail && errors.currentEmail}
-            name="currentEmail"
-            style={styles.input}
-            render={({field: {onChange, onBlur, value}}: any) => (
-              <SugradoTextInput
-                label="Mevcut E-Posta"
-                placeholder="Şu anki e-posta adresinizi giriniz."
-                value={value}
-                valueChange={onChange}
-                onBlur={onBlur}
-                keyboardType="email-address"
-                disabled={true}
+          {!loading && (
+            <>
+              <SugradoFormField
+                control={control}
+                rules={rules.currentEmail}
+                error={errors.currentEmail && errors.currentEmail}
+                name="currentEmail"
+                style={styles.input}
+                render={({field: {onChange, onBlur, value}}: any) => (
+                  <SugradoTextInput
+                    label="Mevcut E-Posta"
+                    placeholder="Şu anki e-posta adresinizi giriniz."
+                    value={value}
+                    valueChange={onChange}
+                    onBlur={onBlur}
+                    keyboardType="email-address"
+                    disabled={true}
+                  />
+                )}
               />
-            )}
-          />
-          <SugradoFormField
-            control={control}
-            rules={rules.newEmail}
-            error={errors.newEmail && errors.newEmail}
-            name="newEmail"
-            style={styles.input}
-            render={({field: {onChange, onBlur, value}}: any) => (
-              <SugradoTextInput
-                label="Yeni E-Posta"
-                placeholder="Yeni e-posta adresinizi giriniz."
-                value={value}
-                valueChange={onChange}
-                onBlur={onBlur}
-                keyboardType="email-address"
+              <SugradoFormField
+                control={control}
+                rules={rules.newEmail}
+                error={errors.newEmail && errors.newEmail}
+                name="newEmail"
+                style={styles.input}
+                render={({field: {onChange, onBlur, value}}: any) => (
+                  <SugradoTextInput
+                    label="Yeni E-Posta"
+                    placeholder="Yeni e-posta adresinizi giriniz."
+                    value={value}
+                    valueChange={onChange}
+                    onBlur={onBlur}
+                    keyboardType="email-address"
+                  />
+                )}
               />
-            )}
-          />
-          <SugradoFormField
-            control={control}
-            rules={rules.newEmailConfirm}
-            error={errors.newEmailConfirm && errors.newEmailConfirm}
-            name="newEmailConfirm"
-            style={styles.input}
-            render={({field: {onChange, onBlur, value}}: any) => (
-              <SugradoTextInput
-                label="Yeni E-Posta (Tekrar)"
-                placeholder="Yeni e-posta adresinizi tekrar giriniz."
-                value={value}
-                valueChange={onChange}
-                onBlur={onBlur}
-                keyboardType="email-address"
+              <SugradoFormField
+                control={control}
+                rules={rules.newEmailConfirm}
+                error={errors.newEmailConfirm && errors.newEmailConfirm}
+                name="newEmailConfirm"
+                style={styles.input}
+                render={({field: {onChange, onBlur, value}}: any) => (
+                  <SugradoTextInput
+                    label="Yeni E-Posta (Tekrar)"
+                    placeholder="Yeni e-posta adresinizi tekrar giriniz."
+                    value={value}
+                    valueChange={onChange}
+                    onBlur={onBlur}
+                    keyboardType="email-address"
+                  />
+                )}
               />
-            )}
-          />
-          <SugradoButton
-            title="Kaydet"
-            onPress={handleSubmit(onSubmit)}
-            style={styles.save_button}
-            icon="content-save"
-          />
+              <SugradoButton
+                title="Kaydet"
+                onPress={handleSubmit(onSubmit)}
+                style={styles.save_button}
+                icon="content-save"
+              />
+            </>
+          )}
         </View>
       </TopSmallIconLayout>
       {error && <SugradoErrorSnackbar error={error} />}

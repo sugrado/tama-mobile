@@ -1,17 +1,17 @@
 import {StyleSheet, View} from 'react-native';
 import React, {useState} from 'react';
-import {CustomError, InterfaceError} from '../../../utils/customErrors';
-import TopSmallIconLayout from '../../../components/layout/TopSmallIconLayout';
-import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
-import Loading from '../../../components/layout/Loading';
+import {CustomError, InterfaceError} from '../../utils/customErrors';
+import TopSmallIconLayout from '../../components/layout/TopSmallIconLayout';
+import SugradoErrorSnackbar from '../../components/core/SugradoErrorSnackbar';
+import Loading from '../../components/layout/Loading';
 import {useForm} from 'react-hook-form';
-import SugradoFormField from '../../../components/core/SugradoFormField';
-import SugradoTextInput from '../../../components/core/SugradoTextInput';
-import SugradoButton from '../../../components/core/SugradoButton';
-import {changePassword} from '../../../api/auths/auth';
-import {FORM_ERROR_MESSAGES} from '../../../constants';
-import SugradoSuccessSnackbar from '../../../components/core/SugradoSuccessSnackbar';
-import SugradoInfoCard from '../../../components/core/SugradoInfoCard';
+import SugradoFormField from '../../components/core/SugradoFormField';
+import SugradoTextInput from '../../components/core/SugradoTextInput';
+import SugradoButton from '../../components/core/SugradoButton';
+import {changePassword} from '../../api/auths/auth';
+import {FORM_ERROR_MESSAGES} from '../../constants';
+import SugradoSuccessSnackbar from '../../components/core/SugradoSuccessSnackbar';
+import SugradoInfoCard from '../../components/core/SugradoInfoCard';
 
 const ChangePassword = ({navigation}: any) => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -112,76 +112,80 @@ const ChangePassword = ({navigation}: any) => {
             icon="information-circle"
             style={styles.info_card}
           />
-          <SugradoFormField
-            control={control}
-            rules={rules.currentPassword}
-            error={errors.currentPassword && errors.currentPassword}
-            name="currentPassword"
-            style={styles.input}
-            render={({field: {onChange, onBlur, value}}) => (
-              <SugradoTextInput
-                label="Parola"
-                placeholder="Kullandığınız parolayı girin."
-                onBlur={onBlur}
-                valueChange={onChange}
-                value={value}
-                secureTextEntry={true}
-                autoCapitalize="none"
-                autoComplete="off"
-                autoCorrect={false}
+          {!loading && (
+            <>
+              <SugradoFormField
+                control={control}
+                rules={rules.currentPassword}
+                error={errors.currentPassword && errors.currentPassword}
+                name="currentPassword"
+                style={styles.input}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <SugradoTextInput
+                    label="Parola"
+                    placeholder="Kullandığınız parolayı girin."
+                    onBlur={onBlur}
+                    valueChange={onChange}
+                    value={value}
+                    secureTextEntry={true}
+                    autoCapitalize="none"
+                    autoComplete="off"
+                    autoCorrect={false}
+                    disabled={success}
+                  />
+                )}
+              />
+              <SugradoFormField
+                control={control}
+                rules={rules.newPassword}
+                error={errors.newPassword && errors.newPassword}
+                name="newPassword"
+                style={styles.input}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <SugradoTextInput
+                    label="Yeni Parola"
+                    placeholder="Yeni parolanızı girin"
+                    onBlur={onBlur}
+                    valueChange={onChange}
+                    value={value}
+                    secureTextEntry={true}
+                    autoCapitalize="none"
+                    autoComplete="off"
+                    autoCorrect={false}
+                    disabled={success}
+                  />
+                )}
+              />
+              <SugradoFormField
+                control={control}
+                rules={rules.newPasswordConfirm}
+                error={errors.newPasswordConfirm && errors.newPasswordConfirm}
+                name="newPasswordConfirm"
+                style={styles.input}
+                render={({field: {onChange, onBlur, value}}) => (
+                  <SugradoTextInput
+                    label="Yeni Parola (Tekrar)"
+                    placeholder="Yeni parolanızı tekrar girin"
+                    onBlur={onBlur}
+                    valueChange={onChange}
+                    value={value}
+                    secureTextEntry={true}
+                    autoCapitalize="none"
+                    autoComplete="off"
+                    autoCorrect={false}
+                    disabled={success}
+                  />
+                )}
+              />
+              <SugradoButton
+                title="Kaydet"
+                onPress={handleSubmit(onSubmit)}
+                style={styles.save_button}
+                icon="content-save"
                 disabled={success}
               />
-            )}
-          />
-          <SugradoFormField
-            control={control}
-            rules={rules.newPassword}
-            error={errors.newPassword && errors.newPassword}
-            name="newPassword"
-            style={styles.input}
-            render={({field: {onChange, onBlur, value}}) => (
-              <SugradoTextInput
-                label="Yeni Parola"
-                placeholder="Yeni parolanızı girin"
-                onBlur={onBlur}
-                valueChange={onChange}
-                value={value}
-                secureTextEntry={true}
-                autoCapitalize="none"
-                autoComplete="off"
-                autoCorrect={false}
-                disabled={success}
-              />
-            )}
-          />
-          <SugradoFormField
-            control={control}
-            rules={rules.newPasswordConfirm}
-            error={errors.newPasswordConfirm && errors.newPasswordConfirm}
-            name="newPasswordConfirm"
-            style={styles.input}
-            render={({field: {onChange, onBlur, value}}) => (
-              <SugradoTextInput
-                label="Yeni Parola (Tekrar)"
-                placeholder="Yeni parolanızı tekrar girin"
-                onBlur={onBlur}
-                valueChange={onChange}
-                value={value}
-                secureTextEntry={true}
-                autoCapitalize="none"
-                autoComplete="off"
-                autoCorrect={false}
-                disabled={success}
-              />
-            )}
-          />
-          <SugradoButton
-            title="Kaydet"
-            onPress={handleSubmit(onSubmit)}
-            style={styles.save_button}
-            icon="content-save"
-            disabled={success}
-          />
+            </>
+          )}
         </View>
       </TopSmallIconLayout>
       {error && <SugradoErrorSnackbar error={error} />}
