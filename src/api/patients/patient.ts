@@ -6,6 +6,8 @@ import {GetSummaryResponse} from './dtos/get-summary-response';
 import {GetMyQRCodeResponse} from './dtos/get-my-qr-code-response.dto';
 import {GetHomeScreenDataResponse} from './dtos/get-home-screen-data-response.dto';
 import {UpdateFromAuthCommand} from './dtos/update-from-auth.dto';
+import {GetListResponse} from '../../dto/paginate';
+import {GetByRelativeListItemDto} from './dtos/get-by-relative-list-item.dto';
 
 export const acceptConsent = async (): Promise<ApiErrorResponse> => {
   try {
@@ -73,6 +75,19 @@ export const getHomeScreenData = async (): Promise<
     const res = await axiosInstance.get<GetHomeScreenDataResponse>(
       'patients/home',
     );
+    return {data: res.data, error: null};
+  } catch (error) {
+    return {data: null, error: error as CustomError};
+  }
+};
+
+export const getByRelative = async (): Promise<
+  ApiDataResponse<GetListResponse<GetByRelativeListItemDto>>
+> => {
+  try {
+    const res = await axiosInstance.get<
+      GetListResponse<GetByRelativeListItemDto>
+    >('patients/by-relative');
     return {data: res.data, error: null};
   } catch (error) {
     return {data: null, error: error as CustomError};
