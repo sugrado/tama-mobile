@@ -1,7 +1,6 @@
 export class GetProfileFromAuthResponse {
   titleName: string;
   workAddress: string;
-  availableForAppointment: boolean;
   user: DoctorUserProfile;
 }
 
