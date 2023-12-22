@@ -27,6 +27,14 @@ const Settings = ({navigation}: any) => {
     setLogoutDialogVisible(true);
   };
 
+  const handleChangePasswordPress = async () => {
+    navigation.navigate(PAGE_NAMES.DOCTOR.SETTINGS.CHANGE_PASSWORD);
+  };
+
+  const handleChangeEmailPress = async () => {
+    navigation.navigate(PAGE_NAMES.DOCTOR.SETTINGS.CHANGE_EMAIL);
+  };
+
   const handleLogout = async () => {
     setLoading(true);
     const err = await logout();
@@ -55,8 +63,20 @@ const Settings = ({navigation}: any) => {
           <View style={styles.container}>
             <SettingRow
               icon="account"
-              title="Hesabım"
+              title="Bilgilerim"
               onPress={handleAccountPress}
+            />
+            <Divider />
+            <SettingRow
+              icon="lock"
+              title="Parola Değişikliği"
+              onPress={handleChangePasswordPress}
+            />
+            <Divider />
+            <SettingRow
+              icon="email"
+              title="E-posta Değişikliği"
+              onPress={handleChangeEmailPress}
             />
             <Divider />
             <SettingRow

@@ -2,7 +2,9 @@ import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {PAGE_NAMES} from '../../constants';
 import Account from '../../screens/doctor/Settings/Account';
-import Settings from '../../screens/doctor/Settings/Settings';
+import Settings from '../../screens/doctor/Settings';
+import ChangePassword from '../../screens/common/ChangePassword';
+import ChangeEmail from '../../screens/common/ChangeEmail';
 
 const SettingsStack = createStackNavigator();
 
@@ -32,6 +34,14 @@ const SettingsStackNavigator = () => (
     <SettingsStack.Screen
       name={PAGE_NAMES.DOCTOR.SETTINGS.ACCOUNT}
       component={Account}
+    />
+    <SettingsStack.Screen
+      name={PAGE_NAMES.DOCTOR.SETTINGS.CHANGE_PASSWORD}
+      component={ChangePassword}
+    />
+    <SettingsStack.Screen
+      name={PAGE_NAMES.DOCTOR.SETTINGS.CHANGE_EMAIL}
+      component={ChangeEmail}
     />
   </SettingsStack.Navigator>
 );

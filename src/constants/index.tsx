@@ -21,6 +21,8 @@ export const PAGE_NAMES = {
       SETTINGS_STACK: 'doctorSettingsStack',
       SETTINGS: 'doctorSettings',
       ACCOUNT: 'doctorAccount',
+      CHANGE_PASSWORD: 'patientChangePassword',
+      CHANGE_EMAIL: 'patientChangeEmail',
     },
   },
   RELATIVE: {
