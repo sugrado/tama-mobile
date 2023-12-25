@@ -35,7 +35,7 @@ const ScanQRCode = ({navigation}: any) => {
       return;
     }
     setError(null);
-    navigation.navigate(PAGE_NAMES.RELATIVE.HOME.HOME);
+    navigation.navigate(PAGE_NAMES.RELATIVE.HOME);
     setLoading(false);
   };
 
