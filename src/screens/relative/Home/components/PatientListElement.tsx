@@ -1,9 +1,9 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {COLORS} from '../../../constants';
+import {COLORS} from '../../../../constants';
 import {Divider, Text} from 'react-native-paper';
-import {GetByRelativeListItemDto} from '../../../api/patients/dtos/get-by-relative-list-item.dto';
+import {GetByRelativeListItemDto} from '../../../../api/patients/dtos/get-by-relative-list-item.dto';
 
 type PatientListElementProps = {
   item: GetByRelativeListItemDto;

@@ -1,4 +1,5 @@
 export class GetByRelativeListItemDto {
+  id: number;
   fullName: string;
   details: GetByRelativeDto;
 }
