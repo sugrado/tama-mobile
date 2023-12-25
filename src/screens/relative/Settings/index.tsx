@@ -31,6 +31,10 @@ const Settings = ({navigation}: any) => {
     navigation.navigate(PAGE_NAMES.RELATIVE.SETTINGS.CHANGE_EMAIL);
   };
 
+  const handleQRCodeScanPress = async () => {
+    navigation.navigate(PAGE_NAMES.RELATIVE.SETTINGS.SCAN_QR_CODE);
+  };
+
   const handleLogoutPress = () => {
     setLogoutDialogVisible(true);
   };
@@ -65,6 +69,12 @@ const Settings = ({navigation}: any) => {
               icon="account"
               title="Bilgilerim"
               onPress={handleAccountPress}
+            />
+            <Divider />
+            <SettingRow
+              icon="qrcode-scan"
+              title="QR Kod Okut"
+              onPress={handleQRCodeScanPress}
             />
             <Divider />
             <SettingRow

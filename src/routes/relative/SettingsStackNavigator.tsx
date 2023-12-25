@@ -5,6 +5,7 @@ import Account from '../../screens/relative/Settings/Account';
 import Settings from '../../screens/relative/Settings';
 import ChangePassword from '../../screens/common/ChangePassword';
 import ChangeEmail from '../../screens/common/ChangeEmail';
+import ScanQRCode from '../../screens/relative/Settings/ScanQRCode';
 
 const SettingsStack = createStackNavigator();
 
@@ -42,6 +43,10 @@ const SettingsStackNavigator = () => (
     <SettingsStack.Screen
       name={PAGE_NAMES.RELATIVE.SETTINGS.CHANGE_EMAIL}
       component={ChangeEmail}
+    />
+    <SettingsStack.Screen
+      name={PAGE_NAMES.RELATIVE.SETTINGS.SCAN_QR_CODE}
+      component={ScanQRCode}
     />
   </SettingsStack.Navigator>
 );
