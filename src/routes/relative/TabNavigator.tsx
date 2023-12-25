@@ -53,7 +53,7 @@ const getIconNameByPage = (name: string, focused: boolean) => {
   switch (name) {
     case PAGE_NAMES.RELATIVE.HOME:
       return focused ? 'home' : 'home-outline';
-    case PAGE_NAMES.PATIENT.SETTINGS.SETTINGS_STACK:
+    case PAGE_NAMES.RELATIVE.SETTINGS.SETTINGS_STACK:
       return focused ? 'settings' : 'settings-outline';
     default:
       throw new Error('Invalid page name');

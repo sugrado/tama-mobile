@@ -26,17 +26,18 @@ export const PAGE_NAMES = {
     },
   },
   RELATIVE: {
-    HOME: 'home',
+    HOME: 'relativeHome',
     AUTH: {
       LOGIN: 'relativeLogin',
       REGISTER: 'relativeRegister',
     },
     SETTINGS: {
-      SETTINGS_STACK: 'patientSettingsStack',
-      SETTINGS: 'patientSettings',
-      ACCOUNT: 'patientAccount',
-      CHANGE_PASSWORD: 'patientChangePassword',
-      CHANGE_EMAIL: 'patientChangeEmail',
+      SETTINGS_STACK: 'relativeSettingsStack',
+      SETTINGS: 'relativeSettings',
+      ACCOUNT: 'relativeAccount',
+      CHANGE_PASSWORD: 'relativeChangePassword',
+      CHANGE_EMAIL: 'relativeChangeEmail',
+      SCAN_QR_CODE: 'relativeScanQRCode',
     },
   },
   PATIENT: {
