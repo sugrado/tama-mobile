@@ -28,3 +28,12 @@ export const getMyRelatives = async (): Promise<
     return {data: null, error: error as CustomError};
   }
 };
+
+export const remove = async (relativeId: number): Promise<ApiErrorResponse> => {
+  try {
+    await axiosInstance.delete(`patient-relatives/by-relative/${relativeId}`);
+    return {error: null};
+  } catch (error) {
+    return {error: error as CustomError};
+  }
+};
