@@ -31,6 +31,14 @@ export const formatDate = (date: string | Date, type: FormatType): string => {
   }
 };
 
+export const calculateAge = (birthDate: string | Date): Number => {
+  const dateObject = new Date(birthDate);
+  const birthYear = dateObject.getFullYear();
+  const now = new Date();
+  const currentYear = now.getFullYear();
+  return currentYear - birthYear;
+};
+
 export const generateId = (): number => Math.round(Math.random() * 1000000);
 
 export const getEndOfTheDayCountdown = (): string => {
