@@ -15,7 +15,13 @@ export const PAGE_NAMES = {
     HOME: {
       HOME_STACK: 'doctorHomeStack',
       HOME: 'doctorHome',
-      SEARCH_PATIENT: 'searchPatient',
+    },
+    SEARCH_PATIENT: {
+      SEARCH_PATIENT_TOP_TAB: 'doctorSearchPatientTopTab',
+      GENERAL: 'doctorGeneral',
+      DIAGNOSES: 'doctorDiagnoses',
+      CHRONIC_DISEASES: 'doctorChronicDiseases',
+      DAILY_QUESTION_ANSWERS: 'doctorDailyQuestionAnswers',
     },
     SETTINGS: {
       SETTINGS_STACK: 'doctorSettingsStack',

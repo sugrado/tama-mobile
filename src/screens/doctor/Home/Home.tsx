@@ -57,9 +57,12 @@ const Home = ({navigation}: any) => {
   };
 
   const navigateToPatientSearch = (code: string) => {
-    navigation.navigate(PAGE_NAMES.DOCTOR.HOME.SEARCH_PATIENT, {
-      code,
-    });
+    navigation.navigate(
+      PAGE_NAMES.DOCTOR.SEARCH_PATIENT.SEARCH_PATIENT_TOP_TAB,
+      {
+        code,
+      },
+    );
   };
 
   const handleScanQRCode = async () => {

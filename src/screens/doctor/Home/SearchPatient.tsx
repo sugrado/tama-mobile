@@ -5,7 +5,8 @@ import Loading from '../../../components/layout/Loading';
 import {qrSummary} from '../../../api/patients/patient';
 import {GetSummaryResponse} from '../../../api/patients/dtos/get-summary-response';
 import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
-import {CustomError} from '../../../utils/customErrors';
+import {CustomError, isCritical} from '../../../utils/customErrors';
+import SugradoErrorPage from '../../../components/core/SugradoErrorPage';
 
 const SearchPatient = ({route}: any) => {
   const {code} = route.params;
@@ -29,7 +30,9 @@ const SearchPatient = ({route}: any) => {
   return (
     <>
       {loading && <Loading loading={loading} />}
-      {error == null ? (
+      {error && isCritical(error) ? (
+        <SugradoErrorPage retry={getPatientInfo} />
+      ) : (
         <View>
           <Text variant="bodyMedium">{code}</Text>
           {Object.keys(patient || {}).map(key => (
@@ -38,9 +41,8 @@ const SearchPatient = ({route}: any) => {
             </Text>
           ))}
         </View>
-      ) : (
-        <SugradoErrorSnackbar error={error} retry={getPatientInfo} />
       )}
+      {error && <SugradoErrorSnackbar error={error} />}
     </>
   );
 };
