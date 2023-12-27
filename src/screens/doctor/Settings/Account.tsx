@@ -16,7 +16,7 @@ import SugradoSuccessSnackbar from '../../../components/core/SugradoSuccessSnack
 import {GetProfileFromAuthResponse} from '../../../api/doctors/dtos/get-profile-from-auth-response.dto';
 import {UpdateFromAuthCommand} from '../../../api/doctors/dtos/update-from-auth.dto';
 
-export default function Profile() {
+export default function Account() {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<CustomError | null>(null);
   const [success, setSuccess] = useState<boolean>(false);
