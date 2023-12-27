@@ -104,15 +104,15 @@ const SearchPatient = ({navigation, route}: any) => {
               value={patient.dailyCoffeeConsumption}
             />
             <PatientInfoRow
-              label="Sigara Kullanır"
+              label="Sigara Kullanımı"
               value={patient.smoke ? 'Evet' : 'Hayır'}
             />
             <PatientInfoRow
-              label="Alkol Kullanır"
+              label="Alkol Kullanımı"
               value={patient.alcohol ? 'Evet' : 'Hayır'}
             />
             <PatientInfoRow
-              label="Uyuşturucu Kullanır"
+              label="Uyuşturucu Madde Kullanımı"
               value={patient.drugs ? 'Evet' : 'Hayır'}
             />
             <PatientInfoRow
