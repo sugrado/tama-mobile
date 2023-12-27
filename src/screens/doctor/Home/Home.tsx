@@ -4,7 +4,7 @@ import SugradoBarcodeScanner from '../../../components/core/SugradoBarcodeScanne
 import {Text} from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {COLORS, PAGE_NAMES} from '../../../constants';
-import {PatientListElement} from './PatientListElement';
+import {PatientListElement} from './components/PatientListElement';
 
 import {
   checkCameraPermission,
@@ -57,12 +57,9 @@ const Home = ({navigation}: any) => {
   };
 
   const navigateToPatientSearch = (code: string) => {
-    navigation.navigate(
-      PAGE_NAMES.DOCTOR.SEARCH_PATIENT.SEARCH_PATIENT_TOP_TAB,
-      {
-        code,
-      },
-    );
+    navigation.navigate(PAGE_NAMES.DOCTOR.HOME.SEARCH_PATIENT, {
+      code,
+    });
   };
 
   const handleScanQRCode = async () => {

@@ -1,10 +1,10 @@
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import React from 'react';
-import {COLORS} from '../../../constants';
+import {COLORS} from '../../../../constants';
 import {Divider, Text} from 'react-native-paper';
-import {LastTransactionDto} from '../../../api/patientSearchTransactions/dto/get-my-last-transactions-response.dto';
-import {FormatType, formatDate} from '../../../utils/helpers';
+import {LastTransactionDto} from '../../../../api/patientSearchTransactions/dto/get-my-last-transactions-response.dto';
+import {FormatType, formatDate} from '../../../../utils/helpers';
 
 type PatientListElementProps = {
   item: LastTransactionDto;

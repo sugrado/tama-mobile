@@ -1,20 +1,18 @@
-import {Gender} from '../../enums/Gender';
-
-export class GetSummaryResponse {
+export interface GetQRSummaryResponse {
+  id: number;
+  fullName: string;
+  username: string;
+  identityNumber: string;
+  birthAt: string;
+  genderName: string;
   height: number;
   weight: number;
   dailyTeaConsumption: number;
   dailyCoffeeConsumption: number;
-  gender: Gender;
-  identityNumber: string;
-  address: string;
-  username: string;
-  usingMedicinesAndFrequency: string | null;
-  previousSurgery: string | null;
-  allergy: string | null;
-  birthAt: Date | string;
   smoke: boolean;
   alcohol: boolean;
   drugs: boolean;
-  consentAccepted: boolean;
+  usingMedicinesAndFrequency: string | null;
+  previousSurgery: string | null;
+  allergy: string | null;
 }
