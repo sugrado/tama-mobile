@@ -1,26 +1,33 @@
 import {Text} from 'react-native-paper';
-import {GetChronicDiseasesByPatientListItemDto} from '../../../../api/patientChronicDiseases/dto/GetChronicDiseasesByPatientListItemDto';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {COLORS} from '../../../../constants';
+import {GetDiagnosesByPatientListItemDto} from '../../../../api/diagnoses/dto/GetDiagnosesByPatientListItemDto';
+import {FormatType, formatDate} from '../../../../utils/helpers';
 
-type PatientChronicDiseaseListItemProps = {
-  chronicDisease: GetChronicDiseasesByPatientListItemDto;
+type PatientDiagnosisListItemProps = {
+  diagnosis: GetDiagnosesByPatientListItemDto;
 };
 
-export const PatientChronicDiseaseListItem = ({
-  chronicDisease,
-}: PatientChronicDiseaseListItemProps) => {
+export const PatientDiagnosisListItem = ({
+  diagnosis,
+}: PatientDiagnosisListItemProps) => {
   return (
     <View style={styles.item_container}>
       <View style={styles.info_column}>
         <Text variant="bodyMedium" style={styles.section_title}>
-          Hastalık:{' '}
-          <Text variant="bodyMedium">{chronicDisease.chronicDisease.name}</Text>
+          Teşhis:{' '}
+          <Text variant="bodyMedium">{diagnosis.detectedDisease.name}</Text>
+        </Text>
+        <Text variant="bodyMedium" style={styles.section_title}>
+          Tarih:{' '}
+          <Text variant="bodyMedium">
+            {formatDate(diagnosis.startDate, FormatType.DATE)}
+          </Text>
         </Text>
         <Text variant="bodyMedium" style={styles.section_title}>
           Açıklama:{' '}
-          <Text variant="bodyMedium">{chronicDisease.detail ?? '-'}</Text>
+          <Text variant="bodyMedium">{diagnosis.description ?? '-'}</Text>
         </Text>
       </View>
     </View>
