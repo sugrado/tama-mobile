@@ -1,4 +1,4 @@
-import {ScrollView, StyleSheet, View} from 'react-native';
+import {Image, ScrollView, StyleSheet, View} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import Loading from '../../../components/layout/Loading';
 import {qrSummary} from '../../../api/patients/patient';
@@ -14,6 +14,7 @@ import {Button} from 'react-native-paper';
 const SearchPatient = ({navigation, route}: any) => {
   const {code} = route.params;
   const [loading, setLoading] = useState<boolean>(false);
+  const [qrCode, setQRCode] = useState<string>();
   const [patient, setPatient] = useState<GetQRSummaryResponse | null>(null);
   const [error, setError] = useState<CustomError | null>(null);
 
@@ -25,8 +26,15 @@ const SearchPatient = ({navigation, route}: any) => {
   const getPatientInfo = async () => {
     setLoading(true);
     const res = await qrSummary(code);
-    setError(res.error);
+    if (res.error) {
+      setError(res.error);
+      setLoading(false);
+      return;
+    }
+    setError(null);
     setPatient(res.data);
+    const base64Image = 'data:image/png;base64,' + res.data!.qrCode;
+    setQRCode(base64Image);
     setLoading(false);
   };
 
@@ -82,6 +90,14 @@ const SearchPatient = ({navigation, route}: any) => {
                 Gün. Yanıtlar
               </Button>
             </View>
+            {qrCode && (
+              <Image
+                source={{uri: qrCode}}
+                style={styles.qr_code}
+                height={200}
+                width={200}
+              />
+            )}
             <PatientInfoRow label="Ad Soyad" value={patient.fullName} />
             <PatientInfoRow label="Kullanıcı Adı" value={patient.username} />
             <PatientInfoRow label="TCKN" value={patient.identityNumber} />
@@ -144,6 +160,9 @@ const styles = StyleSheet.create({
   },
   navigation_button: {
     paddingHorizontal: 8,
+  },
+  qr_code: {
+    alignSelf: 'center',
   },
 });
 

@@ -15,4 +15,5 @@ export interface GetQRSummaryResponse {
   usingMedicinesAndFrequency: string | null;
   previousSurgery: string | null;
   allergy: string | null;
+  qrCode: string;
 }
