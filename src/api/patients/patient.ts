@@ -2,12 +2,12 @@ import {GetProfileFromAuthResponse} from './dtos/get-profile-from-auth-response.
 import axiosInstance from '../../contexts/AxiosInterceptor';
 import {ApiDataResponse, ApiErrorResponse} from '../../dto/api';
 import {CustomError} from '../../utils/customErrors';
-import {GetSummaryResponse} from './dtos/get-summary-response';
 import {GetMyQRCodeResponse} from './dtos/get-my-qr-code-response.dto';
 import {GetHomeScreenDataResponse} from './dtos/get-home-screen-data-response.dto';
 import {UpdateFromAuthCommand} from './dtos/update-from-auth.dto';
 import {GetListResponse} from '../../dto/paginate';
 import {GetByRelativeListItemDto} from './dtos/get-by-relative-list-item.dto';
+import {GetQRSummaryResponse} from './dtos/get-summary-response';
 
 export const acceptConsent = async (): Promise<ApiErrorResponse> => {
   try {
@@ -44,9 +44,9 @@ export const update = async (
 
 export const qrSummary = async (
   qrCodeId: string,
-): Promise<ApiDataResponse<GetSummaryResponse>> => {
+): Promise<ApiDataResponse<GetQRSummaryResponse>> => {
   try {
-    const res = await axiosInstance.get<GetSummaryResponse>(
+    const res = await axiosInstance.get<GetQRSummaryResponse>(
       `patients/${qrCodeId}/qr-summary`,
     );
     return {data: res.data, error: null};

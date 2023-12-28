@@ -36,7 +36,12 @@ const Home = () => {
   const getMyPatients = async () => {
     setLoading(true);
     const response = await getByRelative();
-    setError(response.error);
+    if (response.error) {
+      setError(response.error);
+      setLoading(false);
+      return;
+    }
+    setError(null);
     setMyPatients(response.data!.items);
     setLoading(false);
   };

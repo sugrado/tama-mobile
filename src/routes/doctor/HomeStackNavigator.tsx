@@ -32,7 +32,7 @@ const HomeStackNavigator = () => (
     <HomeStack.Screen
       name={PAGE_NAMES.DOCTOR.HOME.DAILY_QUESTION_ANSWERS}
       component={DailyQuestionAnswers}
-      options={{headerShown: true, title: 'Günlük Sorular'}}
+      options={{headerShown: true, title: 'Yanıtlanan Sorular'}}
     />
     <HomeStack.Screen
       name={PAGE_NAMES.DOCTOR.HOME.CHRONIC_DISEASES}
