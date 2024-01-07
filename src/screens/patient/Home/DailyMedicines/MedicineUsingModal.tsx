@@ -1,24 +1,21 @@
-import React, {useState} from 'react';
+import React, {Fragment, useState} from 'react';
 import {Divider, IconButton, Text} from 'react-native-paper';
 import {FlatList, StyleSheet, View} from 'react-native';
 import SugradoModal from '../../../../components/core/SugradoModal';
 import Loading from '../../../../components/layout/Loading';
-import {
-  DailyMedicineDto,
-  TimeDto,
-} from '../../../../api/patients/dtos/daily-medicine.dto';
 import {COLORS} from '../../../../constants';
+import {GetMyDailyMedicineTimeDto} from '../../../../api/patients/dtos/my-daily-medicine.dto';
+import {CustomError} from '../../../../utils/customErrors';
+import {saveMedicineUsage} from '../../../../api/diagnosisMedicineTimeUsages/diagnosisMedicineTimeUsage';
 
 type MedicineUsingModalProps = {
   visible: boolean;
   onDismiss: () => void;
-  onCompleted: (
-    medicines: DailyMedicineDto[],
-    allMedicinesUsed: boolean,
-  ) => void;
+  onCompleted: () => void;
   title: string;
-  data: TimeDto[];
-  medicineId: string;
+  data: GetMyDailyMedicineTimeDto[];
+  medicineId: number;
+  setError: React.Dispatch<React.SetStateAction<CustomError | null>>;
 };
 
 const MedicineUsingModal = ({
@@ -28,43 +25,28 @@ const MedicineUsingModal = ({
   title,
   data,
   medicineId,
+  setError,
 }: MedicineUsingModalProps) => {
   const [loading, setLoading] = useState<boolean>(false);
-  const handleUsed = async (timeId: string, isUsed: boolean) => {
-    // TODO: go to api and save data
-    // axiosInstance
-    //   .patch(`daily-medicines`, {
-    //     medicineId: medicineId,
-    //     timeId: timeId,
-    //     isUsed: isUsed,
-    //   })
-    //   .then((response) => {
-    //     onCompleted(
-    //       response.data as DailyMedicineDto[],
-    //       response.data.find(p => p.id === Number(medicineId))?.times.every((time: TimeDto) => time.used)!,
-    //     );
-    //   })
-    //   .catch(function (error) {
-    //     console.log(error);
-    //   });
 
+  const handleUsed = async (time: string, used: boolean) => {
     setLoading(true);
-    await wait(2000);
-    onCompleted(
-      medicines_dummydata as DailyMedicineDto[],
-      medicines_dummydata
-        .find(p => p.id === Number(medicineId))
-        ?.times.every((time: TimeDto) => time.used)!,
-    ); // TODO: post servisinden geriye güncellenmiş ilaçlar dönecek.
-    setLoading(false);
-  };
-  function wait(ms: any) {
-    return new Promise((resolve, _) => {
-      setTimeout(() => {
-        resolve(ms);
-      }, ms);
+    const res = await saveMedicineUsage({
+      medicineId: medicineId,
+      time: time,
+      used: used,
+      requestedAt: new Date(),
     });
-  }
+    if (res.error) {
+      setError(res.error);
+      setLoading(false);
+      return;
+    }
+    setError(null);
+    setLoading(false);
+    onCompleted();
+  };
+
   return (
     <>
       {loading && <Loading loading={loading} />}
@@ -75,7 +57,7 @@ const MedicineUsingModal = ({
         <FlatList
           data={data}
           renderItem={({item}) => <Item item={item} onSelected={handleUsed} />}
-          keyExtractor={(item: TimeDto) => item.id}
+          keyExtractor={(item: GetMyDailyMedicineTimeDto) => item.time}
         />
       </SugradoModal>
     </>
@@ -83,38 +65,59 @@ const MedicineUsingModal = ({
 };
 
 type ItemProps = {
-  item: TimeDto;
-  onSelected: (timeId: string, isUsed: boolean) => void;
+  item: GetMyDailyMedicineTimeDto;
+  onSelected: (time: string, used: boolean) => void;
 };
 
 const Item = ({item, onSelected}: ItemProps) => (
-  <>
+  <Fragment>
     <View style={styles.item_container}>
-      <Text>{item.value}</Text>
+      <Text>{item.time}</Text>
       <View style={styles.button_container}>
-        {!item.used && (
-          <IconButton
-            icon="close-circle"
-            iconColor={COLORS.DARK_RED}
-            size={24}
-            onPress={() => {
-              onSelected(item.id, false);
-            }}
-          />
+        {item.used != null ? (
+          item.used ? (
+            <IconButton
+              icon="check-circle"
+              disabled={true}
+              size={24}
+              onPress={() => {
+                onSelected(item.time, false);
+              }}
+            />
+          ) : (
+            <IconButton
+              icon="close-circle"
+              disabled={true}
+              size={24}
+              onPress={() => {
+                onSelected(item.time, true);
+              }}
+            />
+          )
+        ) : (
+          <>
+            <IconButton
+              icon="close-circle"
+              iconColor={COLORS.DARK_RED}
+              size={24}
+              onPress={() => {
+                onSelected(item.time, false);
+              }}
+            />
+            <IconButton
+              icon="check-circle"
+              iconColor="#4d7e3e"
+              size={24}
+              onPress={() => {
+                onSelected(item.time, true);
+              }}
+            />
+          </>
         )}
-        <IconButton
-          icon="check-circle"
-          iconColor="#4d7e3e"
-          size={24}
-          onPress={() => {
-            onSelected(item.id, true);
-          }}
-          disabled={item.used}
-        />
       </View>
     </View>
     <Divider />
-  </>
+  </Fragment>
 );
 
 const styles = StyleSheet.create({
@@ -136,28 +139,3 @@ const styles = StyleSheet.create({
 });
 
 export default MedicineUsingModal;
-
-const medicines_dummydata = [
-  {
-    id: 1,
-    name: 'Martes foina',
-    times: [
-      {id: '1', value: '09:00', used: true},
-      {id: '2', value: '21:00', used: true},
-    ] as TimeDto[],
-  },
-  {
-    id: 2,
-    name: 'Canis lupus',
-    times: [{id: '1', value: '12:30', used: true}] as TimeDto[],
-  },
-  {
-    id: 3,
-    name: 'Capreolus capreolus',
-    times: [
-      {id: '1', value: '09:00', used: true},
-      {id: '2', value: '15:00', used: true},
-      {id: '3', value: '21:00', used: false},
-    ] as TimeDto[],
-  },
-] as DailyMedicineDto[];

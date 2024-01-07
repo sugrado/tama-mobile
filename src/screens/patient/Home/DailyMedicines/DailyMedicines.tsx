@@ -7,13 +7,16 @@ import {getMyDailyMedicines} from '../../../../api/patients/patient';
 import {GetMyDailyMedicineDto} from '../../../../api/patients/dtos/my-daily-medicine.dto';
 import {CustomError, isCritical} from '../../../../utils/customErrors';
 import SugradoErrorPage from '../../../../components/core/SugradoErrorPage';
+import SugradoErrorSnackbar from '../../../../components/core/SugradoErrorSnackbar';
+import SugradoSuccessSnackbar from '../../../../components/core/SugradoSuccessSnackbar';
 
 const DailyMedicines = () => {
   const [medicines, setMedicines] = useState<GetMyDailyMedicineDto[] | null>(
     null,
   );
-  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<CustomError | null>(null);
+  const [success, setSuccess] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [openModals, setOpenModals] = useState<Record<number, boolean>>({});
 
   useEffect(() => {
@@ -39,7 +42,7 @@ const DailyMedicines = () => {
 
   return (
     <>
-      {loading && <Loading loading={loading} fillBackground={true} />}
+      {loading && <Loading loading={loading} />}
       {error && isCritical(error) ? (
         <SugradoErrorPage retry={getMedicines} />
       ) : (
@@ -62,15 +65,18 @@ const DailyMedicines = () => {
                 }}
               />
               <MedicineUsingModal
+                setError={e => {
+                  toggleModal(medicine.medicineId);
+                  setError(e);
+                }}
                 data={medicine.times}
                 medicineId={medicine.medicineId}
                 title={medicine.name + ' ilacına ait kullanımlar'}
                 visible={openModals[medicine.medicineId]}
-                onCompleted={(newMedicines, allMedicinesUsed) => {
-                  setMedicines(newMedicines);
-                  if (allMedicinesUsed) {
-                    toggleModal(medicine.medicineId);
-                  }
+                onCompleted={async () => {
+                  toggleModal(medicine.medicineId);
+                  await getMedicines();
+                  setSuccess(true);
                 }}
                 onDismiss={() => {
                   toggleModal(medicine.medicineId);
@@ -80,6 +86,8 @@ const DailyMedicines = () => {
           );
         })
       )}
+      {error && <SugradoErrorSnackbar error={error} />}
+      <SugradoSuccessSnackbar setVisible={setSuccess} visible={success} />
     </>
   );
 };
