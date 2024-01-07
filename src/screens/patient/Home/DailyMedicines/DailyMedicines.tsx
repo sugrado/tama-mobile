@@ -49,7 +49,9 @@ const DailyMedicines = () => {
         medicines &&
         medicines.length > 0 &&
         medicines.map(medicine => {
-          const allUsed = medicine.times.every((time: any) => time.used);
+          const allUsed = medicine.times.every(
+            (time: any) => time.used !== null,
+          );
           return (
             <React.Fragment key={medicine.medicineId}>
               <DailyMedicineCard

@@ -94,15 +94,17 @@ const Home = ({navigation}: any) => {
         }}
       />
     );
-    const medicinesText = '';
-    dataResponse.dailyMedicinesToUse.forEach(medicine => {
-      medicinesText.concat(medicine.name + ': ' + medicine.usageTimes + '\n');
-    });
+
     const dailyMedicineCard = (
       <HomeCard
         key={generateId()}
         icon="medical-bag"
         headerText="Günlük İlaç Takibi"
+        backgroundColor={
+          dataResponse.dailyMedicinesToUse.length > 0
+            ? COLORS.CARD_UNSUCCESS_BACKGROUND
+            : COLORS.CARD_SUCCESS_BACKGROUND
+        }
         statusColor={
           dataResponse.dailyMedicinesToUse.length > 0
             ? COLORS.DARK_RED
@@ -116,9 +118,16 @@ const Home = ({navigation}: any) => {
         bodyText={
           dataResponse.dailyMedicinesToUse.length > 0
             ? 'Bugün kullanman gereken ilaçları takip etmeyi unutma!'
-            : 'Bugün kullanman gereken bütün ilaçları kullandın. Tebrikler!'
+            : 'Bugünkü ilaç kullanımlarının hepsini kaydettin. Tebrikler!'
         }
-        footerText={medicinesText}
+        footerText={
+          dataResponse.dailyMedicinesToUse.length > 0
+            ? 'Aksiyon Bekleyen Kullanımlar:\n' +
+              dataResponse.dailyMedicinesToUse
+                .map(medicine => `${medicine.name}: ${medicine.usageTimes}`)
+                .join('\n')
+            : ''
+        }
         onPress={() => {
           navigation.navigate(PAGE_NAMES.PATIENT.HOME.DAILY_MEDICINES);
         }}

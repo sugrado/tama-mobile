@@ -4,6 +4,7 @@ import {Card, IconButton, Text} from 'react-native-paper';
 import {COLORS} from '../../../../constants';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import {GetMyDailyMedicineDto} from '../../../../api/patients/dtos/my-daily-medicine.dto';
+import {FormatType, formatDate} from '../../../../utils/helpers';
 
 type DailyMedicineCardProps = {
   onPress: () => void;
@@ -32,7 +33,7 @@ const DailyMedicineCard = ({
             {medicine.times?.map((time, index) => (
               <View key={time.time} style={styles.time_container}>
                 <Text key={index} style={styles.time_text}>
-                  {time.time}
+                  {formatDate(time.time, FormatType.TIME)}
                 </Text>
                 <FontAwesome5
                   name={getIconName(time.used)}

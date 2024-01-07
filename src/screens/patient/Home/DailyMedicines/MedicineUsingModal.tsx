@@ -7,6 +7,7 @@ import {COLORS} from '../../../../constants';
 import {GetMyDailyMedicineTimeDto} from '../../../../api/patients/dtos/my-daily-medicine.dto';
 import {CustomError} from '../../../../utils/customErrors';
 import {saveMedicineUsage} from '../../../../api/diagnosisMedicineTimeUsages/diagnosisMedicineTimeUsage';
+import {FormatType, formatDate} from '../../../../utils/helpers';
 
 type MedicineUsingModalProps = {
   visible: boolean;
@@ -72,7 +73,7 @@ type ItemProps = {
 const Item = ({item, onSelected}: ItemProps) => (
   <Fragment>
     <View style={styles.item_container}>
-      <Text>{item.time}</Text>
+      <Text>{formatDate(item.time, FormatType.TIME)}</Text>
       <View style={styles.button_container}>
         {item.used != null ? (
           item.used ? (
