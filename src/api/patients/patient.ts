@@ -8,6 +8,7 @@ import {UpdateFromAuthCommand} from './dtos/update-from-auth.dto';
 import {GetListResponse} from '../../dto/paginate';
 import {GetByRelativeListItemDto} from './dtos/get-by-relative-list-item.dto';
 import {GetQRSummaryResponse} from './dtos/get-summary-response';
+import {GetMyMedicinesDto} from './dtos/get-my-medicines.dto';
 import {MyDailyQuestion} from './dtos/my-daily-question.dto';
 import {GetMyDailyMedicineDto} from './dtos/my-daily-medicine.dto';
 export const acceptConsent = async (): Promise<ApiErrorResponse> => {
@@ -89,6 +90,19 @@ export const getByRelative = async (): Promise<
     const res = await axiosInstance.get<
       GetListResponse<GetByRelativeListItemDto>
     >('patients/by-relative');
+    return {data: res.data, error: null};
+  } catch (error) {
+    return {data: null, error: error as CustomError};
+  }
+};
+
+export const getMyMedicines = async (): Promise<
+  ApiDataResponse<GetMyMedicinesDto[]>
+> => {
+  try {
+    const res = await axiosInstance.get<GetMyMedicinesDto[]>(
+      'patients/my-medicines',
+    );
     return {data: res.data, error: null};
   } catch (error) {
     return {data: null, error: error as CustomError};

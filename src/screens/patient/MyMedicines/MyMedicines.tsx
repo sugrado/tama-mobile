@@ -1,63 +1,97 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {FlatList, View, StyleSheet} from 'react-native';
 import {Text} from 'react-native-paper';
 import {COLORS} from '../../../constants';
 import Loading from '../../../components/layout/Loading';
+import {getMyMedicines} from '../../../api/patients/patient';
+import {CustomError, isCritical} from '../../../utils/customErrors';
+import {GetMyMedicinesDto} from '../../../api/patients/dtos/get-my-medicines.dto';
+import {FormatType, formatDate} from '../../../utils/helpers';
+import SugradoErrorPage from '../../../components/core/SugradoErrorPage';
+import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
+import {useFocusEffect} from '@react-navigation/native';
 
-type ItemProps = {item: any};
+type ItemProps = {item: GetMyMedicinesDto};
 
 const Item = ({item}: ItemProps) => (
   <View style={styles.item_container}>
     <View style={styles.medicine_info_row}>
       <Text variant="titleMedium">İlaç Adı: </Text>
-      <Text variant="bodyMedium">{item.name}</Text>
+      <Text variant="bodyMedium">{item.medicineName}</Text>
     </View>
     <View style={styles.medicine_info_row}>
-      <Text variant="titleMedium">Doktor Notu: </Text>
-      <Text variant="bodyMedium">{item.doctorNote}</Text>
+      <Text variant="titleMedium">Başlangıç Tarihi: </Text>
+      <Text variant="bodyMedium">
+        {formatDate(item.startDate, FormatType.DATE)}
+      </Text>
     </View>
     <View style={styles.medicine_info_row}>
-      <Text variant="titleMedium">Başlangıç: </Text>
-      <Text variant="bodyMedium">{item.startDate}</Text>
+      <Text variant="titleMedium">Bitiş Tarihi: </Text>
+      <Text variant="bodyMedium">
+        {item.endDate != null
+          ? formatDate(item.endDate, FormatType.DATE)
+          : 'Ömür Boyu'}
+      </Text>
     </View>
     <View style={styles.medicine_info_row}>
-      <Text variant="titleMedium">Kullanım Süresi: </Text>
-      <Text variant="bodyMedium">{item.usageTime}</Text>
+      <Text variant="titleMedium">Kullanım Süreleri: </Text>
     </View>
-    <View style={styles.medicine_info_row}>
-      <Text variant="titleMedium">Bağlı Olduğu Randevu: </Text>
-      <Text variant="bodyMedium">#{item.appointmentOrder}</Text>
-    </View>
+    {item.times.map((time, index) => (
+      <Text variant="bodyMedium" key={index}>
+        {time.time}
+        {index !== item.times.length - 1 ? ', ' : ''}
+      </Text>
+    ))}
   </View>
 );
 
 export default function MyMedicines() {
-  const [medicines, setMedicines] = useState<any[]>();
+  const [medicines, setMedicines] = useState<GetMyMedicinesDto[] | null>();
   const [loading, setLoading] = useState<boolean>(false);
-  useEffect(() => {
-    // TODO: go to api and get data
+  const [error, setError] = useState<CustomError | null>(null);
+
+  useFocusEffect(
+    useCallback(() => {
+      getMedicines();
+    }, []),
+  );
+
+  const getMedicines = async () => {
     setLoading(true);
-    setMedicines(dummyData);
+    const response = await getMyMedicines();
+    if (response.error) {
+      setError(response.error);
+      setLoading(false);
+      return;
+    }
+    setError(null);
+    setMedicines(response.data);
     setLoading(false);
-  }, []);
+  };
 
   return (
     <>
-      {loading && <Loading loading={loading} fillBackground={true} />}
-      {medicines && medicines.length > 0 ? (
+      {loading && <Loading loading={loading} />}
+      {error && isCritical(error) ? (
+        <SugradoErrorPage retry={getMedicines} />
+      ) : (
         <FlatList
           data={medicines}
           renderItem={({item}) => <Item item={item} />}
-          keyExtractor={(item: any) => item.id}
+          keyExtractor={(item: GetMyMedicinesDto) => String(item.id)}
+          ListEmptyComponent={EmptyList}
         />
-      ) : (
-        <Text style={styles.no_data_text}>
-          Kullanımda olduğunuz herhangi bir ilaç bulunmamaktadır.
-        </Text>
       )}
+      {error && <SugradoErrorSnackbar error={error} />}
     </>
   );
 }
+
+const EmptyList = () => (
+  <Text style={styles.no_data_text}>
+    Kullanımda olduğunuz ilaç bulunmamaktadır.
+  </Text>
+);
 
 const styles = StyleSheet.create({
   item_container: {
@@ -83,54 +117,3 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
-
-const dummyData = [
-  {
-    id: 1,
-    name: 'Martes foina',
-    appointmentOrder: 1,
-    doctorNote: 'günde 2 kez sabah ve akşam',
-    startDate: '30.08.2021',
-    usageTime: '6 ay',
-  },
-  {
-    id: 2,
-    name: 'Canis lupus',
-    appointmentOrder: 2,
-    doctorNote: 'günde 1 kez öğlen',
-    startDate: '30.08.2021',
-    usageTime: 'Ömür Boyu',
-  },
-  {
-    id: 3,
-    name: 'Capreolus capreolus',
-    appointmentOrder: 3,
-    doctorNote: 'günde 3 kez sabah, öğlen ve akşam',
-    startDate: '30.08.2021',
-    usageTime: '3 ay',
-  },
-  {
-    id: 4,
-    name: 'Martes foina',
-    appointmentOrder: 1,
-    doctorNote: 'günde 2 kez sabah ve akşam',
-    startDate: '30.08.2021',
-    usageTime: '6 ay',
-  },
-  {
-    id: 5,
-    name: 'Canis lupus',
-    appointmentOrder: 2,
-    doctorNote: 'günde 1 kez öğlen',
-    startDate: '30.08.2021',
-    usageTime: '24 ay',
-  },
-  {
-    id: 6,
-    name: 'Capreolus capreolus',
-    appointmentOrder: 3,
-    doctorNote: 'günde 3 kez sabah, öğlen ve akşam',
-    startDate: '30.08.2021',
-    usageTime: '3 ay',
-  },
-];
