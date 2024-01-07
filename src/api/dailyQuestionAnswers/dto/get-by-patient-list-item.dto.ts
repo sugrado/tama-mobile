@@ -1,4 +1,4 @@
-import {PatientHomeDailyQuestionOption} from '../../dailyQuestions/dto/patient-home-daily-question.dto';
+import {MyDailyQuestionOption} from '../../patients/dtos/my-daily-question.dto';
 
 export class GetByPatientListItemDto {
   date: string;
@@ -13,5 +13,5 @@ export class GetByPatientListItemQuestionDto {
 export class GetByPatientListItemAnswerDto {
   id: number;
   answer: string | null;
-  selectedOption: PatientHomeDailyQuestionOption | null;
+  selectedOption: MyDailyQuestionOption | null;
 }

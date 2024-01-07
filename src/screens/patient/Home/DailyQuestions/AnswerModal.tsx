@@ -4,10 +4,10 @@ import {StyleSheet} from 'react-native';
 import SugradoModal from '../../../../components/core/SugradoModal';
 import SugradoSelectBox from '../../../../components/core/SugradoSelectBox';
 import Loading from '../../../../components/layout/Loading';
-import {PatientHomeDailyQuestionOption} from '../../../../api/dailyQuestions/dto/patient-home-daily-question.dto';
 import {answerDailyQuestion} from '../../../../api/dailyQuestions/dailyQuestions';
 import {AnswerDailyQuestionDto} from '../../../../api/dailyQuestions/dto/answer-daily-question.dto';
 import {CustomError} from '../../../../utils/customErrors';
+import {MyDailyQuestionOption} from '../../../../api/patients/dtos/my-daily-question.dto';
 
 type AnswerModalProps = {
   visible: boolean;
@@ -15,7 +15,7 @@ type AnswerModalProps = {
   onCompleted: () => void;
   title: string;
   label: string;
-  data: PatientHomeDailyQuestionOption[];
+  data: MyDailyQuestionOption[];
   questionId: number;
   setError: React.Dispatch<React.SetStateAction<CustomError | null>>;
 };
