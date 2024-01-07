@@ -5,6 +5,7 @@ import {COLORS} from '../../../../constants';
 import {GetByRelativeListItemDto} from '../../../../api/patients/dtos/get-by-relative-list-item.dto';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {FormatType, formatDate} from '../../../../utils/helpers';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 type PatientDetailCardProps = {
   patient: GetByRelativeListItemDto;
@@ -66,7 +67,29 @@ const PatientDetailCard = ({patient}: PatientDetailCardProps) => {
           </View>
           <View style={styles.section}>
             <Title title="Günlük İlaçlar" icon="medical-bag" />
-            <Text variant="bodyMedium">TODO</Text>
+            {patient.details.dailyMedicines.map(dailyMedicine => {
+              return (
+                <View
+                  key={dailyMedicine.medicineId}
+                  style={styles.dailyQuestionContainer}>
+                  <Text variant="bodyMedium">
+                    İlaç Adı: {dailyMedicine.name}
+                  </Text>
+                  {dailyMedicine.times?.map((time, index) => (
+                    <View key={time.time} style={styles.time_container}>
+                      <Text key={index} style={styles.time_text}>
+                        {formatDate(time.time, FormatType.TIME)}
+                      </Text>
+                      <FontAwesome5
+                        name={getIconName(time.used)}
+                        color={getColor(time.used)}
+                        size={14}
+                      />
+                    </View>
+                  ))}
+                </View>
+              );
+            })}
           </View>
           <View style={styles.section}>
             <Title title="Randevu Durumu" icon="calendar-month-outline" />
@@ -110,6 +133,20 @@ const PatientDetailCard = ({patient}: PatientDetailCardProps) => {
       </Card.Content>
     </Card>
   );
+};
+
+const getIconName = (used: boolean | null) => {
+  if (used == null) {
+    return 'question-circle';
+  }
+  return used ? 'check-circle' : 'times-circle';
+};
+
+const getColor = (used: boolean | null) => {
+  if (used == null) {
+    return COLORS.QUESTION;
+  }
+  return used ? COLORS.THEME_COLOR : COLORS.DARK_RED;
 };
 
 const Title = ({title, icon}: {title: string; icon: string}) => {
@@ -180,6 +217,14 @@ const styles = StyleSheet.create({
   },
   fieldValueText: {
     fontWeight: 'bold',
+  },
+  time_text: {
+    color: 'gray',
+    marginEnd: 5,
+  },
+  time_container: {
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
 

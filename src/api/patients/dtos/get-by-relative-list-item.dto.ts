@@ -1,3 +1,5 @@
+import {GetMyDailyMedicineDto} from './my-daily-medicine.dto';
+
 export class GetByRelativeListItemDto {
   id: number;
   fullName: string;
@@ -6,7 +8,7 @@ export class GetByRelativeListItemDto {
 
 export class GetByRelativeDto {
   dailyQuestions: GetByRelativeQuestionDto[];
-  //dailyMedicines: GetByRelativeMedicineDto[];
+  dailyMedicines: GetMyDailyMedicineDto[];
   appointment: GetByRelativeAppointmentDto | null;
 }
 
