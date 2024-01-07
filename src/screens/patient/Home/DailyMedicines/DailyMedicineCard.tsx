@@ -2,12 +2,12 @@ import {StyleSheet, View} from 'react-native';
 import React from 'react';
 import {Card, IconButton, Text} from 'react-native-paper';
 import {COLORS} from '../../../../constants';
-import {DailyMedicineDto} from '../../../../api/patients/dtos/daily-medicine.dto';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {GetMyDailyMedicineDto} from '../../../../api/patients/dtos/my-daily-medicine.dto';
 
 type DailyMedicineCardProps = {
   onPress: () => void;
-  medicine: DailyMedicineDto;
+  medicine: GetMyDailyMedicineDto;
   backgroundColor: string;
   allUsed: boolean;
 };
@@ -30,17 +30,15 @@ const DailyMedicineCard = ({
           <View style={styles.text_column}>
             <Text variant="bodyLarge">İlaç Adı: {medicine.name}</Text>
             {medicine.times?.map((time, index) => (
-              <View key={time.id} style={styles.time_container}>
+              <View key={time.time} style={styles.time_container}>
                 <Text key={index} style={styles.time_text}>
-                  {time.value}
+                  {time.time}
                 </Text>
-                {time.used && (
-                  <FontAwesome5
-                    name="check-circle"
-                    color={COLORS.THEME_COLOR}
-                    size={16}
-                  />
-                )}
+                <FontAwesome5
+                  name={getIconName(time.used)}
+                  color={getColor(time.used)}
+                  size={14}
+                />
               </View>
             ))}
           </View>
@@ -57,6 +55,20 @@ const DailyMedicineCard = ({
       </Card.Content>
     </Card>
   );
+};
+
+const getIconName = (used: boolean | null) => {
+  if (used == null) {
+    return 'question-circle';
+  }
+  return used ? 'check-circle' : 'times-circle';
+};
+
+const getColor = (used: boolean | null) => {
+  if (used == null) {
+    return COLORS.QUESTION;
+  }
+  return used ? COLORS.THEME_COLOR : COLORS.DARK_RED;
 };
 
 const styles = StyleSheet.create({

@@ -110,6 +110,7 @@ export const COLORS = {
   TEXT: 'white',
   PRIMARY_THEME: 'purple',
   WARNING: '#ffdb4d',
+  QUESTION: '#e6b800',
   SNACKBAR_SUCCESS: '#8B3C7F',
 };
 

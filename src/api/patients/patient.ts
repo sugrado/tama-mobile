@@ -9,6 +9,7 @@ import {GetListResponse} from '../../dto/paginate';
 import {GetByRelativeListItemDto} from './dtos/get-by-relative-list-item.dto';
 import {GetQRSummaryResponse} from './dtos/get-summary-response';
 import {MyDailyQuestion} from './dtos/my-daily-question.dto';
+import {GetMyDailyMedicineDto} from './dtos/my-daily-medicine.dto';
 export const acceptConsent = async (): Promise<ApiErrorResponse> => {
   try {
     await axiosInstance.patch('patients/accept-consent');
@@ -100,6 +101,19 @@ export const getMyDailyQuestions = async (): Promise<
   try {
     const res = await axiosInstance.get<MyDailyQuestion[]>(
       'patients/my-daily-questions',
+    );
+    return {data: res.data, error: null};
+  } catch (error) {
+    return {data: null, error: error as CustomError};
+  }
+};
+
+export const getMyDailyMedicines = async (): Promise<
+  ApiDataResponse<GetMyDailyMedicineDto[]>
+> => {
+  try {
+    const res = await axiosInstance.get<GetMyDailyMedicineDto[]>(
+      'patients/my-daily-medicines',
     );
     return {data: res.data, error: null};
   } catch (error) {
