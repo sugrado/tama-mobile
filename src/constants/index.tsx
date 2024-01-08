@@ -19,6 +19,7 @@ export const PAGE_NAMES = {
       DIAGNOSES: 'doctorDiagnoses',
       CHRONIC_DISEASES: 'doctorChronicDiseases',
       DAILY_QUESTION_ANSWERS: 'doctorDailyQuestionAnswers',
+      MEDICINE_USAGE_ANALYSIS: 'doctorPatientMedicineUsageAnalysis',
     },
     SETTINGS: {
       SETTINGS_STACK: 'doctorSettingsStack',

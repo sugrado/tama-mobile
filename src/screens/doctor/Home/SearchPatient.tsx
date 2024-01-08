@@ -46,7 +46,111 @@ const SearchPatient = ({navigation, route}: any) => {
       ) : (
         patient && (
           <ScrollView>
+            {/* <SegmentedButtons
+              value={'undefined'}
+              onValueChange={() => {}}
+              buttons={[
+                {
+                  value: 'walk',
+                  label: 'Yanıtlar',
+                  labelStyle: {color: COLORS.TEXT},
+                  style: {
+                    backgroundColor: COLORS.BUTTON_COLOR,
+                    borderColor: COLORS.TEXT,
+                  },
+                  onPress: () => {
+                    navigation.navigate(
+                      PAGE_NAMES.DOCTOR.HOME.DAILY_QUESTION_ANSWERS,
+                      {
+                        patientId: patient.id,
+                      },
+                    );
+                  },
+                },
+                {
+                  value: 'train',
+                  label: 'Analizler',
+                  labelStyle: {color: COLORS.TEXT},
+                  style: {
+                    backgroundColor: COLORS.BUTTON_COLOR,
+                    borderColor: COLORS.TEXT,
+                  },
+                  onPress: () => {
+                    navigation.navigate(
+                      PAGE_NAMES.DOCTOR.HOME.MEDICINE_USAGE_ANALYSIS,
+                      {
+                        patientId: patient.id,
+                      },
+                    );
+                  },
+                },
+                {
+                  value: 'drive',
+                  label: 'Kr. Hastalıklar',
+                  labelStyle: {color: COLORS.TEXT},
+                  style: {
+                    backgroundColor: COLORS.BUTTON_COLOR,
+                    borderColor: COLORS.TEXT,
+                  },
+                  onPress: () => {
+                    navigation.navigate(
+                      PAGE_NAMES.DOCTOR.HOME.CHRONIC_DISEASES,
+                      {
+                        patientId: patient.id,
+                      },
+                    );
+                  },
+                },
+                {
+                  value: 'drive',
+                  label: 'Teşhisler',
+                  labelStyle: {color: COLORS.TEXT},
+                  style: {
+                    backgroundColor: COLORS.BUTTON_COLOR,
+                    borderColor: COLORS.TEXT,
+                  },
+                  onPress: () => {
+                    navigation.navigate(PAGE_NAMES.DOCTOR.HOME.DIAGNOSES, {
+                      patientId: patient.id,
+                    });
+                  },
+                },
+              ]}
+              style={{margin: 10}}
+            /> */}
             <View style={styles.navigation_buttons}>
+              <Button
+                mode="text"
+                buttonColor={COLORS.BUTTON_COLOR}
+                textColor={COLORS.TEXT}
+                style={styles.navigation_button}
+                onPress={() => {
+                  navigation.navigate(
+                    PAGE_NAMES.DOCTOR.HOME.DAILY_QUESTION_ANSWERS,
+                    {
+                      patientId: patient.id,
+                    },
+                  );
+                }}
+                theme={{dark: false}}>
+                Gün. Yanıtlar
+              </Button>
+              <Button
+                mode="text"
+                buttonColor={COLORS.BUTTON_COLOR}
+                textColor={COLORS.TEXT}
+                style={styles.navigation_button}
+                onPress={() => {
+                  navigation.navigate(
+                    PAGE_NAMES.DOCTOR.HOME.MEDICINE_USAGE_ANALYSIS,
+                    {
+                      patientId: patient.id,
+                    },
+                  );
+                }}
+                theme={{dark: false}}>
+                İlaç Analizleri
+              </Button>
               <Button
                 mode="text"
                 buttonColor={COLORS.BUTTON_COLOR}
@@ -72,22 +176,6 @@ const SearchPatient = ({navigation, route}: any) => {
                 }}
                 theme={{dark: false}}>
                 Teşhisler
-              </Button>
-              <Button
-                mode="text"
-                buttonColor={COLORS.BUTTON_COLOR}
-                textColor={COLORS.TEXT}
-                style={styles.navigation_button}
-                onPress={() => {
-                  navigation.navigate(
-                    PAGE_NAMES.DOCTOR.HOME.DAILY_QUESTION_ANSWERS,
-                    {
-                      patientId: patient.id,
-                    },
-                  );
-                }}
-                theme={{dark: false}}>
-                Gün. Yanıtlar
               </Button>
             </View>
             {qrCode && (
@@ -153,13 +241,15 @@ const SearchPatient = ({navigation, route}: any) => {
 
 const styles = StyleSheet.create({
   navigation_buttons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexWrap: 'wrap',
     alignItems: 'center',
-    padding: 10,
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   navigation_button: {
     paddingHorizontal: 8,
+    borderRadius: 10,
+    margin: 5,
   },
   qr_code: {
     alignSelf: 'center',

@@ -6,6 +6,7 @@ import SearchPatient from '../../screens/doctor/Home/SearchPatient';
 import Diagnoses from '../../screens/doctor/Home/Diagnoses';
 import DailyQuestionAnswers from '../../screens/doctor/Home/DailyQuestionAnswers';
 import ChronicDiseases from '../../screens/doctor/Home/ChronicDiseases';
+import MedicineUsageAnalysis from '../../screens/doctor/Home/MedicineUsageAnalysis';
 
 const HomeStack = createStackNavigator();
 
@@ -33,6 +34,11 @@ const HomeStackNavigator = () => (
       name={PAGE_NAMES.DOCTOR.HOME.DAILY_QUESTION_ANSWERS}
       component={DailyQuestionAnswers}
       options={{headerShown: true, title: 'Yanıtlanan Sorular'}}
+    />
+    <HomeStack.Screen
+      name={PAGE_NAMES.DOCTOR.HOME.MEDICINE_USAGE_ANALYSIS}
+      component={MedicineUsageAnalysis}
+      options={{headerShown: true, title: 'İlaç Kullanım Analizleri'}}
     />
     <HomeStack.Screen
       name={PAGE_NAMES.DOCTOR.HOME.CHRONIC_DISEASES}
