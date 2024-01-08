@@ -28,7 +28,7 @@ const PatientDetailCard = ({patient}: PatientDetailCardProps) => {
             </Text>
           </View>
         </View>
-        <View style={styles.cardBody}>
+        <View>
           <View style={styles.section}>
             <Title title="Günlük Sorular" icon="notebook-check-outline" />
             {patient.details.dailyQuestions.map(dailyQuestion => {
@@ -50,8 +50,10 @@ const PatientDetailCard = ({patient}: PatientDetailCardProps) => {
                 <View
                   key={dailyQuestion.id}
                   style={styles.dailyQuestionContainer}>
-                  <Text variant="bodyMedium">{dailyQuestion.description}</Text>
                   <Text variant="bodyMedium">
+                    - {dailyQuestion.description}
+                  </Text>
+                  <Text variant="bodyMedium" style={styles.response_text}>
                     Yanıt:{' '}
                     <Text
                       style={[
@@ -81,7 +83,7 @@ const PatientDetailCard = ({patient}: PatientDetailCardProps) => {
                   {dailyMedicine.times?.map((time, index) => (
                     <View key={time.time} style={styles.time_container}>
                       <Text key={index} style={styles.time_text}>
-                        {formatDate(time.time, FormatType.TIME)}
+                        - {formatDate(time.time, FormatType.TIME)}
                       </Text>
                       <FontAwesome5
                         name={getIconName(time.used)}
@@ -98,7 +100,7 @@ const PatientDetailCard = ({patient}: PatientDetailCardProps) => {
             <Title title="Randevu Durumu" icon="calendar-month-outline" />
             {patient.details.appointment ? (
               <>
-                <Text variant="bodyMedium">
+                <Text variant="bodyMedium" style={styles.appointment_field}>
                   Tarih:{' '}
                   <Text variant="bodyMedium" style={styles.fieldValueText}>
                     {formatDate(
@@ -107,7 +109,7 @@ const PatientDetailCard = ({patient}: PatientDetailCardProps) => {
                     )}
                   </Text>
                 </Text>
-                <Text variant="bodyMedium">
+                <Text variant="bodyMedium" style={styles.appointment_field}>
                   Saat:{' '}
                   <Text variant="bodyMedium" style={styles.fieldValueText}>
                     {formatDate(
@@ -121,7 +123,7 @@ const PatientDetailCard = ({patient}: PatientDetailCardProps) => {
                       )}
                   </Text>
                 </Text>
-                <Text variant="bodyMedium">
+                <Text variant="bodyMedium" style={styles.appointment_field}>
                   Doktor:{' '}
                   <Text variant="bodyMedium" style={styles.fieldValueText}>
                     {patient.details.appointment.doctorFullName}
@@ -202,7 +204,6 @@ const styles = StyleSheet.create({
   sectionTitleText: {
     color: COLORS.BUTTON_COLOR,
   },
-  cardBody: {},
   cardFooter: {
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -228,6 +229,14 @@ const styles = StyleSheet.create({
   time_container: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 5,
+  },
+  response_text: {
+    marginTop: 5,
+    marginStart: 8,
+  },
+  appointment_field: {
+    marginVertical: 5,
   },
 });
 

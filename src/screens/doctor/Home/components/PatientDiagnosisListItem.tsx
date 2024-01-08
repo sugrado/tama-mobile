@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
   },
   section_field: {
     marginStart: 10,
+    marginBottom: 5,
   },
   medicine_container: {
     marginBottom: 10,

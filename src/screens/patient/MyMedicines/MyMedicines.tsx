@@ -37,9 +37,8 @@ const Item = ({item}: ItemProps) => (
       <Text variant="titleMedium">Kullanım Süreleri: </Text>
     </View>
     {item.times.map((time, index) => (
-      <Text variant="bodyMedium" key={index}>
-        {time.time}
-        {index !== item.times.length - 1 ? ', ' : ''}
+      <Text variant="bodyMedium" key={index} style={styles.section_field}>
+        - {time.time}
       </Text>
     ))}
   </View>
@@ -111,9 +110,15 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     flexWrap: 'wrap',
+    marginStart: 10,
+    marginVertical: 5,
   },
   no_data_text: {
     textAlign: 'center',
     marginTop: 20,
+  },
+  section_field: {
+    marginStart: 10,
+    marginBottom: 5,
   },
 });
