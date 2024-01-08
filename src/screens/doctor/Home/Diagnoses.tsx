@@ -6,7 +6,7 @@ import SugradoErrorPage from '../../../components/core/SugradoErrorPage';
 import SugradoInfoCard from '../../../components/core/SugradoInfoCard';
 import SugradoErrorSnackbar from '../../../components/core/SugradoErrorSnackbar';
 import {PatientDiagnosisListItem} from './components/PatientDiagnosisListItem';
-import {GetDiagnosesByPatientListItemDto} from '../../../api/diagnoses/dto/GetDiagnosesByPatientListItemDto';
+import {GetDiagnosesByPatientListItemDto} from '../../../api/diagnoses/dto/get-diagnoses-by-patient-list-item.dto';
 import {getPatientDiagnoses} from '../../../api/diagnoses/diagnosis';
 
 const Diagnoses = ({route}: any) => {

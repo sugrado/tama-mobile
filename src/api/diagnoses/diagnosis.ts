@@ -2,7 +2,7 @@ import axiosInstance from '../../contexts/AxiosInterceptor';
 import {ApiDataResponse} from '../../dto/api';
 import {GetListResponse} from '../../dto/paginate';
 import {CustomError} from '../../utils/customErrors';
-import {GetDiagnosesByPatientListItemDto} from './dto/GetDiagnosesByPatientListItemDto';
+import {GetDiagnosesByPatientListItemDto} from './dto/get-diagnoses-by-patient-list-item.dto';
 
 export const getPatientDiagnoses = async (
   patientId: number,

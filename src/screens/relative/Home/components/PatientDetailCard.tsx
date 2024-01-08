@@ -73,7 +73,10 @@ const PatientDetailCard = ({patient}: PatientDetailCardProps) => {
                   key={dailyMedicine.medicineId}
                   style={styles.dailyQuestionContainer}>
                   <Text variant="bodyMedium">
-                    İlaç Adı: {dailyMedicine.name}
+                    İlaç Adı:{' '}
+                    <Text variant="bodyMedium" style={styles.fieldValueText}>
+                      {dailyMedicine.name}
+                    </Text>
                   </Text>
                   {dailyMedicine.times?.map((time, index) => (
                     <View key={time.time} style={styles.time_container}>
